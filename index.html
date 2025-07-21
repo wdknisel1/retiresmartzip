@@ -82,6 +82,12 @@
     .contact a:hover {
       color: #e0f7fa;
     }
+    #formMessage {
+      display: none;
+      margin-top: 15px;
+      font-size: 1.1rem;
+      color: #e0f7fa;
+    }
   </style>
 </head>
 <body>
@@ -93,11 +99,30 @@
       <li>✓ Personalized SNAP & Medicaid guidance</li>
       <li>✓ Real success stories & step-by-step checklists</li>
     </ul>
-    <form action="https://formspree.io/f/mvgqzvrb" method="POST">
+    <form id="notifyForm" action="https://formspree.io/f/mvgqzvrb" method="POST">
       <input type="email" name="email" placeholder="Enter your email" required>
       <button type="submit" class="btn">Notify Me</button>
     </form>
+    <p id="formMessage">Thank you! We'll be in touch shortly.</p>
     <p class="contact">Questions? <a href="mailto:william.d.kniseley@outlook.com">Contact us</a></p>
   </div>
+  <script>
+    document.getElementById('notifyForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (response.ok) {
+        form.style.display = 'none';
+        document.getElementById('formMessage').style.display = 'block';
+      } else {
+        alert('Oops! Something went wrong.');
+      }
+    });
+  </script>
 </body>
 </html>
