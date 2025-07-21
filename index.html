@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,15 +46,13 @@
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(this);
-            const data = Object.fromEntries(formData.entries());
+            const params = new URLSearchParams(formData);
+
             fetch('https://script.google.com/macros/s/AKfycbymS5J2BRlWIB8hm1R2-Ay9dA6F3tAekPvh-hehrZBAq8yVGqyMQc9FiTjzVbRyONSzVw/exec', {
                 method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                body: params
             })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(result => alert('Thank you for signing up!'))
             .catch(error => alert('Error submitting form.'));
         });
