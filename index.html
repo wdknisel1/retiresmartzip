@@ -12,7 +12,6 @@
         input, select, button { padding: 10px; margin: 10px; font-size: 1em; }
         button { background-color: white; color: #008B8B; border: none; cursor: pointer; }
         button:hover { background-color: #f0f0f0; }
-        iframe { display: none; }
     </style>
 </head>
 <body>
@@ -23,8 +22,7 @@
         <li>✓ Personalized SNAP & Medicaid guidance</li>
         <li>✓ Real success stories & step-by-step checklists</li>
     </ul>
-
-    <form id="signupForm" method="GET" target="hidden_iframe" action="https://script.google.com/macros/s/AKfycbxEf2GH_ZnHhN2qkQNm2rCAZcQfuw5bvsIINlM1QN1rOTt1oz7iH6Jz20-09WR6Bn9gMA/exec">
+    <form id="signupForm" action="https://formspree.io/f/mvgqzvrb" method="POST">
         <input type="email" name="email" placeholder="Enter your email" required>
         <select name="retirement_range" required>
             <option value="">When do you plan to retire?</option>
@@ -44,16 +42,5 @@
         </select>
         <button type="submit">Notify Me</button>
     </form>
-
-    <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
-
-    <script>
-        document.getElementById('signupForm').addEventListener('submit', function () {
-            setTimeout(() => {
-                alert('Thank you for signing up!');
-                document.getElementById('signupForm').reset();
-            }, 500);
-        });
-    </script>
 </body>
 </html>
