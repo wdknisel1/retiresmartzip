@@ -3,40 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You - RetireSmartZIP</title>
+    <title>Thank You</title>
     <style>
         body { background-color: #008B8B; color: white; font-family: Arial, sans-serif; text-align: center; padding: 50px; }
         h1 { font-size: 3em; }
         p { font-size: 1.2em; }
-        .countdown { margin-top: 20px; font-size: 1.5em; }
-        a { color: white; text-decoration: underline; }
+        #countdown { font-size: 1.5em; margin-top: 20px; }
     </style>
 </head>
 <body>
     <h1>Thank You!</h1>
-    <p>Stay tuned for Smart Retirement Tools.</p>
-    <div class="countdown" id="countdownDisplay"></div>
-    <a href="index.html">Go Back</a>
-
+    <p>Stay tuned for Smart Retirement Tools and updates.</p>
+    <p id="countdown"></p>
     <script>
-        function getCountdown(retirementDate) {
-            const now = new Date();
-            const target = new Date(retirementDate);
-            if (target < now) return 'Your retirement date has already passed!';
-            const diff = target - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const workWeeks = Math.floor(days / 5);
-            return `You have ${days} days left until retirement! That's about ${workWeeks} work weeks left.`;
-        }
-
         const urlParams = new URLSearchParams(window.location.search);
-        let retirementDate = urlParams.get('retirement_date');
-        const retirementYear = urlParams.get('retirement_year');
-        if (!retirementDate && retirementYear) {
-            retirementDate = retirementYear + '-12-31';
-        }
-        if (retirementDate) {
-            document.getElementById('countdownDisplay').textContent = getCountdown(retirementDate);
+        const year = urlParams.get('retirement_year');
+        if (year) {
+            const retirementDate = new Date(year, 0, 1);
+            const now = new Date();
+            const diffTime = retirementDate - now;
+            if (diffTime > 0) {
+                const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const weeks = Math.floor(days / 7);
+                document.getElementById('countdown').innerText = `Countdown to retirement: ${days} days (~${weeks} weeks)`;
+            }
         }
     </script>
 </body>
