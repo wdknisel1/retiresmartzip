@@ -45,16 +45,17 @@
     <script>
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData.entries());
+            const form = e.target;
+            const formData = new FormData(form);
+            const queryString = new URLSearchParams(formData).toString();
+            const url = "https://script.google.com/macros/s/AKfycbxEf2GH_ZnHhN2qkQNm2rCAZcQfuw5bvsIINlM1QN1rOTt1oz7iH6Jz20-09WR6Bn9gMA/exec?" + queryString;
+            
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = url;
+            document.body.appendChild(iframe);
 
-            const url = "https://script.google.com/macros/s/AKfycbxEf2GH_ZnHhN2qkQNm2rCAZcQfuw5bvsIINlM1QN1rOTt1oz7iH6Jz20-09WR6Bn9gMA/exec?" + 
-                        new URLSearchParams(data).toString();
-
-            fetch(url)
-                .then(response => response.json())
-                .then(result => alert('Thank you for signing up!'))
-                .catch(error => alert('Error submitting form.'));
+            alert('Thank you for signing up!');
         });
     </script>
 </body>
