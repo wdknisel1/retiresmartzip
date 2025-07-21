@@ -19,7 +19,7 @@
       justify-content: center;
     }
     .hero {
-      max-width: 600px;
+      max-width: 650px;
       padding: 40px 20px;
     }
     h1 {
@@ -48,7 +48,7 @@
       flex-direction: column;
       align-items: center;
     }
-    input[type="email"] {
+    input[type="email"], select {
       padding: 10px;
       width: 80%;
       max-width: 300px;
@@ -87,6 +87,11 @@
       margin-top: 15px;
       font-size: 1.1rem;
       color: #e0f7fa;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+    }
+    #formMessage.show {
+      opacity: 1;
     }
   </style>
 </head>
@@ -101,6 +106,21 @@
     </ul>
     <form id="notifyForm" action="https://formspree.io/f/mvgqzvrb" method="POST">
       <input type="email" name="email" placeholder="Enter your email" required>
+      <select name="retirement_range" required>
+        <option value="" disabled selected>When do you plan to retire?</option>
+        <option value="1-5 years">1-5 years</option>
+        <option value="6-10 years">6-10 years</option>
+        <option value="11-15 years">11-15 years</option>
+        <option value="16+ years">16+ years</option>
+      </select>
+      <select name="concern" required>
+        <option value="" disabled selected>Biggest Concern?</option>
+        <option value="Healthcare">Healthcare</option>
+        <option value="Taxes">Taxes</option>
+        <option value="Cost of Living">Cost of Living</option>
+        <option value="Medicaid & Benefits">Medicaid & Benefits</option>
+        <option value="Other">Other</option>
+      </select>
       <button type="submit" class="btn">Notify Me</button>
     </form>
     <p id="formMessage">Thank you! We'll be in touch shortly.</p>
@@ -118,7 +138,9 @@
       });
       if (response.ok) {
         form.style.display = 'none';
-        document.getElementById('formMessage').style.display = 'block';
+        const msg = document.getElementById('formMessage');
+        msg.style.display = 'block';
+        setTimeout(() => msg.classList.add('show'), 10);
       } else {
         alert('Oops! Something went wrong.');
       }
