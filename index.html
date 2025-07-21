@@ -18,11 +18,12 @@
     <h1>RetireSmartZIP</h1>
     <p>Plan Smarter. Live Better. One ZIP Code at a Time.</p>
     <ul style="list-style: none; padding: 0;">
-        <li>✓ ZIP-specific cost & benefit insights</li>
-        <li>✓ Personalized SNAP & Medicaid guidance</li>
-        <li>✓ Real success stories & step-by-step checklists</li>
+        <li>ZIP-specific cost & benefit insights</li>
+        <li>Personalized SNAP & Medicaid guidance</li>
+        <li>Real success stories & step-by-step checklists</li>
     </ul>
     <form id="signupForm" action="https://formspree.io/f/mvgqzvrb" method="POST">
+        <input type="hidden" name="_redirect" value="https://retiresmartzip.com/thank-you.html">
         <input type="email" name="email" placeholder="Enter your email" required>
         <select name="retirement_range" required>
             <option value="">When do you plan to retire?</option>
@@ -40,7 +41,7 @@
             <option value="How to Spend Retirement">How to Spend Retirement</option>
             <option value="Other">Other</option>
         </select>
-        <button type="submit">Notify Me</button>
+        <button type="submit">Submit</button>
     </form>
 </body>
 </html>
