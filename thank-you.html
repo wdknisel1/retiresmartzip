@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,27 +8,11 @@
     <style>
         body { background-color: #008B8B; color: white; font-family: Arial, sans-serif; text-align: center; padding: 50px; }
         h1 { font-size: 3em; }
-        p { font-size: 1.2em; }
-        #countdown { font-size: 1.5em; margin-top: 20px; }
+        p { font-size: 1.5em; }
     </style>
 </head>
 <body>
     <h1>Thank You!</h1>
-    <p>Stay tuned for Smart Retirement Tools and updates.</p>
-    <p id="countdown"></p>
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const year = urlParams.get('retirement_year');
-        if (year) {
-            const retirementDate = new Date(year, 0, 1);
-            const now = new Date();
-            const diffTime = retirementDate - now;
-            if (diffTime > 0) {
-                const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                const weeks = Math.floor(days / 7);
-                document.getElementById('countdown').innerText = `Countdown to retirement: ${days} days (~${weeks} weeks)`;
-            }
-        }
-    </script>
+    <p>Stay tuned for Smart Retirement Tools and exciting updates.</p>
 </body>
 </html>
