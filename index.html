@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SW7D70V406"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SW7D70V406');
+</script>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Primary Meta -->
+  <title>RetireSmartZIP™ — Find Where You Can Afford to Retire</title>
+  <meta name="description" content="Explore housing, climate, healthcare, and cost-of-living insights by ZIP code. See where retirement could work for you.">
+
+  <!-- Open Graph (LinkedIn / Facebook) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://retiresmartzip.com/">
+  <meta property="og:title" content="RetireSmartZIP™ — Find Where You Can Afford to Retire">
+  <meta property="og:description" content="Explore places by ZIP code using housing, climate, and healthcare insights to find where retirement could work.">
+  <meta property="og:image" content="https://retiresmartzip.com/image/og-preview.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RetireSmartZIP™ — Find Where You Can Afford to Retire">
+  <meta name="twitter:description" content="Explore places by ZIP code using housing, climate, and healthcare insights.">
+  <meta name="twitter:image" content="https://retiresmartzip.com/image/og-preview.png">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://retiresmartzip.com/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#0E3A5F;
+      --navy2:#0B2F4A;
+      --gold:#F2C23E;
+      --ink:#0B1320;
+      --muted:#536173;
+      --surface:#F8FAFC;
+      --card:#FFFFFF;
+      --ring:rgba(15,23,42,.10);
+      --shadow:0 10px 30px rgba(2,6,23,.10), 0 2px 8px rgba(2,6,23,.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 420px at 50% -10%, rgba(242,194,62,.10), transparent 55%),
+        linear-gradient(180deg, #ffffff, var(--surface));
+    }
+    a{color:inherit;text-decoration:none}
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background:linear-gradient(to bottom, rgba(242,194,62,.18), rgba(255,255,255,.97));
+      border-bottom:1px solid var(--ring);
+      backdrop-filter:saturate(1.05) blur(4px);
+    }
+    .nav{
+      max-width:1120px; margin:0 auto; padding:12px 20px;
+      display:flex; align-items:center; justify-content:center; gap:22px; flex-wrap:wrap;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      font-weight:900; font-size:22px; letter-spacing:.2px;
+    }
+    .brand img{height:56px; width:auto; display:block}
+    .brandSub{
+      font-size:12px; color:#64748b; font-weight:700; letter-spacing:.2px;
+      margin-top:2px; text-align:left;
+    }
+    .brandWrap{display:flex; flex-direction:column; align-items:flex-start}
+    .navLinks{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
+    .navLinks a{
+      color:#64748b; padding:8px 10px; border-radius:10px; font-weight:600;
+      font-size:14px;
+    }
+    .navLinks a:hover{background:rgba(2,6,23,.05); color:var(--ink)}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      height:46px; padding:0 18px; border-radius:12px; font-weight:800;
+      border:1px solid transparent; box-shadow:var(--shadow);
+      transition:filter .15s ease, transform .15s ease;
+    }
+    .btn:hover{filter:saturate(1.03) brightness(1.01); transform:translateY(-1px)}
+    .btn.primary{background:var(--gold); color:#241700}
+    .btn.secondary{background:#fff; color:var(--ink); border-color:rgba(15,23,42,.10)}
+    .btn.ghost{background:transparent; color:#fff; border-color:rgba(255,255,255,.14); box-shadow:none}
+    .wrap{max-width:1120px; margin:0 auto; padding:28px 20px 64px}
+    .center{text-align:center}
+    .hero{
+      max-width:920px; margin:0 auto;
+      display:grid; gap:18px;
+    }
+    .eyebrow{
+      display:inline-flex; justify-self:center; align-items:center; gap:8px;
+      padding:9px 14px; border-radius:999px;
+      background:#fff; border:1px solid var(--ring);
+      font-size:12px; font-weight:800; color:#334155;
+    }
+    h1{
+      margin:0;
+      font-size:56px; line-height:1.03; letter-spacing:-1px;
+    }
+    .lead{
+      margin:0 auto; max-width:760px;
+      color:var(--muted); font-size:20px; line-height:1.6;
+    }
+    .heroActions{
+      display:flex; justify-content:center; gap:12px; flex-wrap:wrap;
+    }
+    .heroNote{
+      font-size:13px; color:#64748b; font-weight:700;
+    }
+
+    .bridge{
+      margin:20px auto 0 auto;
+      max-width:920px;
+      padding:14px 18px;
+      border-radius:16px;
+      background:rgba(242,194,62,.08);
+      border:1px solid rgba(242,194,62,.18);
+      color:#5b6473;
+      font-size:14px;
+      font-weight:750;
+      line-height:1.5;
+      text-align:center;
+    }
+
+    .panel{
+      margin-top:24px;
+      background:linear-gradient(180deg, var(--navy2), var(--navy));
+      color:#fff; border-radius:28px; padding:28px;
+      border:1px solid rgba(255,255,255,.08); box-shadow:var(--shadow);
+      max-width:920px; margin-left:auto; margin-right:auto;
+    }
+    .panel h2{margin:0 0 10px; font-size:28px}
+    .panel p{margin:0; color:rgba(255,255,255,.88); line-height:1.65; font-size:17px}
+    .journeyRow{
+      display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px;
+      margin-top:20px;
+    }
+    .journeyStep{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px; padding:14px; text-align:left;
+    }
+    .journeyStep .k{
+      font-size:12px; font-weight:900; letter-spacing:.35px; color:rgba(242,194,62,.95);
+      text-transform:uppercase;
+    }
+    .journeyStep .v{margin-top:6px; font-size:15px; font-weight:800}
+    .journeyStep .s{margin-top:4px; font-size:12px; color:rgba(255,255,255,.72); line-height:1.45}
+
+    .section{margin-top:28px}
+    .cards{
+      display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px;
+      margin-top:14px;
+    }
+    .card{
+      background:var(--card); border:1px solid var(--ring); border-radius:20px;
+      padding:20px; box-shadow:var(--shadow); text-align:left;
+    }
+    .card h3{margin:0 0 8px; font-size:18px}
+    .card p{margin:0; color:var(--muted); line-height:1.55}
+    .section h2{margin:0; font-size:28px}
+    .section .sub{margin-top:8px; color:var(--muted); line-height:1.6; max-width:760px; margin-left:auto; margin-right:auto}
+
+    .ctaStrip{
+      margin-top:20px;
+      background:linear-gradient(180deg, #132F4A, #0E2438);
+      color:#fff; border-radius:22px; padding:22px; box-shadow:var(--shadow);
+      display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .ctaStrip strong{font-size:20px}
+    .ctaStrip p{margin:6px 0 0; color:rgba(255,255,255,.82)}
+
+    .faq{display:grid; gap:14px; margin-top:16px}
+    .faq details{
+      background:#fff; border:1px solid var(--ring); border-radius:16px; padding:14px 16px; box-shadow:var(--shadow);
+      text-align:left;
+    }
+    .faq summary{cursor:pointer; font-weight:800}
+    .faq p{margin:10px 0 0; color:var(--muted); line-height:1.55}
+
+    .source{
+      margin-top:20px; font-size:13px; color:#64748b; line-height:1.55; text-align:center;
+    }
+    footer{
+      margin-top:30px; padding-top:16px; border-top:1px solid var(--ring);
+      color:#64748b; font-size:13px; text-align:center;
+    }
+
+    @media (max-width: 980px){
+      h1{font-size:42px}
+      .lead{font-size:18px}
+      .journeyRow,.cards{grid-template-columns:1fr}
+      .nav{gap:12px}
+      .brand img{height:48px}
+      .brand{font-size:20px}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <nav class="nav">
+      <div class="brand">
+        <img src="./image/RSZ_20251217.png" alt="RetireSmartZIP logo" onerror="this.style.display='none'">
+        <div class="brandWrap">
+          <div>RetireSmartZIP™</div>
+          <div class="brandSub">Explore where retirement could work</div>
+        </div>
+      </div>
+      <div class="navLinks">
+        <a href="#how">How it works</a>
+        <a href="#universe">Our universe</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn primary" href="explorer.html">Open Explorer</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="wrap">
+    <section class="hero center">
+      <div class="eyebrow">RetireSmartZIP™ • ZIP Explorer</div>
+      <h1>Explore where to retire — your way</h1>
+      <p class="lead">
+        Use the map, your preferences, or a ZIP code to explore places that fit your life — using housing, climate, healthcare, and local context to narrow your options with confidence.
+      </p>
+      <div class="heroActions">
+        <a class="btn primary" href="explorer.html">Open Explorer</a>
+        <a class="btn secondary" href="#how">See how it works</a>
+      </div>
+      <div class="heroNote">
+        Start with exploration — deeper comparison and planning tools come next.
+      </div>
+    </section>
+
+    <div class="bridge">
+      Start with exploration — build confidence before moving into deeper retirement decisions.
+    </div>
+
+    <section class="section center" id="three-ways">
+      <h2>3 ways to explore</h2>
+      <p class="sub">
+        Start wherever you feel most comfortable — there’s no single right way to begin.
+      </p>
+      <div class="cards">
+        <article class="card">
+          <h3>Explore by preferences</h3>
+          <p>Start with lifestyle and priorities to discover places that may fit how you want to live.</p>
+        </article>
+        <article class="card">
+          <h3>Explore by city &amp; state</h3>
+          <p>Begin with locations you already know and move into nearby ZIPs worth a closer look.</p>
+        </article>
+        <article class="card">
+          <h3>Explore by ZIP code</h3>
+          <p>Jump directly into any ZIP to review housing, climate, and healthcare context instantly.</p>
+        </article>
+      </div>
+      <div style="margin-top:16px;">
+        <a class="btn secondary" href="explorer.html">Start exploring</a>
+      </div>
+      <div class="heroNote" style="margin-top:10px;">
+        New here? Watch a quick 2-minute walkthrough inside the explorer.
+      </div>
+    </section>
+
+    <section class="panel center">
+      <h2>This page is orientation (WHERE)</h2>
+      <p>
+        RetireSmartZIP is designed to help you understand where retirement could work before you move into deeper planning and decisions.
+      </p>
+      <div class="journeyRow">
+        <div class="journeyStep">
+          <div class="k">Explore</div>
+          <div class="v">Explore places</div>
+          <div class="s">Use ZIP-level housing, climate, healthcare, and local context to build a short list.</div>
+        </div>
+        <div class="journeyStep">
+          <div class="k">Explore confidently</div>
+          <div class="v">Time the move</div>
+          <div class="s">Future tools can help you think about timing when retirement becomes real.</div>
+        </div>
+        <div class="journeyStep">
+          <div class="k">Compare</div>
+          <div class="v">Plan the transition</div>
+          <div class="s">Later phases can support planning, comparison, and practical decision-making.</div>
+        </div>
+        <div class="journeyStep">
+          <div class="k">Decide</div>
+          <div class="v">Pull the trigger</div>
+          <div class="s">The full journey is about turning exploration into a confident move when you are ready.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section center" id="how">
+      <h2>How this first release works</h2>
+      <p class="sub">
+        Start with the explorer, review the facts about a place, and narrow your list before deeper retirement decisions.
+      </p>
+      <div class="cards">
+        <article class="card">
+          <h3>Explore regions and ZIPs</h3>
+          <p>Use the map, preferences, city/state search, or direct ZIP search to move from broad geography into specific places worth a closer look.</p>
+        </article>
+        <article class="card">
+          <h3>Review the local facts</h3>
+          <p>See housing, climate, and healthcare context for each ZIP without digging through multiple sources or forcing an immediate decision.</p>
+        </article>
+        <article class="card">
+          <h3>Build a short list</h3>
+          <p>Use the explorer to reduce noise and identify the locations worth deeper follow-up as your retirement thinking evolves.</p>
+        </article>
+      </div>
+
+      <div class="ctaStrip">
+        <div>
+          <strong>Ready to start exploring?</strong>
+          <p>No signup required. Start exploring where retirement could work.</p>
+        </div>
+        <a class="btn primary" href="explorer.html">Open Explorer</a>
+      </div>
+    </section>
+
+    <section class="section center" id="universe">
+      <h2>About the RetireSmartZIP universe</h2>
+      <p class="sub">
+        The explorer focuses on ZIP codes with sufficient data coverage and practical retirement relevance. Not every ZIP is included, and some places may be represented by the nearest supported context.
+      </p>
+      <div class="cards">
+        <article class="card">
+          <h3>Housing at a glance</h3>
+          <p>Quickly review current home value and rent context for a ZIP without switching between multiple sites.</p>
+        </article>
+        <article class="card">
+          <h3>Climate context</h3>
+          <p>Use long-term climate normals to understand temperature and rainfall patterns in practical, readable terms.</p>
+        </article>
+        <article class="card">
+          <h3>Healthcare context</h3>
+          <p>Review basic healthcare access signals to understand whether a place deserves a closer look.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section center" id="faq">
+      <h2>Frequently asked questions</h2>
+      <div class="faq">
+        <details>
+          <summary>Is this a recommendation engine?</summary>
+          <p>No. This first release is an exploration tool. It helps you understand places and narrow options—it does not tell you where to retire.</p>
+        </details>
+        <details>
+          <summary>What data is included?</summary>
+          <p>This tool uses selected ZIP-level housing, climate, healthcare, and local context data to support orientation and comparison.</p>
+        </details>
+        <details>
+          <summary>Why might some ZIPs not appear?</summary>
+          <p>The explorer focuses on ZIP codes within the RetireSmartZIP universe—locations with sufficient data and practical retirement relevance. If a ZIP is not shown, nearby ZIPs may provide the closest available context.</p>
+        </details>
+      </div>
+    </section>
+
+    <div class="source">
+      Data is compiled from publicly available sources including U.S. Census, NOAA climate normals, CMS healthcare data, and housing market estimates.
+    </div>
+
+    <footer>
+      © 2026 RetireSmartZIP™
+    </footer>
+  </main>
+</body>
+</html>

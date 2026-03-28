@@ -1,0 +1,3083 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Explore ZIP Codes for Retirement | RetireSmartZIP™</title>
+<meta name="description" content="Explore U.S. ZIP codes for retirement. Compare home values, climate, healthcare, and cost-of-living insights to find where you can afford to retire.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://retiresmartzip.com/explorer.html">
+<meta property="og:title" content="Explore ZIP Codes for Retirement | RetireSmartZIP™">
+<meta property="og:description" content="Compare ZIP codes across housing, climate, and healthcare to find your best place to retire.">
+<meta property="og:image" content="https://retiresmartzip.com/image/og-preview.png">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Explore ZIP Codes for Retirement | RetireSmartZIP™">
+<meta name="twitter:description" content="Find where you can afford to retire using ZIP-level data.">
+<meta name="twitter:image" content="https://retiresmartzip.com/image/og-preview.png">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://retiresmartzip.com/explorer.html">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RetireSmartZIP™ — Explore by ZIP</title>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <style>
+    :root{
+      --bg0:#0B2F4A;
+      --bg1:#0E3A5F;
+      --panel:#0f172a;
+      --panel2:#111b31;
+      --card:#121c2d;
+      --stroke:rgba(255,255,255,.08);
+      --stroke2:rgba(255,255,255,.12);
+      --text:#e8eefc;
+      --muted:rgba(232,238,252,.72);
+      --muted2:rgba(232,238,252,.55);
+      --accent:#F2C23E;
+      --accent2:#ef4444;
+      --good:#22c55e;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --r16:16px;
+      --r12:12px;
+      --r10:10px;
+      --pad:14px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:
+        radial-gradient(1200px 650px at 30% -10%, rgba(59,130,246,.22), transparent 60%),
+        radial-gradient(900px 520px at 85% 0%, rgba(242,194,62,.18), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      color:var(--text);
+      overflow:hidden;
+    }
+
+    /* Top bar */
+     .topbar{
+      height:84px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 28px;
+      background: linear-gradient(180deg, rgba(10,18,32,.95), rgba(8,14,26,.98));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 8px 24px rgba(0,0,0,.45);
+    }
+    
+
+    /* Brand / Logo */
+       .logoImg{
+      height:54px;
+      width:auto;
+      object-fit:contain;
+      filter: drop-shadow(0 14px 34px rgba(0,0,0,.65));
+    }
+     .logoFallback{
+      width:46px; height:46px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(242,194,62,.85), rgba(59,130,246,.65));
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.08);
+    }
+     .brandText{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+      .brandTitle{
+      font-size:32px;
+      font-weight:950;
+      letter-spacing:.5px;
+      line-height:1.05;
+    }
+     .brandSub{
+      font-size:13px;
+      color:var(--muted2);
+      font-weight:800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+.brand{
+      display:flex; gap:12px; align-items:center;
+      min-width:0;
+    }
+    .rightbar{
+      display:flex; gap:10px; align-items:center;
+    }
+    .search{
+      display:flex; gap:8px; align-items:center;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:8px 10px;
+      min-width:320px;
+    }
+    .search input{
+      width:100%;
+      border:none; outline:none;
+      background:transparent;
+      color:var(--text);
+      font-size:13px;
+    }
+    .btn{
+      border:1px solid var(--stroke2);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      padding:8px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:650;
+      font-size:13px;
+    }
+    .btn:hover{ border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.08); }
+    .pill{
+      display:flex; align-items:center; gap:8px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:8px 12px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:650;
+    }
+    .dot{
+      width:8px; height:8px; border-radius:999px;
+      background:var(--good);
+      box-shadow: 0 0 0 6px rgba(34,197,94,.12);
+    }
+    .dot.bad{ background:var(--accent2); box-shadow: 0 0 0 6px rgba(239,68,68,.10); }
+
+    /* Layout */
+    .wrap{
+      height:calc(100vh - 64px);
+      padding:12px;
+    }
+    .grid{
+      height:100%;
+      display:grid;
+      grid-template-columns: 1.25fr 1fr;
+      grid-template-rows: 1.05fr .95fr;
+      gap:12px;
+    }
+    .panel{
+      position:relative;
+      border-radius: var(--r16);
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panelHeader{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      padding:12px 12px 18px 12px;
+      border-bottom:1px solid var(--stroke);
+      background:rgba(255,255,255,.02);
+    }
+    .panelHeader .title{
+      font-weight:800;
+      font-size:13px;
+      letter-spacing:.2px;
+    }
+    .panelHeader .desc{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:3px;
+    }
+    .panelHeader .actions{
+      display:flex; gap:8px; align-items:center;
+    }
+    .miniBtn{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:12px;
+      font-weight:750;
+      cursor:pointer;
+      user-select:none;
+    }
+    .miniBtn:hover{ background:rgba(255,255,255,.08); color:var(--text); }
+
+    /* Rev10: clearer map scope selector affordance */
+    #scopeBtn{
+      cursor:pointer;
+      position:relative;
+      padding-right:28px;
+      background:rgba(59,130,246,.14);
+      border-color:rgba(59,130,246,.38);
+      color:#ffffff;
+      box-shadow:0 0 0 1px rgba(59,130,246,.12) inset;
+    }
+    #scopeBtn:hover{
+      background:rgba(59,130,246,.22);
+      border-color:rgba(59,130,246,.52);
+      color:#ffffff;
+    }
+    #scopeBtn::after{
+      content:"▼";
+      position:absolute;
+      right:10px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:10px;
+      opacity:.85;
+      pointer-events:none;
+    }
+    .miniBtn.primary{
+      border-color: rgba(242,194,62,.35);
+      color: rgba(242,194,62,.95);
+      background: rgba(242,194,62,.10);
+    }
+    .miniBtn.danger{
+      border-color: rgba(239,68,68,.35);
+      color: rgba(239,68,68,.95);
+      background: rgba(239,68,68,.10);
+    }
+
+    /* Fullscreen behavior */
+    .fullscreen{
+      position:fixed !important;
+      inset: 76px 12px 12px 12px;
+      z-index: 9999;
+    }
+    .hideWhenFullscreen{
+      display:none !important;
+    }
+
+    /* Q1 map */
+    #map{
+      position:absolute;
+      inset:48px 0 0 0;
+    }
+    .mapOverlayHint{
+      position:absolute;
+      left:16px;
+      top:64px;
+      padding:10px 12px;
+      background: rgba(255,255,255,.55);
+      color:#0b1220;
+      border-radius:12px;
+      font-weight:800;
+      font-size:12px;
+      border:1px solid rgba(0,0,0,.12);
+      backdrop-filter: blur(6px);
+    }
+    .bigHint{
+      position:absolute;
+      left:50%;
+      top:40%;
+      transform:translate(-50%,-50%);
+      padding:26px 28px;
+      width:min(520px, calc(100% - 40px));
+      background: rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.24);
+      border-radius:18px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 30px 80px rgba(0,0,0,.40);
+      text-align:center;
+      color: rgba(255,255,255,.92);
+    }
+    .bigHint .h1{ font-size:34px; font-weight:900; margin:0 0 6px 0; }
+    .bigHint .h2{ font-size:16px; color: rgba(255,255,255,.86); margin:0; font-weight:700; }
+    .bigHint .h3{ margin-top:14px; font-size:12px; color: rgba(255,255,255,.75); font-weight:700; }
+
+    /* Q2 content */
+    .q2Body{
+      position:absolute; inset:48px 0 0 0;
+      overflow:auto;
+      padding:12px;
+    }
+    .selectedRow{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px;
+      border:1px solid var(--stroke);
+      border-radius: var(--r12);
+      background: rgba(0,0,0,.12);
+    }
+    .selectedRow .left .label{
+      font-size:12px; color:var(--muted);
+      font-weight:700;
+    }
+    .selectedRow .left .zip{
+      margin-top:3px;
+      font-size:14px;
+      font-weight:900;
+    }
+    .selectedRow .left .place{
+      margin-top:2px;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:750;
+    }
+    .meta{ margin-top:2px; font-size:12px; color:var(--muted); opacity:.9; }
+
+    .tabs{
+      display:flex; gap:8px;
+      padding:10px 0 10px 0;
+      border-bottom:1px solid var(--stroke);
+      margin-top:10px;
+    }
+    .tab{
+      display:flex; align-items:center; gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:850;
+      cursor:pointer;
+      user-select:none;
+    }
+    .tab.active{
+      border-color: rgba(242,194,62,.35);
+      background: rgba(242,194,62,.10);
+      color: rgba(242,194,62,.95);
+    }
+    .tabPanels{ margin-top: 12px; }
+    .tabPanel{ display:none; }
+    .tabPanel.active{ display:block; }
+
+    .lock{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:16px; height:16px;
+      border-radius:6px;
+      background:rgba(242,194,62,.15);
+      border:1px solid rgba(242,194,62,.28);
+      color: rgba(242,194,62,.95);
+      font-size:11px;
+      line-height:1;
+    }
+
+    .cards{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap:12px;
+    }
+    .card{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--r12);
+      padding:12px;
+      min-height:92px;
+    }
+    .card .k{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:750;
+    }
+    .card .v{
+      margin-top:6px;
+      font-size:22px;
+      font-weight:950;
+      letter-spacing:.2px;
+    }
+    .card .s{
+      margin-top:2px;
+      font-size:12px;
+      color:var(--muted2);
+      font-weight:750;
+      line-height:1.25;
+    }
+    .wideRow{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .box{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--r12);
+      padding:12px;
+    }
+    .box h3{
+      margin:0 0 6px 0;
+      font-size:13px;
+      font-weight:950;
+    }
+    .box p{
+      margin:0;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+      font-weight:650;
+    }
+    .box ul{
+      margin:8px 0 0 18px;
+      padding:0;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+      font-weight:650;
+    }
+    .ctaList{
+      display:flex; flex-direction:column; gap:8px;
+      margin-top:8px;
+    }
+    .ctaItem{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.12);
+      cursor:not-allowed;
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+    }
+    .ctaItem span{
+      display:flex; gap:10px; align-items:center;
+    }
+    .ctaItem .arrow{ opacity:.65; }
+
+    
+/* Q2 At a glance summary */
+.atGlance{
+  margin-top:12px;
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,.03);
+  border-radius: var(--r12);
+  padding:12px;
+}
+.atGlanceTitle{
+  font-size:12px;
+  font-weight:900;
+  color:var(--muted2);
+  letter-spacing:.2px;
+  margin-bottom:10px;
+}
+.atGlanceGrid{
+  display:grid;
+  grid-template-columns: 130px 1fr;
+  gap:8px 14px;
+}
+.atGlanceLabel{
+  font-size:12px;
+  font-weight:900;
+  color:var(--text);
+}
+.atGlanceValue{
+  font-size:12px;
+  font-weight:750;
+  color:var(--muted);
+  line-height:1.35;
+}
+@media (max-width: 700px){
+  .atGlanceGrid{ grid-template-columns: 1fr; gap:6px; }
+}
+
+    /* Q3 mode toggle */
+    .modeWrap{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 12px;
+      border:1px solid rgba(59,130,246,.24);
+      background: rgba(59,130,246,.08);
+      border-radius: 14px;
+      margin-bottom:10px;
+    }
+    .modeLeft{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+    .modeTitle{
+      font-size:12px;
+      font-weight:950;
+      letter-spacing:.2px;
+      color: rgba(242,194,62,.95);
+    }
+    .modeSub{
+      font-size:12px;
+      color: var(--muted);
+      font-weight:750;
+      line-height:1.35;
+      max-width: 720px;
+    }
+    .modeToggle{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      padding:6px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+      flex-shrink:0;
+    }
+    .modeBtn{
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-weight:950;
+      font-size:12px;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .modeBtn:hover{ background: rgba(255,255,255,.07); color: var(--text); border-color: rgba(255,255,255,.14); }
+    .modeBtn.active{
+      border-color: rgba(242,194,62,.40);
+      background: rgba(242,194,62,.14);
+      color: rgba(242,194,62,.98);
+      box-shadow: 0 0 0 2px rgba(242,194,62,.18);
+    }
+    .modePulse{ animation: pulseGlow 1.8s ease-in-out infinite; }
+    @keyframes pulseGlow{
+      0%{ box-shadow: 0 0 0 0 rgba(242,194,62,.20); }
+      50%{ box-shadow: 0 0 0 10px rgba(242,194,62,.07); }
+      100%{ box-shadow: 0 0 0 0 rgba(242,194,62,.20); }
+    }
+
+    /* Place Search (City/State) UI */
+    .placeRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+    }
+    .select{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      border-radius: 12px;
+      padding:8px 10px;
+      min-width: 200px;
+    }
+    .select label{
+      font-size:12px;
+      color: var(--muted2);
+      font-weight:900;
+    }
+    .select select{
+      border:none;
+      outline:none;
+      background: transparent;
+      color: var(--text);
+      font-weight:850;
+      font-size:12px;
+      min-width: 140px;
+    }
+    .pagerRow{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:flex-end;
+      margin-top:10px;
+    }
+
+    .q3Body{
+      position:absolute; inset:48px 0 0 0;
+      padding:12px;
+      overflow:auto;
+    }
+    .chipsRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    .chip{
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      color:var(--muted);
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .chip.active{
+      border-color: rgba(242,194,62,.35);
+      background: rgba(242,194,62,.10);
+      color: rgba(242,194,62,.95);
+    }
+    .chip.disabled{ opacity:.55; cursor:not-allowed; }
+    .chipCount{
+      font-size:11px;
+      font-weight:950;
+      padding:3px 7px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      color:var(--muted2);
+      background: rgba(0,0,0,.12);
+    }
+    .q3Hint{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+      line-height:1.45;
+    }
+    .section{
+      margin-top:12px;
+      border-top:1px solid var(--stroke);
+      padding-top:12px;
+    }
+    .sectionTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .sectionTitle .label{
+      font-size:12px;
+      color:var(--muted2);
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .badge{
+      font-size:11px;
+      font-weight:950;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.12);
+      color:var(--muted);
+    }
+    .resultsList{
+      margin-top:10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .resultRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.12);
+      cursor:pointer;
+    }
+    .resultRow:hover{
+      border-color: rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+    }
+    .resultLeft{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .resultZip{ font-weight:950; font-size:12px; color: var(--text); letter-spacing:.2px; }
+    .resultPlace{
+      font-weight:800;
+      font-size:12px;
+      color: var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 520px;
+    }
+    .resultMeta{ font-weight:800; font-size:11px; color: var(--muted2); white-space:nowrap; }
+    .relaxGrid{ margin-top:10px; display:grid; grid-template-columns: 1fr; gap:8px; }
+    .relaxBtn{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+      color: var(--muted);
+      font-weight:900;
+      font-size:12px;
+    }
+    .relaxBtn:hover{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.18);
+      color: var(--text);
+    }
+    .relaxBtn .small{
+      font-size:11px;
+      color: var(--muted2);
+      font-weight:850;
+    }
+
+    /* Q4 */
+    .q4Body{
+      position:absolute; inset:48px 0 0 0;
+      overflow:auto;
+      padding:12px;
+    }
+    .tipBox{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--r12);
+      padding:12px;
+    }
+    .tipBox h3{
+      margin:0 0 6px 0;
+      font-size:13px;
+      font-weight:950;
+    }
+    .tipBox ol{
+      margin:8px 0 0 18px;
+      padding:0;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.55;
+      font-weight:650;
+    }
+
+    /* Small screens fallback */
+    @media (max-width: 1100px){
+      body{ overflow:auto; }
+      .wrap{ height:auto; }
+      .grid{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .panel{ min-height:460px; }
+      #map{ inset:48px 0 0 0; min-height:420px; }
+    }
+
+    /* City/State dropdown readability (dark UI) */
+    select{ color: #EAF0FF; }
+    select option{ background:#0B0F16; color:#EAF0FF; }
+
+    /* Map always-on ZIP label (no bubble/fill) */
+    .leaflet-tooltip.zipLabel{
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      color: #111827;
+      pointer-events: none;
+      text-shadow: 0 1px 2px rgba(255,255,255,.95), 0 0 6px rgba(255,255,255,.85), 0 1px 8px rgba(0,0,0,.35);
+    }
+
+    /* Remove Leaflet tooltip arrow (little triangle) */
+    .leaflet-tooltip.zipLabel:before{
+      display:none !important;
+      border:none !important;
+    }
+    .leaflet-tooltip.zipLabel .zipLblCity{
+      font-weight: 850;
+      font-size: 13px;
+      line-height: 1.05;
+      opacity: 0.96;
+      white-space: nowrap;
+    }
+    .leaflet-tooltip.zipLabel .zipLblZip{
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1.05;
+      margin-top: 3px;
+      opacity: 0.92;
+      white-space: nowrap;
+    }
+    /* Satellite mode: switch to light label text w/ dark halo */
+    body.base-satellite .leaflet-tooltip.zipLabel{
+      color: rgba(248,250,252,.98);
+      text-shadow:
+        0 1px 2px rgba(0,0,0,.95),
+        0 0 8px rgba(0,0,0,.85),
+        0 2px 12px rgba(0,0,0,.75);
+    }
+
+    .leaflet-tooltip.zipLabel .zipLblCity{
+      font-weight: 850;
+      font-size: 13px;
+      line-height: 1.05;
+      opacity: 0.95;
+      white-space: nowrap;
+    }
+    .leaflet-tooltip.zipLabel .zipLblZip{
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1.05;
+      margin-top: 3px;
+      opacity: 0.90;
+      white-space: nowrap;
+    }
+
+    /* Climate card helper tooltip */
+    .infoTip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;
+      height:16px;
+      margin-left:6px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.05);
+      color:var(--muted2);
+      font-size:10px;
+      font-weight:900;
+      cursor:help;
+      vertical-align:middle;
+    }
+    .infoTip:hover{
+      color:rgba(242,194,62,.98);
+      border-color:rgba(242,194,62,.35);
+      background:rgba(242,194,62,.10);
+    }
+
+    /* Rev15: warm homepage-aligned guidance tooltip for climate info icons */
+    .infoTip{
+      position:relative;
+      overflow:visible;
+    }
+    .infoTip[data-tip]::after{
+      opacity:0;
+      transition:opacity .12s ease-out;
+    }
+    .infoTip[data-tip]:hover::after{
+      content:attr(data-tip);
+      position:absolute;
+      left:50%;
+      top:calc(100% + 14px);
+      transform:translateX(-50%);
+      background:rgba(255,248,220,.96);
+      color:#0B2F4A;
+      border:1px solid rgba(242,194,62,.35);
+      border-radius:10px;
+      padding:7px 10px;
+      font-size:12px;
+      font-weight:800;
+      line-height:1.25;
+      white-space:nowrap;
+      max-width:none;
+      box-shadow:0 10px 28px rgba(0,0,0,.18);
+      z-index:2000;
+      pointer-events:none;
+      text-align:center;
+      opacity:1;
+    }
+    .infoTip[data-tip]:hover::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:calc(100% + 8px);
+      transform:translateX(-50%);
+      border-left:6px solid transparent;
+      border-right:6px solid transparent;
+      border-bottom:6px solid rgba(255,248,220,.96);
+      z-index:2001;
+      pointer-events:none;
+    }
+
+    /* Region hover label */
+    .leaflet-tooltip.regionHoverTip{
+      background: rgba(15,23,42,.92) !important;
+      color: #e8eefc !important;
+      border: 1px solid rgba(255,255,255,.16) !important;
+      border-radius: 10px !important;
+      box-shadow: 0 8px 22px rgba(0,0,0,.32) !important;
+      padding: 6px 10px !important;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+    .leaflet-tooltip.regionHoverTip:before{
+      border-top-color: rgba(15,23,42,.92) !important;
+    }
+  
+
+    /* MVP: hide empty LifestyleRing chips */
+    #gsLifestyleChips:empty{ display:none; }
+
+/* Direct base-layer toggle (no collapsed icon) */
+.baseToggleControl{
+  background: rgba(31,41,55,.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.35);
+  padding: 8px 10px;
+  color: var(--text);
+}
+.baseToggleControl .row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  font-weight:800;
+  color: var(--text);
+}
+.baseToggleControl .row + .row{ margin-top:6px; }
+.baseToggleControl input[type="radio"]{
+  margin:0;
+  accent-color:#3B82F6;
+}
+.baseToggleControl label{ cursor:pointer; user-select:none; }
+
+/* --- NO-DRIFT: permanently hide debug + start-here overlays --- */
+#mapStats{ display:none !important; }
+#startHint{ display:none !important; }
+
+</style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="brand">
+  <img class="logoImg" src="./image/RSZ_20251217.png" alt="RetireSmartZIP logo"
+       onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';" />
+  <div id="logoFallback" class="logoFallback" style="display:none;"></div>
+  <div class="brandText">
+    <div class="brandTitle">RetireSmartZIP™</div>
+    
+  </div>
+</div>
+
+    <div class="rightbar">
+      <div id="statusPill" class="pill">
+        <span id="statusDot" class="dot bad"></span>
+        <span id="statusText">Loading…</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="grid" id="gridRoot">
+      <!-- Q1 -->
+      <div class="panel" id="panelQ1">
+        <div class="panelHeader">
+          <div>
+            <div class="title">Navigator Map</div>
+            <div class="desc">Click the map to select a ZIP. Use View to switch: USA → REGION → ZIP.</div>
+          </div>
+          <div class="actions">
+            <div id="scopeBtn" class="miniBtn">View: <b id="scopeLabel">USA</b></div>
+            <div class="miniBtn" data-fs="panelQ1" title="Fullscreen">⤢</div>
+          </div>
+        </div>
+
+        <div id="map"></div>
+        <div class="mapOverlayHint" id="mapStats">Loading JSON…</div>
+
+        <div class="bigHint" id="startHint">
+          <div class="h1">Start here</div>
+          <div class="h2">Click anywhere on the map to explore a ZIP (we’ll choose the nearest ZIP centroid).</div>
+          <div class="h3">Scroll wheel to zoom • Drag to pan • Click again to change ZIP</div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="panel" id="panelQ2">
+        <div class="panelHeader">
+          <div>
+            <div class="title">ZIP Overview</div>
+            <div class="desc">Facts about this location — deeper analysis comes later.</div>
+          </div>
+          <div class="actions">
+            <div class="miniBtn" data-fs="panelQ2" title="Fullscreen">⤢</div>
+          </div>
+        </div>
+
+        <div class="q2Body">
+          <div class="selectedRow">
+            <div class="left">
+              <div class="label">Selected ZIP</div>
+              <div class="zip" id="selZipTop">—</div>
+              <div class="place" id="selPlaceTop">Click anywhere on the map to pick a ZIP.</div>
+              <div class="meta" id="selMetaTop">—</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <div class="miniBtn" id="showOnMapBtn">Show on map</div>
+              <div class="miniBtn danger" id="resetBtn">Reset</div>
+            </div>
+          </div>
+
+          
+
+          <div class="atGlance" id="zipAtAGlance">
+            <div class="atGlanceTitle">At a glance</div>
+            <div class="atGlanceGrid">
+              <div class="atGlanceLabel">Climate</div>
+              <div class="atGlanceValue" id="aglClimate">—</div>
+
+              <div class="atGlanceLabel">Cost</div>
+              <div class="atGlanceValue" id="aglCost">—</div>
+
+              <div class="atGlanceLabel">Healthcare</div>
+              <div class="atGlanceValue" id="aglHealthcare">—</div>
+
+              <div class="atGlanceLabel">Setting</div>
+              <div class="atGlanceValue" id="aglSetting">—</div>
+            </div>
+          </div>
+
+          <div class="tabs" id="q2Tabs">
+            <div class="tab active" data-tab="home">Home</div>
+            <div class="tab" data-tab="climate">Climate</div>
+            <div class="tab" data-tab="health">Healthcare</div>
+          </div>
+
+          <div class="tabPanels" id="q2Panels">
+            <div class="tabPanel active" data-panel="home">
+              <div class="cards">
+                <div class="card">
+                  <div class="k">Home Value (Most Recent)</div>
+                  <div class="v" id="cardHomeValue">—</div>
+                  <div class="s" id="cardHomeAsOf">—</div>
+                </div>
+
+                <div class="card">
+                  <div class="k">Rent (Most Recent)</div>
+                  <div class="v" id="cardRent">—</div>
+                  <div class="s" id="cardRentAsOf">—</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tabPanel" data-panel="climate">
+              <div class="cards">
+
+                <!-- Temperature (30-year normals) -->
+                <div class="card">
+                  <div class="k">Annual Avg Temperature<span class="infoTip" data-tip="Summer = Jun–Aug | Winter = Dec–Feb">ⓘ</span></div>
+                  <div class="v" id="climateTempValue">—</div>
+                  <div class="s">Typical year range</div>
+                  <div class="s" id="climateTempRange">—</div>
+                </div>
+
+                <!-- Precipitation (30-year normals) -->
+                <div class="card">
+                  <div class="k">Annual Rainfall<span class="infoTip" data-tip="Summer = Jun–Aug | Winter = Dec–Feb">ⓘ</span></div>
+                  <div class="v" id="climatePrecipValue">—</div>
+                  <div class="s" id="climatePrecipSummer">—</div>
+                  <div class="s" id="climatePrecipWinter">—</div>
+                </div>
+
+                <!-- Seasonal Climate (plain-language profiles) -->
+                <div class="card">
+                  <div class="k">Climate Character</div>
+                  <div class="s" id="climateSeasonality">—</div>
+                  <div class="s" id="climateSummerProfile">—</div>
+                  <div class="s" id="climateWinterProfile">—</div>
+                </div>
+
+              </div>
+
+              <div style="margin-top:10px; font-size:12px; color:var(--muted2); font-weight:700;">
+                Climate metrics based on 30-year climate normals (1991–2020). Values represent long-term averages for this ZIP code.
+              </div>
+            </div>
+
+            <div class="tabPanel" data-panel="health">
+              <div class="cards">
+                <div class="card">
+                  <div class="k">Primary Care</div>
+                  <div class="v" id="cardPrimaryCare">—</div>
+                  <div class="s" id="cardClinicians">—</div>
+                  <div class="s" id="cardNearestMetro">—</div>
+                </div>
+
+                <div class="card">
+                  <div class="k">Care Categories</div>
+                  <div class="v" id="cardCareCategories">—</div>
+                  <div class="s" id="cardCareCategoriesSub">—</div>
+                </div>
+
+                <div class="card">
+                  <div class="k">Healthcare Profile</div>
+                  <div class="s" id="cardHealthProfile1">—</div>
+                  <div class="s" id="cardHealthProfile2">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+<div style="display:flex; gap:10px; margin-top:12px;">
+            <div class="miniBtn primary" id="focusMetroBtn">Focus map to metro points</div>
+            <div class="miniBtn" id="clearZipBtn">Clear selected ZIP</div>
+          </div>
+
+          <div style="margin-top:10px; font-size:12px; color:var(--muted2); font-weight:700;">
+            Click the map to select a ZIP. Click again to choose a different one.
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="panel" id="panelQ3">
+        <div class="panelHeader">
+          <div>
+            <div class="title">Explore ZIPs</div>
+            <div class="desc">Explore by Preferences, City &amp; State, or ZIP Code</div>
+          </div>
+          <div class="actions">
+            <div class="miniBtn" id="gsClearBtn" title="Clear filters">Clear</div>
+            <div class="miniBtn" data-fs="panelQ3" title="Fullscreen">⤢</div>
+          </div>
+        </div>
+
+        <div class="q3Body">
+          <div class="modeWrap" id="q3ModeWrap">
+            <div class="modeLeft">
+              <div class="modeTitle">Choose your explore mode</div>
+              <div class="modeSub" id="q3ModeCopy">Choose how you want to explore — by <b>preferences</b>, <b>location</b>, or <b>ZIP</b>.</div>
+            </div>
+            <div class="modeToggle" role="tablist" aria-label="Search mode">
+              <div class="modeBtn active modePulse" id="modeGuidedBtn" role="tab" aria-selected="true">Preferences</div>
+              <div class="modeBtn" id="modePlaceBtn" role="tab" aria-selected="false">City &amp; State</div>
+              <div class="modeBtn" id="modeZipBtn" role="tab" aria-selected="false">ZIP Code</div>
+            </div>
+          </div>
+
+          <div id="guidedBlock">
+            <div class="chipsRow" id="chipsTop"></div>
+
+            <div class="q3Hint" id="q3Hint">Loading…</div>
+
+            <div class="section">
+              <div class="sectionTitle">
+                <div class="label">Preferences Funnel</div>
+                <div class="badge" id="matchBadge">Matches: —</div>
+              </div>
+
+              <div style="font-size:12px; color:var(--muted2); font-weight:900; margin:10px 0 8px 0;">Region</div>
+              <div class="chipsRow" id="gsRegionChips"></div>
+
+              <div style="font-size:12px; color:var(--muted2); font-weight:900; margin:14px 0 8px 0;">ClimateProfile</div>
+              <div class="chipsRow" id="gsClimateChips"></div>
+
+              <div style="font-size:12px; color:var(--muted2); font-weight:900; margin:14px 0 8px 0;">HomeValueBand</div>
+              <div class="chipsRow" id="gsHomeBandChips"></div>
+
+              <div style="font-size:12px; color:var(--muted2); font-weight:900; margin:14px 0 8px 0;">CommunityFeel</div>
+              <div class="chipsRow" id="gsCommunityChips"></div>
+            </div>
+
+            <div class="section">
+              <div class="sectionTitle">
+                <div class="label">Results</div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <div class="miniBtn" id="showDifferentBtn" style="display:none;">Show different ZIPs</div>
+                </div>
+              </div>
+              <div id="resultsSummary" class="q3Hint" style="margin-top:6px; margin-bottom:8px; display:none;"></div>
+              <div id="resultsWrap"></div>
+            </div>
+          </div><!-- /guidedBlock -->
+
+          <div id="placeBlock" style="display:none;">
+            <div class="q3Hint" id="placeHint">
+              Choose a <b>State</b>, then a <b>City</b>. We’ll list that city’s ZIPs (sorted from the city center outward). Click any ZIP to update the ZIP Overview and pan the map.
+            </div>
+
+            <div class="placeRow">
+              <div class="select">
+                <label for="placeState">State</label>
+                <select id="placeState"></select>
+              </div>
+
+              <div class="select" style="min-width:260px;">
+                <label for="placeCity">City</label>
+                <select id="placeCity"></select>
+              </div>
+
+              <div class="badge" id="placeCountBadge">ZIPs: —</div>
+            </div>
+
+            <div class="pagerRow">
+              <div class="miniBtn" id="placePrevBtn">Prev</div>
+              <div class="badge" id="placePageBadge">Page —</div>
+              <div class="miniBtn" id="placeNextBtn">Next</div>
+            </div>
+
+            <div id="placeResultsWrap" style="margin-top:10px;"></div>
+          </div><!-- /placeBlock -->
+
+          <div id="zipBlock" style="display:none;">
+            <div class="q3Hint" id="zipHint">
+              Enter a <b>5-digit ZIP</b> to jump directly to that place. The map will pan and the ZIP Overview will update.
+            </div>
+
+            <div class="placeRow">
+              <div class="select" style="min-width:260px;">
+                <label for="q3ZipInput">ZIP</label>
+                <input
+                  id="q3ZipInput"
+                  type="text"
+                  maxlength="5"
+                  inputmode="numeric"
+                  placeholder="e.g. 85258"
+                  style="background:transparent;border:none;color:var(--text);font-weight:850;font-size:13px;outline:none;width:140px;"
+                />
+              </div>
+
+              <div class="miniBtn primary" id="q3ZipGoBtn" title="Go to ZIP">Explore ZIP</div>
+            </div>
+
+            <div id="zipSearchMessage" style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:750;"></div>
+          </div><!-- /zipBlock -->
+
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="panel" id="panelQ4">
+        <div class="panelHeader">
+          <div>
+            <div class="title">Orientation Guide</div>
+            <div class="desc">What to do next</div>
+          </div>
+          <div class="actions">
+            <div class="miniBtn" data-fs="panelQ4" title="Fullscreen">⤢</div>
+          </div>
+        </div>
+
+        <div class="q4Body">
+          <div class="tipBox">
+            <h3>Start here</h3>
+            <div style="margin-top:8px; font-size:12px; color:var(--muted); font-weight:700; line-height:1.5;">
+              • Click anywhere on the map to explore a ZIP<br>
+              • Or use Explore ZIPs to narrow down options your way<br>
+              • Each selection updates the snapshot on the right<br><br>
+
+              <span style="color:var(--muted2);">
+                Tip: Try a few different ZIPs to see what stands out.
+              </span>
+            </div>
+
+            <div style="margin-top:10px;">
+              <span id="walkthroughBtn" class="miniBtn" style="cursor:pointer;">
+                ▶ Watch 2-minute walkthrough
+              </span>
+            </div>
+          </div>
+
+          <div class="tipBox" style="margin-top:12px;">
+            <h3>Zoom & pan</h3>
+            <ol>
+              <li>Scroll wheel: zoom in/out</li>
+              <li>Drag: pan</li>
+              <li>Use the View button on the map: USA → REGION → ZIP</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Walkthrough Modal -->
+  <div id="videoModal" style="
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.7);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+  ">
+    <div style="
+      position:relative;
+      width:min(900px, 80vw);
+      max-height:90vh;
+      background:#000;
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 18px 60px rgba(0,0,0,.55);
+    ">
+      <video id="walkthroughVideo" controls preload="metadata" style="width:100%;display:block;">
+        <source src="./Video/Demo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <button id="closeVideo" style="
+        position:absolute;
+        top:10px;
+        right:10px;
+        background:#fff;
+        color:#111827;
+        border:none;
+        padding:6px 10px;
+        cursor:pointer;
+        border-radius:4px;
+        font-weight:700;
+      ">Close</button>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+   RetireSmartZIP — CITYFIX14 (Baseline clone, optimized structure)
+   GOAL: Same look/feel + same behavior as working CITYFIX14.
+   NO-DRIFT RULE:
+     - Only edit inside clearly marked "EDIT ZONE" blocks.
+     - Do NOT change map boot/load/selection/marker logic unless a bug is proven.
+   ============================================================ */
+
+// ----------------------------
+    // Helpers
+    // ----------------------------
+    const $ = (id) => document.getElementById(id);
+
+    // Key normalization (prevents hidden whitespace / casing mismatches)
+    const normState = (s) => (s || "").trim().toUpperCase();
+    const normCity  = (s) => (s || "").trim().replace(/\s+/g, " ");
+    const makeCityKey = (st, ct) => {
+      const S = normState(st);
+      const C = normCity(ct);
+      return (S && C) ? `${S}|${C}` : null;
+    };
+
+    function fmtMoney(n){
+      if(n === null || n === undefined || n === "" || isNaN(Number(n))) return "—";
+      return Number(n).toLocaleString(undefined, {style:"currency", currency:"USD", maximumFractionDigits:0});
+    }
+    function fmtPct(v){
+      if(v === null || v === undefined || v === "" || isNaN(Number(v))) return null;
+      let x = Number(v);
+      // Data may arrive as 0–1 fraction; convert to 0–100 percent
+      if(x > 0 && x <= 1) x = x * 100;
+      // Clamp extreme junk
+      if(x < 0 || x > 1000) return null;
+      return x;
+    }
+
+    
+    // Lifestyle Ring description (retiree-friendly)
+    function describeLifestyleRing(ring){
+      const r = (ring || "").toString().trim().toLowerCase();
+      if(!r) return "—";
+      // Handle common ring labels
+      if(r.includes("core")) return "Walkable access + dense amenities (higher activity, higher cost).";
+      if(r.includes("suburb")) return "Metro access with quieter neighborhoods and easier parking.";
+      if(r.includes("small") || r.includes("town") || r.includes("regional")) return "Everyday services nearby with a slower pace and shorter drives.";
+      if(r.includes("rural") || r.includes("remote") || r.includes("country")) return "Space and quiet — expect longer drives for healthcare, shopping, and airports.";
+      return "Lifestyle context based on metro proximity and access to services.";
+    }
+
+    function hasNumber(v){
+      return !(v === null || v === undefined || v === "" || isNaN(Number(v)));
+    }
+
+    function describeSeasonality(v){
+      const s = safeStr(v, "").toLowerCase();
+      if(!s) return "—";
+      if(s === 'high seasonality') return 'Strong seasonal swings';
+      if(s === 'moderate seasonality') return 'Moderate seasonal swing';
+      if(s === 'low seasonality') return 'Lower seasonal swing';
+      return v;
+    }
+
+    function describeSummerProfile(v){
+      const s = safeStr(v, "").toLowerCase();
+      if(!s) return "—";
+      if(s === 'dry summer') return 'Dry summers';
+      if(s === 'hot summer') return 'Hot summers';
+      if(s === 'mild summer') return 'Mild to warm summers';
+      if(s === 'cool summer') return 'Cool summers';
+      return v;
+    }
+
+    function describeWinterProfile(v){
+      const s = safeStr(v, "").toLowerCase();
+      if(!s) return "—";
+      if(s === 'severe winter') return 'Cold winters';
+      if(s === 'cold winter') return 'Cold winters';
+      if(s === 'cool winter') return 'Cool winters';
+      if(s === 'mild winter') return 'Mild winters';
+      return v;
+    }
+
+    function coverageSummary(row){
+      const hv = hasNumber(row.HomeValue);
+      const rent = hasNumber(row.Rent);
+      const coast = hasNumber(row.CoastMiles) || ((row.CoastContext||"").trim().length>0);
+      const parts = [];
+      if(hv) parts.push("Home value");
+      if(rent) parts.push("Rent");
+      if(coast) parts.push("Coast");
+      const val = parts.length ? ("Includes: " + parts.join(" • ")) : "Place-only";
+      const sub = (!hv || !rent) ? "Some housing fields may be missing by ZIP." : "Core WHERE fields available.";
+      return { val, sub };
+    }
+
+    function parseBoolish(v){
+      if(v === true || v === 1) return true;
+      if(v === false || v === 0) return false;
+      const s = String(v ?? "").trim().toLowerCase();
+      if(!s) return null;
+      if(["1","y","yes","true","t","available"].includes(s)) return true;
+      if(["0","n","no","false","f","unavailable","none"].includes(s)) return false;
+      return null;
+    }
+
+    function fmtMiles1(v){
+      if(v === null || v === undefined || v === "" || isNaN(Number(v))) return null;
+      return Number(v).toFixed(1) + " mi";
+    }
+
+    function clinicianSupplyLabel(count){
+      if(!hasNumber(count) || Number(count) <= 0) return "unavailable";
+      const n = Number(count);
+      if(n >= 250) return "robust";
+      if(n >= 100) return "moderate";
+      return "limited";
+    }
+
+    function buildHealthcareProfile(row){
+      const hasPcp = parseBoolish(row.HasPCP);
+      const clinicians = hasNumber(row.TotalClinicians) ? Number(row.TotalClinicians) : null;
+      const careCats = hasNumber(row.CareCategoryCount) ? Number(row.CareCategoryCount) : null;
+      const primary = hasPcp === true ? "Primary care: available" : (hasPcp === false ? "Primary care: unavailable" : "Primary care: Data not available");
+      let supply = clinicians === null ? "Clinician supply: Data not available" : `Clinician supply: ${clinicianSupplyLabel(clinicians)}`;
+      if(supply.endsWith('unknown') && careCats !== null){
+        supply = `Care breadth: ${careCats >= 8 ? 'broad' : careCats >= 4 ? 'moderate' : 'limited'}`;
+      }
+      return { primary, supply };
+    }
+function safeStr(v, fallback="—"){
+      if(v === null || v === undefined) return fallback;
+      const s = String(v).trim();
+      return s.length ? s : fallback;
+    }
+    function normalizeZip(z){
+      const s = String(z ?? "").trim();
+      if(!s) return null;
+      const digits = s.replace(/\D/g,"");
+      if(digits.length !== 5) return null;
+      return digits;
+    }
+
+    // deterministic-ish: stable hash for sampling
+    function hashStr(s){
+      let h = 2166136261 >>> 0;
+      for(let i=0;i<s.length;i++){
+        h ^= s.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+    function mulberry32(seed){
+      return function(){
+        let t = seed += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#39;");
+    }
+
+    function haversineMiles(lat1, lon1, lat2, lon2){
+      const R = 3958.7613; // miles
+      const toRad = (d) => d * Math.PI / 180;
+      const dLat = toRad(lat2-lat1);
+      const dLon = toRad(lon2-lon1);
+      const a =
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    // ----------------------------
+    // Global state
+    // ----------------------------
+    let spineRows = [];
+    let zipIndex = new Map();        // zip -> normalized row
+
+    let regions = [];
+    let statesByRegion = new Map();
+    let metrosByState = new Map();
+    let metroCentroids = new Map();
+
+    // REGION shading (no-drift additive layer)
+    let statesLayer = null;
+    let statesLayerLoadError = null;
+    let stateRegionMap = null; // { AZ: "Mountain Southwest", ... }
+    const REGION_COLORS = {
+      "pacific north": "#2E7D32",
+      "pacific south": "#E6C08D",
+      "mountain southwest": "#D9652B",
+      "midwest plains": "#8E949B",
+      "northeast": "#2F80ED",
+      "southeast gulf": "#D4B347"
+    };
+    const STATE_NAME_BY_ABBR = {
+      AL:"Alabama", AK:"Alaska", AZ:"Arizona", AR:"Arkansas", CA:"California", CO:"Colorado",
+      CT:"Connecticut", DE:"Delaware", FL:"Florida", GA:"Georgia", HI:"Hawaii", ID:"Idaho",
+      IL:"Illinois", IN:"Indiana", IA:"Iowa", KS:"Kansas", KY:"Kentucky", LA:"Louisiana",
+      ME:"Maine", MD:"Maryland", MA:"Massachusetts", MI:"Michigan", MN:"Minnesota", MS:"Mississippi",
+      MO:"Missouri", MT:"Montana", NE:"Nebraska", NV:"Nevada", NH:"New Hampshire", NJ:"New Jersey",
+      NM:"New Mexico", NY:"New York", NC:"North Carolina", ND:"North Dakota", OH:"Ohio", OK:"Oklahoma",
+      OR:"Oregon", PA:"Pennsylvania", RI:"Rhode Island", SC:"South Carolina", SD:"South Dakota",
+      TN:"Tennessee", TX:"Texas", UT:"Utah", VT:"Vermont", VA:"Virginia", WA:"Washington",
+      WV:"West Virginia", WI:"Wisconsin", WY:"Wyoming", DC:"District of Columbia",
+      PR:"Puerto Rico", VI:"U.S. Virgin Islands", GU:"Guam", MP:"Northern Mariana Islands", AS:"American Samoa"
+    };
+
+    let selectedZip = null;
+    let selectedRow = null;
+
+    // Leaflet
+    let map, baseLayer, zipMarker, metroLayer;
+
+    // Base layers (for Satellite toggle)
+    let streetsLayer, satelliteLayer, baseLayerControl;
+
+    let scopeMode = "USA"; // USA | REGION | ZIP
+
+    // Guided Search state (LOCKED PLAN)
+    const gs = {
+      RegionName: null,
+      ClimateProfile: null,
+      HomeValueBandName: null,
+      CommunityFeel: null,
+      sampleSeed: 1
+    };
+
+    // Q3 mode (Guided Search vs City/State)
+    let q3Mode = (localStorage.getItem("rsz_q3_mode") || "guided").toLowerCase(); // guided | place
+
+    // City/State index
+    let stateCityIndex = new Map(); // state -> array of {city, count, centroidLat, centroidLng}
+    let cityZipIndex = new Map();   // key "STATE|CITY" -> { state, city, centroidLat, centroidLng, zips:[row] }
+    const place = { state:null, city:null, page:0, pageSize:25 };
+
+    
+    // ----------------------------
+    // Base-layer theme (label color)
+    // ----------------------------
+    function setBaseTheme(layerName){
+      const isSat = (layerName || "").toLowerCase().includes("satellite");
+      document.body.classList.toggle("base-satellite", isSat);
+    }
+
+    function normalizeStateName(v){
+      return safeStr(v, "").toLowerCase().replace(/\./g, "").replace(/\s+/g, " ").trim();
+    }
+
+    function getFeatureStateName(feature){
+      const p = (feature && feature.properties) ? feature.properties : {};
+      return safeStr(p.name || p.NAME || p.state || p.State || p.stusps || p.STUSPS, "");
+    }
+
+    function normalizeRegionName(v){
+      return safeStr(v, "")
+        .toLowerCase()
+        .replace(/&/g, "and")
+        .replace(/[\/]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function getRegionColor(regionName){
+      return REGION_COLORS[normalizeRegionName(regionName)] || "#6b7280";
+    }
+
+    async function loadStateRegionMap(){
+      if(stateRegionMap) return stateRegionMap;
+
+      const candidates = [
+        "./data/state_region_map.json",
+        "/data/state_region_map.json",
+        "./app/data/state_region_map.json",
+        "/app/data/state_region_map.json",
+        "./state_region_map.json"
+      ];
+
+      let lastErr = null;
+      for(const url of candidates){
+        try{
+          const resp = await fetch(url, { cache:"no-store" });
+          if(!resp.ok) throw new Error(`HTTP ${resp.status} ${resp.statusText}`);
+          const data = await resp.json();
+          if(!Array.isArray(data)) throw new Error("state_region_map.json is not an array");
+
+          stateRegionMap = {};
+          for(const r of data){
+            const abbr = safeStr(r.State, "").toUpperCase();
+            const region = safeStr(r.RegionName, "");
+            if(abbr && region) stateRegionMap[abbr] = region;
+          }
+          stateRegionMap._loadedFrom = url;
+          return stateRegionMap;
+        }catch(err){
+          lastErr = err;
+        }
+      }
+      throw lastErr || new Error("Unable to load state_region_map.json");
+    }
+
+    function getRegionForFeature(feature){
+      const featureState = getFeatureStateName(feature);
+      const featureNorm = normalizeStateName(featureState);
+
+      // Preferred path: explicit state -> region lookup from state_region_map.json
+      if(stateRegionMap){
+        for(const [abbr, region] of Object.entries(stateRegionMap)){
+          const full = STATE_NAME_BY_ABBR[abbr] || abbr;
+          if(normalizeStateName(full) === featureNorm || normalizeStateName(abbr) === featureNorm){
+            return safeStr(region, "");
+          }
+        }
+      }
+
+      // Fallback path: derive from loaded ZIP spine
+      for(const [, row] of zipIndex){
+        const abbr = safeStr(row.State, "").toUpperCase();
+        const full = STATE_NAME_BY_ABBR[abbr] || row.State || "";
+        if(normalizeStateName(full) === featureNorm || normalizeStateName(abbr) === featureNorm){
+          return safeStr(row.RegionName, "");
+        }
+      }
+      return "";
+    }
+
+// ----------------------------
+    // ZIP marker renderer (FIXED)
+    // ----------------------------
+    
+
+// ==================== CORE: MAP MARKER (DO NOT EDIT) ====================
+function placeZipMarker(row){
+      if(!map) return;
+
+      if(zipMarker) { zipMarker.remove(); zipMarker = null; }
+
+      // Outer ring
+      const ring = L.circleMarker([row.Lat,row.Lng], {
+        radius: 10,
+        weight: 3,
+        color: "#587A9C",
+        fillColor: "#587A9C",
+        fillOpacity: 0.22
+      });
+
+      // Center dot
+      const dot = L.circleMarker([row.Lat,row.Lng], {
+        radius: 3,
+        weight: 0,
+        color: "#587A9C",
+        fillColor: "#587A9C",
+        fillOpacity: 0.95
+      });
+
+      // Group them so remove() kills both
+      zipMarker = L.layerGroup([ring, dot]).addTo(map);
+
+      const city = safeStr(row.City, "").trim();
+      const st   = safeStr(row.State, "").trim();
+      const line1 = (city || st) ? `${city}${(city && st) ? ", " : ""}${st}` : "—";
+
+      const labelHtml =
+        `<div class="zipLblCity">${escapeHtml(line1)}</div>` +
+        `<div class="zipLblZip">${escapeHtml(row.ZipCode)}</div>`;
+
+      ring.bindTooltip(labelHtml, {
+        permanent: true,
+        direction: "top",
+        offset: [0, -10],
+        className: "zipLabel",
+        opacity: 1
+      }).openTooltip();
+    }
+
+    // ----------------------------
+    // Load JSON (robust paths)
+    // ----------------------------
+    async function loadSpine(){
+      const candidates = [
+        "./data/location_spine.json",
+        "./data/location_spine",
+        "./app/data/location_spine.json",
+        "/data/location_spine.json",
+        "/app/data/location_spine.json"
+      ];
+
+      let lastErr = null;
+      for(const url of candidates){
+        try{
+          const r = await fetch(url, { cache: "no-store" });
+          if(!r.ok) throw new Error(`HTTP ${r.status} ${r.statusText}`);
+          const data = await r.json();
+          if(!Array.isArray(data)) throw new Error("JSON is not an array");
+          return { data, url };
+        }catch(e){
+          lastErr = e;
+        }
+      }
+      throw lastErr || new Error("Unable to load JSON");
+    }
+
+    // ----------------------------
+    // Build indexes
+    // ----------------------------
+    
+
+// ==================== EDIT ZONE A: INGEST + FIELD BINDINGS ====================
+function ingestRows(rows){
+      spineRows = rows;
+
+      zipIndex.clear();
+      statesByRegion.clear();
+      metrosByState.clear();
+      metroCentroids.clear();
+
+      const col = {
+        zip:   ["ZipCode","ZIP","zip","Zip","zip_code"],
+        city:  ["City","city"],
+        state: ["State","state"],
+        region:["RegionName","Region","region","Region_Name"],
+        metro: ["MetroClusterName","Metro","AssignedCBSA_Name","FinalCBSA_Name","CBSA_Name"],
+        lat:   ["Lat","Latitude","ZipLat","lat","latitude"],
+        lng:   ["Lng","Longitude","ZipLng","lng","longitude"],
+
+        climate:["ClimateProfile","Climate","Climate_Group","ClimateGroup4"],
+
+        // Climate normals (30-year)
+        avgTemp:["AvgTemp_Annual","AvgTempAnnual","TempAvg_Annual","TempAvgAnnual"],
+        minTemp:["MinTemp_Annual","MinTempAnnual","TempMin_Annual","TempMinAnnual"],
+        maxTemp:["MaxTemp_Annual","MaxTempAnnual","TempMax_Annual","TempMaxAnnual"],
+        precipA:["Precip_Annual_Inches","AnnualPrecip_Inches","AnnualPrecipInches","PrecipAnnual_Inches","Precip_Annual_Inch"],
+        precipS:["SummerPrecip_Inches","SummerPrecip_Inch","SummerPrecipInches"],
+        precipW:["WinterPrecip_Inches","WinterPrecip_Inch","WinterPrecipInches"],
+        seasonProf:["SeasonalityProfile","SeasonProfile","Seasonality_Profile"],
+        summerProf:["SummerProfile","Summer_Profile"],
+        winterProf:["WinterProfile","Winter_Profile"],
+
+        coast:  ["CoastContext","Coast","CoastBandLabel","CoastBandName"],
+                coastMiles:["MilesToCoast","CoastDistanceMiles","ClosestCoastalDistanceMiles","CoastMiles","Miles_To_Coast"],
+        retiree:["RetireeBandName","RetireeBand","RetireeGroup3","RetireeGroupName"],
+        life:   ["LifestyleRing","Lifestyle","RingName","LifestyleRingName","MetroDistanceRingName"],
+        hvBand: ["HomeValueBandName","HomeValueBand","HomeBandName"],
+
+        hasPCP:["HasPCP","Flag_HasPCP","PCPAvailable","Has_Primary_Care","PrimaryCareAvailable"],
+        clinicians:["TotalClinicians","ClinicianCount","Clinicians","Total_Clinicians"],
+        careCats:["CareCategoryCount","DistinctCareCategories","CareCategories","CategoryCount","Distinct_Care_Categories"],
+        metroMiles:["DistanceMiles","MilesToAssignedMetro","MilesToMetro","MetroDistanceMiles","NearestMetroMiles"],
+
+        geo:   ["WhereGeoType","GeoType","GeoFeature","Geo"],
+        ret65: ["Pct65Plus","Pct_65Plus","Pct65","RetirementShare65","RetirementShare"],
+        pct50: ["Pct50_64","Pct_50_64","Pct50to64"],
+        hv:    ["HomeValue","ZHVI","HomeValueMostRecent","HomeValue_MostRecent"],
+        hva:   ["HomeValueAsOf","HomeValueAsOfDate","ZHVI_AsOf","HomeValue_AsOf"],
+        rent:  ["TypicalMonthlyRent","Rent","ZORI","RentMostRecent"],
+        renta: ["TypicalMonthlyRentAsOf","TypicalMonthlyRent_AsOf","TypicalMonthlyRentAsOfDate","RentAsOf","RentAsOfDate","ZORI_AsOf","Rent_AsOf"],
+        rentflag: ["Flag_RentAvailable","FlagRentAvailable","RentAvailableFlag","Flag_Rent"],
+        rentAvail: ["Flag_RentAvailable","FlagRentAvailable","Flag_RentAvail","Flag_Rent_Available"],
+
+        aglClimate: ["ClimateAtAGlance"],
+        aglCost: ["CostAtAGlance"],
+        aglHealthcare: ["HealthcareAtAGlance"],
+        aglSetting: ["SettingAtAGlance"]
+      };
+
+      function pick(row, keys){
+        for(const k of keys){
+          if(row && Object.prototype.hasOwnProperty.call(row,k)) return row[k];
+        }
+        return undefined;
+      }
+
+      for(const r of spineRows){
+        const zip = normalizeZip(pick(r, col.zip));
+        if(!zip) continue;
+
+        const lat = Number(pick(r, col.lat));
+        const lng = Number(pick(r, col.lng));
+        if(!isFinite(lat) || !isFinite(lng)) continue;
+        const rfRaw1 = pick(r,col.rentflag);
+        const rfRaw2 = (rfRaw1 === undefined) ? pick(r,col.rentAvail) : rfRaw1;
+        const rfNum  = (rfRaw2 === true) ? 1 : (rfRaw2 === false) ? 0 : Number(rfRaw2);
+        const rentFlag = Number.isFinite(rfNum) ? rfNum : 0;
+
+        const row = {
+          _raw: r,
+
+          ZipCode: zip,
+          City: safeStr(pick(r,col.city), ""),
+          State: safeStr(pick(r,col.state), ""),
+          RegionName: safeStr(pick(r,col.region), ""),
+          MetroClusterName: safeStr(pick(r,col.metro), ""),
+
+          Lat: lat,
+          Lng: lng,
+
+          ClimateProfile: safeStr(pick(r,col.climate), ""),
+          CoastContext: safeStr(pick(r,col.coast), ""),
+
+          // Climate normals + profiles
+          AvgTemp_Annual: pick(r,col.avgTemp),
+          MinTemp_Annual: pick(r,col.minTemp),
+          MaxTemp_Annual: pick(r,col.maxTemp),
+          Precip_Annual_Inches: pick(r,col.precipA),
+          SummerPrecip_Inches: pick(r,col.precipS),
+          WinterPrecip_Inches: pick(r,col.precipW),
+          SeasonalityProfile: safeStr(pick(r,col.seasonProf), ""),
+          SummerProfile: safeStr(pick(r,col.summerProf), ""),
+          WinterProfile: safeStr(pick(r,col.winterProf), ""),
+
+          CoastMiles: pick(r,col.coastMiles),
+          LifestyleRing: safeStr(pick(r,col.life), ""),
+          RetireeBandName: safeStr(pick(r,col.retiree), ""),
+          HomeValueBandName: safeStr(pick(r,col.hvBand), ""),
+
+          HasPCP: pick(r,col.hasPCP),
+          TotalClinicians: pick(r,col.clinicians),
+          CareCategoryCount: pick(r,col.careCats),
+          MetroDistanceMiles: pick(r,col.metroMiles),
+
+          WhereGeoType: safeStr(pick(r,col.geo), ""),
+          Pct65Plus: pick(r,col.ret65),
+          Pct50_64: pick(r,col.pct50),
+          HomeValue: pick(r,col.hv),
+          HomeValueAsOf: pick(r,col.hva),
+          Rent: pick(r,col.rent),
+          RentAsOf: pick(r,col.renta),
+          Flag_RentAvailable: rentFlag,
+
+          ClimateAtAGlance: safeStr(pick(r,col.aglClimate), ""),
+          CostAtAGlance: safeStr(pick(r,col.aglCost), ""),
+          HealthcareAtAGlance: safeStr(pick(r,col.aglHealthcare), ""),
+          SettingAtAGlance: safeStr(pick(r,col.aglSetting), "")
+        };
+
+
+        zipIndex.set(zip, row);
+
+        const region = row.RegionName || "Unknown";
+        const state = row.State || "Unknown";
+        if(!statesByRegion.has(region)) statesByRegion.set(region, new Set());
+        statesByRegion.get(region).add(state);
+      }
+
+      regions = Array.from(statesByRegion.keys()).sort((a,b)=>a.localeCompare(b));
+
+      // metro centroids
+      const metroAgg = new Map();
+      for(const [, row] of zipIndex){
+        const metro = (row.MetroClusterName || "").trim();
+        if(!metro || metro === "—") continue;
+
+        const region = row.RegionName || "Unknown";
+        const state = row.State || "Unknown";
+        const key = `${region}|${state}|${metro}`;
+
+        if(!metroAgg.has(key)){
+          metroAgg.set(key, { sumLat:0, sumLng:0, count:0, region, state, metro });
+        }
+        const a = metroAgg.get(key);
+        a.sumLat += row.Lat;
+        a.sumLng += row.Lng;
+        a.count += 1;
+      }
+
+      for(const [key, a] of metroAgg){
+        const c = {
+          lat: a.sumLat / a.count,
+          lng: a.sumLng / a.count,
+          count: a.count,
+          region: a.region,
+          state: a.state,
+          metro: a.metro
+        };
+        metroCentroids.set(key, c);
+
+        const rsKey = `${a.region}|${a.state}`;
+        if(!metrosByState.has(rsKey)) metrosByState.set(rsKey, new Set());
+        metrosByState.get(rsKey).add(a.metro);
+      }
+
+      // Place Search indices
+      stateCityIndex.clear();
+      cityZipIndex.clear();
+
+      const cityAgg = new Map();
+      for(const [, row] of zipIndex){
+        const st = normState(row.State);
+        const ct = normCity(row.City);
+        if(!st || !ct) continue;
+        const k = makeCityKey(st, ct);
+        if(!k) continue;
+
+        if(!cityAgg.has(k)){
+          cityAgg.set(k, { state:st, city:ct, sumLat:0, sumLng:0, count:0, zips:[] });
+        }
+        const a = cityAgg.get(k);
+        a.sumLat += row.Lat;
+        a.sumLng += row.Lng;
+        a.count += 1;
+        a.zips.push(row);
+      }
+
+      for(const [k, a] of cityAgg){
+        const centroidLat = a.sumLat / a.count;
+        const centroidLng = a.sumLng / a.count;
+        cityZipIndex.set(k, { state:a.state, city:a.city, centroidLat, centroidLng, zips:a.zips });
+
+        if(!stateCityIndex.has(a.state)) stateCityIndex.set(a.state, []);
+        stateCityIndex.get(a.state).push({ city:a.city, count:a.count, centroidLat, centroidLng });
+      }
+
+      for(const [st, arr] of stateCityIndex){
+        arr.sort((a,b)=> (b.count - a.count) || a.city.localeCompare(b.city));
+      }
+
+      $("mapStats").textContent =
+        `Rows: ${spineRows.length.toLocaleString()} • Usable: ${zipIndex.size.toLocaleString()} • Regions: ${regions.length} • Metros: ${metroCentroids.size.toLocaleString()}`;
+    }
+
+    function findNearestZip(lat, lng){
+      let best = null;
+      let bestD = Infinity;
+      const cosLat = Math.cos(lat * Math.PI/180);
+      for(const [, row] of zipIndex){
+        const dy = (row.Lat - lat);
+        const dx = (row.Lng - lng) * cosLat;
+        const d2 = dx*dx + dy*dy;
+        if(d2 < bestD){
+          bestD = d2;
+          best = row;
+        }
+      }
+      return best;
+    }
+
+    function setSelectionByZip(zip){
+      const z = normalizeZip(zip);
+      if(!z) return false;
+      const row = zipIndex.get(z);
+      if(!row) return false;
+      applySelection(row, { pan:true });
+      return true;
+    }
+
+    function applySelection(row, opts={pan:false}){
+      selectedRow = row;
+      selectedZip = row.ZipCode;
+
+      $("selZipTop").textContent = row.ZipCode;
+      $("selPlaceTop").textContent = `${safeStr(row.City,"")} ${row.City ? "," : ""} ${safeStr(row.State,"")}`.trim().replace(/^, /,"");
+
+            // Top meta line (keeps the "where am I?" context without extra cards)
+      const region = safeStr(row.RegionName, "").trim();
+      const ring   = safeStr(row.LifestyleRing, "").trim();
+      const metro  = safeStr(row.MetroClusterName, "").trim();
+      const metaParts = [region, ring, metro].filter(v => v && v !== "—");
+      $("selMetaTop").textContent = metaParts.length ? metaParts.join(" • ") : "";
+
+      // At a glance summary
+      $("aglClimate").textContent = row.ClimateAtAGlance || "—";
+      $("aglCost").textContent = row.CostAtAGlance || "—";
+      $("aglHealthcare").textContent = row.HealthcareAtAGlance || "—";
+      $("aglSetting").textContent = row.SettingAtAGlance || "—";
+
+
+      // Housing snapshot
+      if(hasNumber(row.HomeValue)){
+        $("cardHomeValue").textContent = fmtMoney(row.HomeValue);
+        $("cardHomeAsOf").textContent  = row.HomeValueAsOf ? `as of ${row.HomeValueAsOf}` : "";
+      }else{
+        $("cardHomeValue").textContent = "Data not available";
+        $("cardHomeAsOf").textContent  = "";
+      }
+
+      const rentFlag = row.Flag_RentAvailable;
+      const rentFlagKnown = !(rentFlag === undefined || rentFlag === null || rentFlag === "");
+      const rentFlagTrue  = (rentFlag === 1 || rentFlag === true || rentFlag === "1");
+      const rentOk = hasNumber(row.Rent) && Number(row.Rent) > 0 && (!rentFlagKnown || rentFlagTrue);
+      if(rentOk){
+        $("cardRent").textContent = Number(row.Rent).toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0});
+        $("cardRentAsOf").textContent = row.RentAsOf ? `as of ${row.RentAsOf}` : "";
+      }else{
+        $("cardRent").textContent = "Data not available";
+        $("cardRentAsOf").textContent = "";
+      }
+
+      // ==================== CLIMATE DISPLAY (3 cards • 30-year normals) ====================
+
+      // Temperature
+      if(hasNumber(row.AvgTemp_Annual)){
+        $("climateTempValue").textContent = `${Number(row.AvgTemp_Annual).toFixed(0)}°`;
+      }else{
+        $("climateTempValue").textContent = "Data not available";
+      }
+
+      if(hasNumber(row.MinTemp_Annual) && hasNumber(row.MaxTemp_Annual)){
+        $("climateTempRange").textContent = `${Number(row.MinTemp_Annual).toFixed(0)}° – ${Number(row.MaxTemp_Annual).toFixed(0)}°`;
+      }else{
+        $("climateTempRange").textContent = "Data not available";
+      }
+
+      // Precipitation
+      if(hasNumber(row.Precip_Annual_Inches)){
+        $("climatePrecipValue").textContent = `${Number(row.Precip_Annual_Inches).toFixed(0)} in`;
+      }else{
+        $("climatePrecipValue").textContent = "Data not available";
+      }
+
+      $("climatePrecipSummer").textContent =
+        hasNumber(row.SummerPrecip_Inches) ? `Summer (Jun–Aug): ${Number(row.SummerPrecip_Inches).toFixed(1)} in` : "Summer (Jun–Aug): Data not available";
+
+      $("climatePrecipWinter").textContent =
+        hasNumber(row.WinterPrecip_Inches) ? `Winter (Dec–Feb): ${Number(row.WinterPrecip_Inches).toFixed(1)} in` : "Winter (Dec–Feb): Data not available";
+
+      // Seasonal Climate (profiles)
+      $("climateSeasonality").textContent =
+        row.SeasonalityProfile ? describeSeasonality(row.SeasonalityProfile) : "Data not available";
+
+      $("climateSummerProfile").textContent =
+        row.SummerProfile ? describeSummerProfile(row.SummerProfile) : "Data not available";
+
+      $("climateWinterProfile").textContent =
+        row.WinterProfile ? describeWinterProfile(row.WinterProfile) : "Data not available";
+
+
+      // Healthcare access snapshot
+      const hasPcp = parseBoolish(row.HasPCP);
+      $("cardPrimaryCare").textContent = hasPcp === true ? "Yes" : (hasPcp === false ? "No" : "Data not available");
+
+      if(hasNumber(row.TotalClinicians) && Number(row.TotalClinicians) > 0){
+        $("cardClinicians").textContent = `Clinicians: ${Number(row.TotalClinicians).toLocaleString()}`;
+      }else{
+        $("cardClinicians").textContent = "Clinicians: Data not available";
+      }
+
+      const metroMiles = fmtMiles1(row.MetroDistanceMiles);
+      $("cardNearestMetro").textContent = metroMiles ? `Nearest metro: ${metroMiles}` : "Nearest metro: Data not available";
+
+      if(hasNumber(row.CareCategoryCount) && Number(row.CareCategoryCount) > 0){
+        $("cardCareCategories").textContent = String(Number(row.CareCategoryCount));
+        $("cardCareCategoriesSub").textContent = "distinct care categories";
+      }else{
+        $("cardCareCategories").textContent = "Data not available";
+        $("cardCareCategoriesSub").textContent = "care categories unavailable";
+      }
+
+      const hp = buildHealthcareProfile(row);
+      $("cardHealthProfile1").textContent = hp.primary;
+      $("cardHealthProfile2").textContent = hp.supply;
+
+      placeZipMarker(row);
+      $("startHint").style.display = "none";
+
+      if(opts.pan){
+        map.setView([row.Lat, row.Lng], Math.max(map.getZoom(), 9), { animate:true });
+        scopeMode = "ZIP"; updateScopeLabel();
+      }
+    }
+
+    function clearMetroLayer(){
+      if(metroLayer) metroLayer.clearLayers();
+    }
+
+    function drawMetroPoints(region, state){
+      clearMetroLayer();
+      if(!region || !state) return;
+
+      const keyPrefix = `${region}|${state}|`;
+      let count = 0;
+
+      for(const [k, c] of metroCentroids){
+        if(!k.startsWith(keyPrefix)) continue;
+
+        const m = L.circleMarker([c.lat, c.lng], {
+          radius: 6,
+          weight: 2,
+          color: "rgba(242,194,62,.95)",
+          fillColor: "rgba(245,158,11,.55)",
+          fillOpacity: 0.18
+        });
+
+        m.on("click", () => map.setView([c.lat, c.lng], Math.max(map.getZoom(), 9), { animate:true }));
+        m.bindTooltip(`${c.metro}`, { direction:"top", offset:[0,-6] });
+        m.addTo(metroLayer);
+        count++;
+      }
+
+      if(count > 0){
+        $("mapStats").textContent =
+          `Rows: ${spineRows.length.toLocaleString()} • Usable: ${zipIndex.size.toLocaleString()} • Regions: ${regions.length} • Metros: ${metroCentroids.size.toLocaleString()} • Showing metros: ${count}`;
+      }
+    }
+
+    async function loadStatesLayer(){
+      if(statesLayer) return statesLayer;
+      if(!map) return null;
+
+      // Load explicit region lookup first so polygon shading is not inferred from ZIP rows.
+      await loadStateRegionMap();
+
+      const paneName = "stateShadePane";
+      if(!map.getPane(paneName)){
+        map.createPane(paneName);
+        map.getPane(paneName).style.zIndex = 350;
+      }
+
+      const candidates = [
+        "./data/us_states.geojson",
+        "/data/us_states.geojson",
+        "./app/data/us_states.geojson",
+        "/app/data/us_states.geojson",
+        "./us_states.geojson"
+      ];
+
+      let lastErr = null;
+      let geo = null;
+      let loadedFrom = "";
+
+      for(const url of candidates){
+        try{
+          const resp = await fetch(url, { cache:"no-store" });
+          if(!resp.ok) throw new Error(`HTTP ${resp.status} ${resp.statusText}`);
+          geo = await resp.json();
+          loadedFrom = url;
+          break;
+        }catch(err){
+          lastErr = err;
+        }
+      }
+
+      if(!geo){
+        statesLayerLoadError = lastErr || new Error("Unable to load us_states.geojson");
+        throw statesLayerLoadError;
+      }
+
+      statesLayer = L.geoJSON(geo, {
+        pane: paneName,
+        interactive: true,
+        style: function(feature){
+          const region = getRegionForFeature(feature);
+          return {
+            weight: 1.15,
+            color: region ? "rgba(95,99,104,.88)" : "rgba(110,110,110,.45)",
+            fillColor: getRegionColor(region),
+            fillOpacity: region ? 0.42 : 0.08
+          };
+        },
+        onEachFeature: function(feature, layer){
+          const region = getRegionForFeature(feature) || "Region unavailable";
+
+          layer.bindTooltip(region, {
+            sticky: true,
+            direction: "top",
+            className: "regionHoverTip",
+            opacity: 1
+          });
+
+          layer.on("mouseover", function(){
+            if(scopeMode !== "REGION") return;
+            clearRegionHoverTooltips();
+            if(this.openTooltip) this.openTooltip();
+            this.setStyle({
+              weight: 1.8,
+              color: "rgba(31,41,55,.96)",
+              fillOpacity: 0.56
+            });
+            if(this.bringToFront) this.bringToFront();
+          });
+
+          layer.on("mouseout", function(){
+            if(this.closeTooltip) this.closeTooltip();
+            if(statesLayer && statesLayer.resetStyle){
+              statesLayer.resetStyle(this);
+            }
+          });
+        }
+      });
+
+      statesLayer._loadedFrom = loadedFrom;
+      statesLayer._regionMapFrom = stateRegionMap && stateRegionMap._loadedFrom ? stateRegionMap._loadedFrom : "";
+      return statesLayer;
+    }
+
+    function clearRegionHoverTooltips(){
+      if(!statesLayer) return;
+      statesLayer.eachLayer(layer => {
+        if(layer && layer.closeTooltip) layer.closeTooltip();
+      });
+    }
+
+    function updateStatesLayerVisibility(){
+      if(!map || !statesLayer) return;
+      const shouldShow = (scopeMode === "REGION");
+      const has = map.hasLayer(statesLayer);
+
+      clearRegionHoverTooltips();
+
+      if(shouldShow && !has){
+        statesLayer.addTo(map);
+      } else if(!shouldShow && has){
+        map.removeLayer(statesLayer);
+      }
+    }
+
+    function updateScopeLabel(){ $("scopeLabel").textContent = scopeMode; updateStatesLayerVisibility(); }
+
+    function zoomToRegion(region){
+      let minLat=  90, maxLat= -90, minLng= 180, maxLng=-180;
+      let found = 0;
+
+      for(const [, row] of zipIndex){
+        if((row.RegionName || "Unknown") !== region) continue;
+        found++;
+        minLat = Math.min(minLat, row.Lat);
+        maxLat = Math.max(maxLat, row.Lat);
+        minLng = Math.min(minLng, row.Lng);
+        maxLng = Math.max(maxLng, row.Lng);
+      }
+      if(found > 20){
+        map.fitBounds([[minLat,minLng],[maxLat,maxLng]], { padding:[30,30] });
+      }
+    }
+
+    function cycleScope(){
+      scopeMode = (scopeMode === "USA") ? "REGION" : (scopeMode === "REGION") ? "ZIP" : "USA";
+      updateScopeLabel();
+
+      if(scopeMode === "USA"){
+        map.setView([39.5,-98.35], 4, { animate:true });
+      } else if(scopeMode === "REGION"){
+        if(gs.RegionName) zoomToRegion(gs.RegionName);
+        else map.setView([39.5,-98.35], 4, { animate:true });
+      } else {
+        if(selectedRow) map.setView([selectedRow.Lat, selectedRow.Lng], Math.max(map.getZoom(), 9), { animate:true });
+      }
+    }
+
+    function enterFullscreen(panelId){
+      const panel = $(panelId);
+      const panels = ["panelQ1","panelQ2","panelQ3","panelQ4"];
+
+      if(panel.classList.contains("fullscreen")){
+        panels.forEach(id => $(id).classList.remove("fullscreen","hideWhenFullscreen"));
+        setTimeout(()=> map.invalidateSize(), 80);
+        return;
+      }
+
+      panels.forEach(id => {
+        const p = $(id);
+        if(id === panelId){
+          p.classList.add("fullscreen");
+          p.classList.remove("hideWhenFullscreen");
+        } else {
+          p.classList.remove("fullscreen");
+          p.classList.add("hideWhenFullscreen");
+        }
+      });
+
+      setTimeout(()=> map.invalidateSize(), 80);
+    }
+
+    // Guided Search
+    function chipEl(label, active, onClick, count=null, disabled=false){
+      const d = document.createElement("div");
+      d.className = "chip" + (active ? " active" : "") + (disabled ? " disabled" : "");
+      const t = document.createElement("span");
+      t.textContent = label;
+      d.appendChild(t);
+      if(count !== null){
+        const c = document.createElement("span");
+        c.className = "chipCount";
+        c.textContent = count.toLocaleString();
+        d.appendChild(c);
+      }
+      d.addEventListener("click", () => { if(!disabled) onClick?.(); });
+      return d;
+    }
+
+    function allRows(){ return Array.from(zipIndex.values()); }
+    function getVal(row, field){ return (row[field] ?? "").toString().trim(); }
+    function getHomeValueBandLabel(row){
+      const raw = getVal(row, "HomeValueBandName");
+      if(raw) return raw;
+      const n = Number(row.HomeValue);
+      if(!isFinite(n)) return "Unknown";
+      if(n < 150000) return "Under $150k";
+      if(n < 250000) return "$150k-$250k";
+      if(n < 350000) return "$250k-$350k";
+      if(n < 450000) return "$350k-$450k";
+      if(n < 550000) return "$450k-$550k";
+      return "$550k+";
+    }
+    function getCommunityFeelLabel(row){
+      const ring = getVal(row, "LifestyleRing") || getVal(row, "MetroDistanceRingName");
+      if(ring === "Metro Core") return "Urban";
+      if(ring === "Metro Suburbs") return "Suburban";
+      if(ring === "Metro Fringe") return "Small Town";
+      if(ring === "Independent & Remote") return "Rural";
+      return "Small Town";
+    }
+    function distinctCountsBy(rows, getLabel){
+      const m = new Map();
+      for(const r of rows){
+        const v = (getLabel(r) || "").toString().trim();
+        if(!v) continue;
+        m.set(v, (m.get(v) || 0) + 1);
+      }
+      return Array.from(m.entries())
+        .sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]))
+        .map(([v,c]) => ({ v, c }));
+    }
+
+    function applyGsFilters(rows, upto="all"){
+      let out = rows;
+      if(gs.RegionName) out = out.filter(r => getVal(r,"RegionName") === gs.RegionName);
+      if(gs.ClimateProfile) out = out.filter(r => getVal(r,"ClimateProfile") === gs.ClimateProfile);
+      if(upto === "climate") return out;
+
+      if(gs.HomeValueBandName) out = out.filter(r => getHomeValueBandLabel(r) === gs.HomeValueBandName);
+      if(upto === "home") return out;
+
+      if(gs.CommunityFeel) out = out.filter(r => getCommunityFeelLabel(r) === gs.CommunityFeel);
+      return out;
+    }
+
+    function distinctCounts(rows, field){
+      const m = new Map();
+      for(const r of rows){
+        const v = getVal(r, field);
+        if(!v) continue;
+        m.set(v, (m.get(v) || 0) + 1);
+      }
+      return Array.from(m.entries())
+        .sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]))
+        .map(([v,c]) => ({ v, c }));
+    }
+
+    function primaryComplete(){ return !!(gs.RegionName && gs.ClimateProfile && gs.HomeValueBandName && gs.CommunityFeel); }
+
+    function resetLowerFrom(level){
+      if(level === "all"){
+        gs.RegionName = null;
+        gs.ClimateProfile = null;
+        gs.HomeValueBandName = null;
+        gs.CommunityFeel = null;
+        gs.sampleSeed = 1;
+        return;
+      }
+      if(level === "region"){
+        gs.ClimateProfile = null; gs.HomeValueBandName = null; gs.CommunityFeel = null; gs.sampleSeed = 1;
+      }
+      if(level === "climate"){
+        gs.HomeValueBandName = null; gs.CommunityFeel = null; gs.sampleSeed = 1;
+      }
+      if(level === "home"){
+        gs.CommunityFeel = null; gs.sampleSeed = 1;
+      }
+      if(level === "community"){
+        gs.sampleSeed = 1;
+      }
+    }
+
+    function renderBreadcrumb(){
+      const top = $("chipsTop");
+      top.innerHTML = "";
+
+      const any = gs.RegionName || gs.ClimateProfile || gs.HomeValueBandName || gs.CommunityFeel;
+
+      top.appendChild(chipEl("Guided Search", !any, () => { resetLowerFrom("all"); renderGuidedSearch(); setQ3Mode(q3Mode); }));
+
+      if(gs.RegionName) top.appendChild(chipEl("Region: " + gs.RegionName, true, () => { gs.RegionName = null; resetLowerFrom("region"); renderGuidedSearch(); }));
+      if(gs.ClimateProfile) top.appendChild(chipEl("Climate: " + gs.ClimateProfile, true, () => { gs.ClimateProfile = null; resetLowerFrom("climate"); renderGuidedSearch(); }));
+      if(gs.HomeValueBandName) top.appendChild(chipEl("Home Value: " + gs.HomeValueBandName, true, () => { gs.HomeValueBandName = null; resetLowerFrom("home"); renderGuidedSearch(); }));
+      if(gs.CommunityFeel) top.appendChild(chipEl("Community: " + gs.CommunityFeel, true, () => { gs.CommunityFeel = null; resetLowerFrom("community"); renderGuidedSearch(); }));
+
+      if(gs.RegionName){
+        const pan = document.createElement("div");
+        pan.className = "chip";
+        pan.textContent = "Pan to region";
+        pan.addEventListener("click", () => zoomToRegion(gs.RegionName));
+        top.appendChild(pan);
+      }
+    }
+
+    function renderGuidedSearch(){
+      renderBreadcrumb();
+      const base = allRows();
+
+      const afterRegion = gs.RegionName ? base.filter(r => getVal(r,"RegionName") === gs.RegionName) : base;
+      const afterClimate = (gs.RegionName && gs.ClimateProfile) ? afterRegion.filter(r => getVal(r,"ClimateProfile") === gs.ClimateProfile) : afterRegion;
+      const afterHome = (gs.RegionName && gs.ClimateProfile && gs.HomeValueBandName) ? afterClimate.filter(r => getHomeValueBandLabel(r) === gs.HomeValueBandName) : afterClimate;
+
+      const regionOpts = distinctCounts(base, "RegionName");
+      const climateOpts = distinctCounts(afterRegion, "ClimateProfile");
+      const homeOpts = distinctCountsBy(afterClimate, getHomeValueBandLabel);
+      const communityOpts = distinctCountsBy(afterHome, getCommunityFeelLabel);
+
+      const rWrap = $("gsRegionChips"); rWrap.innerHTML = "";
+      for(const o of regionOpts){
+        rWrap.appendChild(chipEl(o.v, o.v === gs.RegionName, () => {
+          gs.RegionName = o.v; resetLowerFrom("region"); renderGuidedSearch();
+          scopeMode = "REGION"; updateScopeLabel(); zoomToRegion(o.v);
+        }, o.c));
+      }
+
+      const cWrap = $("gsClimateChips"); cWrap.innerHTML = "";
+      if(!gs.RegionName){
+        cWrap.appendChild(chipEl("Select a Region first", false, null, null, true));
+      } else {
+        for(const o of climateOpts){
+          cWrap.appendChild(chipEl(o.v, o.v === gs.ClimateProfile, () => {
+            gs.ClimateProfile = o.v; resetLowerFrom("climate"); renderGuidedSearch();
+          }, o.c));
+        }
+        if(!climateOpts.length) cWrap.appendChild(chipEl("No ClimateProfile values", false, null, null, true));
+      }
+
+      const hWrap = $("gsHomeBandChips"); hWrap.innerHTML = "";
+      if(!(gs.RegionName && gs.ClimateProfile)){
+        hWrap.appendChild(chipEl("Select Region + Climate first", false, null, null, true));
+      } else {
+        for(const o of homeOpts){
+          hWrap.appendChild(chipEl(o.v, o.v === gs.HomeValueBandName, () => {
+            gs.HomeValueBandName = o.v; resetLowerFrom("home"); renderGuidedSearch();
+          }, o.c));
+        }
+        if(!homeOpts.length) hWrap.appendChild(chipEl("No HomeValueBand values", false, null, null, true));
+      }
+
+      const cmWrap = $("gsCommunityChips"); cmWrap.innerHTML = "";
+      if(!(gs.RegionName && gs.ClimateProfile && gs.HomeValueBandName)){
+        cmWrap.appendChild(chipEl("Select Region + Climate + Home Value first", false, null, null, true));
+      } else {
+        for(const o of communityOpts){
+          cmWrap.appendChild(chipEl(o.v, o.v === gs.CommunityFeel, () => {
+            gs.CommunityFeel = o.v; resetLowerFrom("community"); renderGuidedSearch();
+          }, o.c));
+        }
+        if(!communityOpts.length) cmWrap.appendChild(chipEl("No CommunityFeel values", false, null, null, true));
+      }
+
+      const finalSet = applyGsFilters(base, "all");
+      $("matchBadge").textContent = primaryComplete() ? `Matches: ${finalSet.length.toLocaleString()}` : "Matches: —";
+
+      const showDifferentBtn = $("showDifferentBtn");
+      showDifferentBtn.style.display = "none";
+
+      const hint = $("q3Hint");
+      if(!primaryComplete()){
+        hint.textContent = "Pick Region, Climate, Home Value, and Community Feel. Then we’ll show a short list you can click.";
+        renderResultsPlaceholder("Complete all 4 funnel steps to see results.");
+        return;
+      }
+
+      const finalCount = finalSet.length;
+      $("matchBadge").textContent = `Matches: ${finalCount.toLocaleString()}`;
+
+      if(finalCount === 0){
+        hint.textContent = "No matches. Try relaxing one filter at a time.";
+        renderNoResultsRelax();
+        return;
+      }
+
+      if(finalCount <= 10){
+        hint.textContent = `Click any ZIP to update Q2 + pan map.`;
+        renderResultsList(finalSet, { topN: finalCount, showDifferent:false });
+        return;
+      }
+
+      hint.textContent = `Click a ZIP to select it or show a different 10.`;
+      showDifferentBtn.style.display = "inline-flex";
+      renderResultsList(finalSet, { topN: 10, showDifferent:true });
+    }
+
+    function renderResultsPlaceholder(text){
+      const summary = $("resultsSummary");
+      summary.style.display = "none";
+      summary.textContent = "";
+      $("resultsWrap").innerHTML = `<div class="q3Hint" style="margin-top:6px;">${text}</div>`;
+    }
+
+    function renderResultsList(rows, {topN=10, showDifferent=false}={}){
+      const wrap = $("resultsWrap");
+      const summary = $("resultsSummary");
+      wrap.innerHTML = "";
+
+      const seed = (hashStr(`${gs.RegionName}|${gs.ClimateProfile}|${gs.HomeValueBandName}|${gs.CommunityFeel}`) + gs.sampleSeed) >>> 0;
+      const rnd = mulberry32(seed);
+
+      const copy = rows.slice();
+      for(let i=copy.length-1;i>0;i--){
+        const j = Math.floor(rnd() * (i+1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+
+      const pick = copy.slice(0, Math.min(topN, copy.length));
+
+      summary.style.display = "block";
+      summary.textContent = `Showing ${pick.length} ZIP${pick.length===1?"":"s"} of ${rows.length.toLocaleString()} matches. These are sample matches, not ranked results.`;
+
+      const list = document.createElement("div");
+      list.className = "resultsList";
+
+      for(const r of pick){
+        const row = document.createElement("div");
+        row.className = "resultRow";
+        row.addEventListener("click", () => applySelection(r, { pan:true }));
+
+        const left = document.createElement("div");
+        left.className = "resultLeft";
+
+        const zip = document.createElement("div");
+        zip.className = "resultZip";
+        zip.textContent = r.ZipCode;
+
+        const place = document.createElement("div");
+        place.className = "resultPlace";
+        const city = safeStr(r.City,"");
+        const state = safeStr(r.State,"");
+        place.textContent = `${city}${city?", ":""}${state}`.trim();
+
+        left.appendChild(zip);
+        left.appendChild(place);
+
+        const right = document.createElement("div");
+        right.className = "resultMeta";
+        right.textContent = "›";
+
+        row.appendChild(left);
+        row.appendChild(right);
+        list.appendChild(row);
+      }
+
+      wrap.appendChild(list);
+
+      if(showDifferent){
+        $("showDifferentBtn").onclick = () => { gs.sampleSeed++; renderGuidedSearch(); };
+      }
+    }
+
+    function renderNoResultsRelax(){
+      const wrap = $("resultsWrap");
+      wrap.innerHTML = "";
+
+      const info = document.createElement("div");
+      info.className = "q3Hint";
+      info.textContent = "Relax suggestions (in order): clear Community Feel, then Home Value, then Climate, then Region last.";
+      wrap.appendChild(info);
+
+      const grid = document.createElement("div");
+      grid.className = "relaxGrid";
+
+      const b1 = document.createElement("div");
+      b1.className = "relaxBtn";
+      b1.innerHTML = `<span>Clear CommunityFeel</span><span class="small">keep Region + Climate + Home Value</span>`;
+      b1.onclick = () => { gs.CommunityFeel = null; resetLowerFrom("community"); renderGuidedSearch(); };
+      grid.appendChild(b1);
+
+      const b2 = document.createElement("div");
+      b2.className = "relaxBtn";
+      b2.innerHTML = `<span>Clear HomeValueBand</span><span class="small">keep Region + Climate</span>`;
+      b2.onclick = () => { gs.HomeValueBandName = null; resetLowerFrom("home"); renderGuidedSearch(); };
+      grid.appendChild(b2);
+
+      const b3 = document.createElement("div");
+      b3.className = "relaxBtn";
+      b3.innerHTML = `<span>Clear ClimateProfile</span><span class="small">keep Region</span>`;
+      b3.onclick = () => { gs.ClimateProfile = null; resetLowerFrom("climate"); renderGuidedSearch(); };
+      grid.appendChild(b3);
+
+      const b4 = document.createElement("div");
+      b4.className = "relaxBtn";
+      b4.innerHTML = `<span>Clear Region (last resort)</span><span class="small">start over</span>`;
+      b4.onclick = () => { gs.RegionName = null; resetLowerFrom("region"); renderGuidedSearch(); scopeMode="USA"; updateScopeLabel(); map.setView([39.5,-98.35],4,{animate:true}); };
+      grid.appendChild(b4);
+
+      wrap.appendChild(grid);
+    }
+
+    function setQ3Mode(mode){
+      q3Mode = (mode || "guided").toLowerCase();
+      if(!["guided","place","zip"].includes(q3Mode)) q3Mode = "guided";
+      localStorage.setItem("rsz_q3_mode", q3Mode);
+
+      const guidedBtn = $("modeGuidedBtn");
+      const placeBtn  = $("modePlaceBtn");
+      const zipBtn    = $("modeZipBtn");
+      const guidedBlock = $("guidedBlock");
+      const placeBlock  = $("placeBlock");
+      const zipBlock    = $("zipBlock");
+      if(!guidedBtn || !placeBtn || !guidedBlock || !placeBlock) return;
+
+      const isGuided = (q3Mode === "guided");
+      const isPlace  = (q3Mode === "place");
+      const isZip    = (q3Mode === "zip");
+
+      guidedBtn.classList.toggle("active", isGuided);
+      placeBtn.classList.toggle("active", isPlace);
+      zipBtn?.classList.toggle("active", isZip);
+
+      guidedBtn.setAttribute("aria-selected", isGuided ? "true" : "false");
+      placeBtn.setAttribute("aria-selected", isPlace ? "true" : "false");
+      zipBtn?.setAttribute("aria-selected", isZip ? "true" : "false");
+
+      guidedBlock.style.display = isGuided ? "block" : "none";
+      placeBlock.style.display  = isPlace  ? "block" : "none";
+      if(zipBlock) zipBlock.style.display  = isZip    ? "block" : "none";
+
+      if(isPlace){
+        renderPlaceSelectors();
+        renderPlaceResults();
+      }
+      if(isZip){
+        // Focus the input for quick use
+        setTimeout(()=> $("q3ZipInput")?.focus(), 0);
+      }
+    }
+
+    function renderPlaceSelectors(){
+      const stSel = $("placeState");
+      const ctSel = $("placeCity");
+      if(!stSel || !ctSel) return;
+
+      const states = Array.from(stateCityIndex.keys()).sort((a,b)=>a.localeCompare(b));
+      stSel.innerHTML = "";
+      stSel.appendChild(new Option("Select…",""));
+
+      for(const st of states){
+        stSel.appendChild(new Option(st, st));
+      }
+
+      if(place.state && stateCityIndex.has(place.state)){
+        stSel.value = place.state;
+      } else if(selectedRow && selectedRow.State && stateCityIndex.has(normState(selectedRow.State))){
+        place.state = normState(selectedRow.State);
+        stSel.value = place.state;
+      }
+
+      populateCitiesForState(stSel.value);
+    }
+
+    function populateCitiesForState(state){
+      const ctSel = $("placeCity");
+      const badge = $("placeCountBadge");
+      if(!ctSel) return;
+
+      ctSel.innerHTML = "";
+      ctSel.appendChild(new Option("Select…",""));
+
+      if(!state || !stateCityIndex.has(state)){
+        if(badge) badge.textContent = "ZIPs: —";
+        place.state = null;
+        place.city = null;
+        place.page = 0;
+        return;
+      }
+
+      place.state = normState(state);
+
+      const cities = stateCityIndex.get(state) || [];
+      for(const c of cities){
+        ctSel.appendChild(new Option(`${c.city} (${c.count})`, c.city));
+      }
+
+      if(place.city && cities.some(x=>normCity(x.city)===normCity(place.city))){
+        ctSel.value = place.city;
+      } else if(cities.length){
+        place.city = normCity(cities[0].city);
+        ctSel.selectedIndex = 1;
+      } else {
+        place.city = null;
+      }
+
+      place.page = 0;
+      if(badge) badge.textContent = "ZIPs: —";
+    }
+
+    function getPlaceKey(){
+      if(!place.state || !place.city) return null;
+      return makeCityKey(place.state, place.city);
+    }
+
+    function renderPlaceResults(){
+      const wrap = $("placeResultsWrap");
+      const badge = $("placeCountBadge");
+      const pageBadge = $("placePageBadge");
+      const prevBtn = $("placePrevBtn");
+      const nextBtn = $("placeNextBtn");
+      if(!wrap) return;
+
+      const key = getPlaceKey();
+      if(!key || !cityZipIndex.has(key)){
+        wrap.innerHTML = `<div class="q3Hint" style="margin-top:6px;">Select a State and City to list ZIPs.</div>`;
+        if(badge) badge.textContent = "ZIPs: —";
+        if(pageBadge) pageBadge.textContent = "Page —";
+        if(prevBtn) prevBtn.style.opacity = .6;
+        if(nextBtn) nextBtn.style.opacity = .6;
+        return;
+      }
+
+      const bundle = cityZipIndex.get(key);
+      const zips = bundle.zips.slice();
+
+      const clat = bundle.centroidLat, clng = bundle.centroidLng;
+      const scored = zips.map(r => ({ r, d: haversineMiles(clat, clng, r.Lat, r.Lng) }))
+                        .sort((a,b)=> a.d - b.d || a.r.ZipCode.localeCompare(b.r.ZipCode));
+
+      const total = scored.length;
+      const pages = Math.max(1, Math.ceil(total / place.pageSize));
+      place.page = Math.min(place.page, pages-1);
+      const start = place.page * place.pageSize;
+      const end = Math.min(start + place.pageSize, total);
+      const pageRows = scored.slice(start, end);
+
+      if(badge) badge.textContent = `ZIPs: ${total.toLocaleString()}`;
+      if(pageBadge) pageBadge.textContent = `Page ${place.page+1} / ${pages}`;
+
+      if(prevBtn){
+        prevBtn.style.opacity = (place.page>0) ? 1 : .6;
+        prevBtn.style.pointerEvents = (place.page>0) ? "auto" : "none";
+      }
+      if(nextBtn){
+        nextBtn.style.opacity = (place.page<pages-1) ? 1 : .6;
+        nextBtn.style.pointerEvents = (place.page<pages-1) ? "auto" : "none";
+      }
+
+      const list = document.createElement("div");
+      list.className = "resultsList";
+
+      for(const s of pageRows){
+        const row = document.createElement("div");
+        row.className = "resultRow";
+        row.addEventListener("click", () => applySelection(s.r, { pan:true }));
+
+        const left = document.createElement("div");
+        left.className = "resultLeft";
+
+        const zip = document.createElement("div");
+        zip.className = "resultZip";
+        zip.textContent = s.r.ZipCode;
+
+        const placeLine = document.createElement("div");
+        placeLine.className = "resultPlace";
+        placeLine.textContent = `${bundle.city}, ${bundle.state}`;
+
+        const meta = document.createElement("div");
+        meta.className = "resultMeta";
+        meta.textContent = `${s.d.toFixed(1)} mi from city center • ${s.r.MetroClusterName ? s.r.MetroClusterName : "metro n/a"}`;
+
+        left.appendChild(zip);
+        left.appendChild(placeLine);
+        left.appendChild(meta);
+
+        const right = document.createElement("div");
+        right.className = "resultMeta";
+        right.textContent = "›";
+
+        row.appendChild(left);
+        row.appendChild(right);
+        list.appendChild(row);
+      }
+
+      wrap.innerHTML = "";
+      wrap.appendChild(list);
+    }
+
+    function updateZoomDisplay(){
+      if(!map) return;
+      const z = map.getZoom();
+      const el = document.getElementById("zoomLevelValue");
+      if(el) el.textContent = String(z);
+    }
+
+    function initMap(){
+      map = L.map("map", { zoomControl:true }).setView([39.5,-98.35],4 );
+
+      streetsLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "Leaflet | © OpenStreetMap contributors"
+      });
+
+      satelliteLayer = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+          maxZoom: 19,
+          attribution: "Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+        }
+      );
+
+      function setBaseLayerChoice(name){
+        const next = String(name || "Map").toLowerCase() === "satellite" ? satelliteLayer : streetsLayer;
+        if(baseLayer && map.hasLayer(baseLayer)) map.removeLayer(baseLayer);
+        baseLayer = next;
+        baseLayer.addTo(map);
+        const labelName = (baseLayer === satelliteLayer) ? "Satellite" : "Map";
+        localStorage.setItem("rsz_base_layer", labelName);
+        setBaseTheme(labelName);
+      }
+
+      const saved = (localStorage.getItem("rsz_base_layer") || "Map").toLowerCase();
+      setBaseLayerChoice(saved);
+
+      const BaseToggleControl = L.Control.extend({
+        options: { position: "topright" },
+        onAdd: function(){
+          const div = L.DomUtil.create("div", "leaflet-bar baseToggleControl");
+          div.innerHTML = `
+            <div class="row"><input type="radio" id="rszMapBase" name="rszBaseLayer" value="map"><label for="rszMapBase">Map</label></div>
+            <div class="row"><input type="radio" id="rszSatBase" name="rszBaseLayer" value="satellite"><label for="rszSatBase">Satellite</label></div>
+            <div class="row"><span>Zoom Level</span><span id="zoomLevelValue">—</span></div>
+          `;
+          L.DomEvent.disableClickPropagation(div);
+          L.DomEvent.disableScrollPropagation(div);
+
+          const mapRadio = div.querySelector('#rszMapBase');
+          const satRadio = div.querySelector('#rszSatBase');
+          if(baseLayer === satelliteLayer) satRadio.checked = true;
+          else mapRadio.checked = true;
+
+          mapRadio.addEventListener('change', () => { if(mapRadio.checked) setBaseLayerChoice('map'); });
+          satRadio.addEventListener('change', () => { if(satRadio.checked) setBaseLayerChoice('satellite'); });
+          return div;
+        }
+      });
+      new BaseToggleControl().addTo(map);
+
+      map.on("zoomstart", clearRegionHoverTooltips);
+      map.on("movestart", clearRegionHoverTooltips);
+      map.on("zoomend", () => { clearRegionHoverTooltips(); updateZoomDisplay(); });
+      map.on("moveend", updateZoomDisplay);
+      updateZoomDisplay();
+
+      metroLayer = L.layerGroup().addTo(map);
+
+      map.on("click", (e) => {
+        clearRegionHoverTooltips();
+        if(zipIndex.size === 0) return;
+        const nearest = findNearestZip(e.latlng.lat, e.latlng.lng);
+        if(nearest) applySelection(nearest, { pan:false });
+      });
+    }
+
+    function setStatus(ok, text){
+      $("statusText").textContent = text;
+      $("statusDot").classList.toggle("bad", !ok);
+    }
+
+    function wireUI(){
+      $("q3ZipGoBtn")?.addEventListener("click", () => {
+        const z = normalizeZip($("q3ZipInput")?.value);
+        const msg = $("zipSearchMessage");
+        if(!z){
+          if(msg) msg.textContent = "Please enter a valid 5-digit ZIP.";
+          return;
+        }
+        const row = zipIndex.get(z);
+        if(!row){
+          if(msg) msg.textContent = "ZIP not found in current universe.";
+          return;
+        }
+        if(msg) msg.textContent = "";
+        applySelection(row, { pan:true });
+      });
+
+      $("q3ZipInput")?.addEventListener("keydown", (ev) => {
+        if(ev.key === "Enter") $("q3ZipGoBtn")?.click();
+      });
+
+      $("scopeBtn").addEventListener("click", cycleScope);
+
+      document.querySelectorAll("[data-fs]").forEach(btn=>{
+        btn.addEventListener("click", () => enterFullscreen(btn.getAttribute("data-fs")));
+      });
+
+      $("showOnMapBtn").addEventListener("click", () => {
+        if(selectedRow){
+          map.setView([selectedRow.Lat, selectedRow.Lng], Math.max(map.getZoom(), 9), { animate:true });
+          scopeMode = "ZIP"; updateScopeLabel();
+        }
+      });
+
+      $("resetBtn").addEventListener("click", clearSelection);
+      $("clearZipBtn").addEventListener("click", clearSelection);
+
+      $("focusMetroBtn").addEventListener("click", () => {
+        if(selectedRow && selectedRow.RegionName && selectedRow.State){
+          drawMetroPoints(selectedRow.RegionName, selectedRow.State);
+          scopeMode = "REGION"; updateScopeLabel();
+        } else {
+          setStatus(true, "Select a ZIP first (or click map)");
+        }
+      });
+
+      document.querySelectorAll("#q2Tabs .tab").forEach(t=>{
+        t.addEventListener("click", () => {
+          const key = t.dataset.tab;
+          document.querySelectorAll("#q2Tabs .tab").forEach(x=>x.classList.toggle("active", x===t));
+          document.querySelectorAll("#q2Panels .tabPanel").forEach(p=>p.classList.toggle("active", p.dataset.panel===key));
+        });
+      });
+
+$("gsClearBtn").addEventListener("click", () => { resetLowerFrom("all"); renderGuidedSearch(); });
+
+      $("modeGuidedBtn")?.addEventListener("click", () => { setQ3Mode("guided"); });
+      $("modePlaceBtn")?.addEventListener("click", () => { setQ3Mode("place"); });
+      $("modeZipBtn")?.addEventListener("click", () => { setQ3Mode("zip"); });
+
+
+      $("placeState")?.addEventListener("change", (e) => {
+        const st = normState(e.target.value);
+        populateCitiesForState(st);
+        const ctSel = $("placeCity");
+        place.city = (ctSel && ctSel.value) ? normCity(ctSel.value) : null;
+        place.page = 0;
+        renderPlaceResults();
+      });
+
+      $("placeCity")?.addEventListener("change", (e) => {
+        place.city = normCity(e.target.value);
+        place.page = 0;
+        renderPlaceResults();
+
+        const key = getPlaceKey();
+        if(key && cityZipIndex.has(key)){
+          const b = cityZipIndex.get(key);
+          map.setView([b.centroidLat, b.centroidLng], Math.max(map.getZoom(), 9), { animate:true });
+          scopeMode = "ZIP"; updateScopeLabel();
+        }
+      });
+
+      $("placePrevBtn")?.addEventListener("click", () => { if(place.page>0){ place.page--; renderPlaceResults(); } });
+      $("placeNextBtn")?.addEventListener("click", () => { place.page++; renderPlaceResults(); });
+    }
+
+    function clearSelection(){
+      selectedZip = null;
+      selectedRow = null;
+
+      $("selZipTop").textContent = "—";
+      $("selPlaceTop").textContent = "Click anywhere on the map to pick a ZIP.";
+
+      ["selMetaTop","cardHomeValue","cardHomeAsOf","cardRent","cardRentAsOf","climateTempValue","climateTempRange","climatePrecipValue","climatePrecipSummer","climatePrecipWinter","climateSeasonality","climateSummerProfile","climateWinterProfile","cardRet65","cardRetSub","cardCoverage","cardCoverageSub"].forEach(id => { const el=$(id); if(el) el.textContent = "Data not available"; });
+      ["aglClimate","aglCost","aglHealthcare","aglSetting"].forEach(id => { const el=$(id); if(el) el.textContent = "—"; });
+
+      if(zipMarker) { zipMarker.remove(); zipMarker = null; }
+      $("startHint").style.display = "block";
+
+      scopeMode = gs.RegionName ? "REGION" : "USA";
+      updateScopeLabel();
+    }
+
+    
+
+// ==================== CORE: BOOT/LOAD (DO NOT EDIT) ====================
+async function boot(){
+      initMap();
+      wireUI();
+
+      try{
+        const { data, url } = await loadSpine();
+        ingestRows(data);
+
+        try{
+          await loadStatesLayer();
+          updateStatesLayerVisibility();
+          if(statesLayer && statesLayer._loadedFrom){
+            $("mapStats").textContent += ` • Region shading: ${statesLayer._loadedFrom}`;
+          }
+        }catch(stateErr){
+          console.warn("REGION shading unavailable:", stateErr);
+          $("mapStats").textContent += ` • Region shading unavailable`;
+        }
+
+        setStatus(true, "Ready");
+        $("mapStats").textContent += ` • Source: ${url}`;
+
+        renderGuidedSearch();
+        setQ3Mode(q3Mode);
+
+        const any = allRows()[0] || {};
+        const req = ["RegionName","ClimateProfile","HomeValue"];
+        const missing = req.filter(k => !(k in any));
+        if(missing.length){
+          $("q3Hint").textContent =
+            `JSON missing fields required for Guided Search: ${missing.join(", ")}. Export location_spine.json from Core.vw_MvpWhereSpine_SSoT with these keys.`;
+          setStatus(false, "JSON contract mismatch");
+        }
+      }catch(err){
+        console.error(err);
+        setStatus(false, "Data load error");
+        $("mapStats").textContent = "Data load error — check JSON path (app/data/location_spine.json) and Live Server root.";
+        $("q3Hint").textContent = "Cannot run Guided Search until location_spine.json loads.";
+      }
+    }
+
+    // Walkthrough video modal
+    (function(){
+      const btn = document.getElementById('walkthroughBtn');
+      const modal = document.getElementById('videoModal');
+      const closeBtn = document.getElementById('closeVideo');
+      const video = document.getElementById('walkthroughVideo');
+
+      if(!btn || !modal || !closeBtn || !video) return;
+
+      function openVideo(){
+        modal.style.display = 'flex';
+        video.currentTime = 0;
+        const p = video.play();
+        if(p && typeof p.catch === 'function') p.catch(() => {});
+      }
+      function closeVideo(){
+        modal.style.display = 'none';
+        video.pause();
+      }
+
+      btn.addEventListener('click', openVideo);
+      closeBtn.addEventListener('click', closeVideo);
+      modal.addEventListener('click', (e) => {
+        if(e.target === modal) closeVideo();
+      });
+      document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape' && modal.style.display !== 'none') closeVideo();
+      });
+    })();
+
+    boot();
+  </script>
+</body>
+</html>
