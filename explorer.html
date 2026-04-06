@@ -19,10 +19,32 @@
 
 <!-- Canonical -->
 <link rel="canonical" href="https://retiresmartzip.com/explorer.html">
+<meta property="og:site_name" content="RetireSmartZIP">
+<meta name="robots" content="index,follow,max-image-preview:large">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SW7D70V406"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SW7D70V406');
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "RetireSmartZIP Explorer",
+  "url": "https://retiresmartzip.com/explorer.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "description": "Explore U.S. ZIP codes for retirement using housing, climate, healthcare, and cost-of-living insights."
+}
+</script>
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>RetireSmartZIP™ — Explore by ZIP</title>
 
   <!-- Leaflet -->
   <link
@@ -953,10 +975,19 @@
 #mapStats{ display:none !important; }
 #startHint{ display:none !important; }
 
+/* Leaflet attribution shrink (RSZ polish) */
+.leaflet-control-attribution {
+  font-size: 8px !important;
+  line-height: 1.2 !important;
+  opacity: 0.55 !important;
+}
+
+
 </style>
 </head>
 
 <body>
+  <h1 style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Explore Retirement Locations by ZIP Code</h1>
   <div class="topbar">
     <div class="brand">
   <img class="logoImg" src="./image/RSZ_20251217.png" alt="RetireSmartZIP logo"
