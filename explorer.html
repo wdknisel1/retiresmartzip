@@ -1384,6 +1384,81 @@
     // Helpers
     // ----------------------------
     const $ = (id) => document.getElementById(id);
+    // ----------------------------
+    // GA4 helpers
+    // ----------------------------
+    const RSZ_GA4_ID = "G-SW7D70V406";
+    const gaState = {
+      scrollMilestonesFired: new Set(),
+      mapMoved: false,
+      mapZoomed: false,
+      initialPageTracked: false
+    };
+
+    function isGtagReady(){
+      return typeof window !== "undefined" && typeof window.gtag === "function";
+    }
+
+    function trackEvent(name, params = {}){
+      if(!isGtagReady()) return;
+      try{
+        window.gtag("event", name, params);
+      }catch(err){
+        console.warn("GA4 event failed:", name, err);
+      }
+    }
+
+    function getDeviceCategory(){
+      const w = window.innerWidth || document.documentElement.clientWidth || 0;
+      if(w <= 768) return "mobile";
+      if(w <= 1100) return "tablet";
+      return "desktop";
+    }
+
+    function getActiveQ2Tab(){
+      return document.querySelector("#q2Tabs .tab.active")?.dataset?.tab || "home";
+    }
+
+    function getCurrentScope(){
+      return scopeMode || "USA";
+    }
+
+    function getCurrentMode(){
+      return q3Mode || "guided";
+    }
+
+    function trackPageContext(){
+      if(gaState.initialPageTracked) return;
+      gaState.initialPageTracked = true;
+      trackEvent("rsz_explorer_loaded", {
+        page_type: "explorer",
+        device_category: getDeviceCategory(),
+        q3_mode: getCurrentMode(),
+        map_scope: getCurrentScope()
+      });
+    }
+
+    function trackScrollDepth(){
+      const doc = document.documentElement;
+      const scrollTop = window.scrollY || doc.scrollTop || 0;
+      const scrollHeight = Math.max(doc.scrollHeight - window.innerHeight, 1);
+      const pct = Math.max(0, Math.min(100, Math.round((scrollTop / scrollHeight) * 100)));
+      [25, 50, 75, 90].forEach(mark => {
+        if(pct >= mark && !gaState.scrollMilestonesFired.has(mark)){
+          gaState.scrollMilestonesFired.add(mark);
+          trackEvent("rsz_scroll_depth", {
+            percent: mark,
+            page_type: "explorer",
+            device_category: getDeviceCategory()
+          });
+        }
+      });
+    }
+
+    function selectionSourceFromOpts(opts = {}){
+      return opts.source || "unknown";
+    }
+
 
     // Key normalization (prevents hidden whitespace / casing mismatches)
     const normState = (s) => (s || "").trim().toUpperCase();
@@ -2031,6 +2106,18 @@ function ingestRows(rows){
       selectedRow = row;
       selectedZip = row.ZipCode;
 
+      trackEvent("rsz_zip_select", {
+        zip_code: safeStr(row.ZipCode, ""),
+        city: safeStr(row.City, ""),
+        state: safeStr(row.State, ""),
+        region_name: safeStr(row.RegionName, ""),
+        source: selectionSourceFromOpts(opts),
+        q3_mode: getCurrentMode(),
+        map_scope: getCurrentScope(),
+        active_tab: getActiveQ2Tab(),
+        device_category: getDeviceCategory()
+      });
+
       $("selZipTop").textContent = row.ZipCode;
       $("selPlaceTop").textContent = `${safeStr(row.City,"")} ${row.City ? "," : ""} ${safeStr(row.State,"")}`.trim().replace(/^, /,"");
 
@@ -2484,6 +2571,7 @@ function ingestRows(rows){
       for(const o of regionOpts){
         rWrap.appendChild(chipEl(o.v, o.v === gs.RegionName, () => {
           gs.RegionName = o.v; resetLowerFrom("region"); renderGuidedSearch();
+          trackEvent("rsz_guided_filter", { filter_name: "RegionName", filter_value: o.v, match_count: o.c, device_category: getDeviceCategory() });
           scopeMode = "REGION"; updateScopeLabel(); zoomToRegion(o.v);
         }, o.c));
       }
@@ -2495,6 +2583,7 @@ function ingestRows(rows){
         for(const o of climateOpts){
           cWrap.appendChild(chipEl(o.v, o.v === gs.ClimateProfile, () => {
             gs.ClimateProfile = o.v; resetLowerFrom("climate"); renderGuidedSearch();
+            trackEvent("rsz_guided_filter", { filter_name: "ClimateProfile", filter_value: o.v, match_count: o.c, device_category: getDeviceCategory() });
           }, o.c));
         }
         if(!climateOpts.length) cWrap.appendChild(chipEl("No ClimateProfile values", false, null, null, true));
@@ -2507,6 +2596,7 @@ function ingestRows(rows){
         for(const o of homeOpts){
           hWrap.appendChild(chipEl(o.v, o.v === gs.HomeValueBandName, () => {
             gs.HomeValueBandName = o.v; resetLowerFrom("home"); renderGuidedSearch();
+            trackEvent("rsz_guided_filter", { filter_name: "HomeValueBand", filter_value: o.v, match_count: o.c, device_category: getDeviceCategory() });
           }, o.c));
         }
         if(!homeOpts.length) hWrap.appendChild(chipEl("No HomeValueBand values", false, null, null, true));
@@ -2519,6 +2609,7 @@ function ingestRows(rows){
         for(const o of communityOpts){
           cmWrap.appendChild(chipEl(o.v, o.v === gs.CommunityFeel, () => {
             gs.CommunityFeel = o.v; resetLowerFrom("community"); renderGuidedSearch();
+            trackEvent("rsz_guided_filter", { filter_name: "CommunityFeel", filter_value: o.v, match_count: o.c, device_category: getDeviceCategory() });
           }, o.c));
         }
         if(!communityOpts.length) cmWrap.appendChild(chipEl("No CommunityFeel values", false, null, null, true));
@@ -2589,7 +2680,7 @@ function ingestRows(rows){
       for(const r of pick){
         const row = document.createElement("div");
         row.className = "resultRow";
-        row.addEventListener("click", () => applySelection(r, { pan:true }));
+        row.addEventListener("click", () => applySelection(r, { pan:true, source:"guided_results" }));
 
         const left = document.createElement("div");
         left.className = "resultLeft";
@@ -2619,7 +2710,7 @@ function ingestRows(rows){
       wrap.appendChild(list);
 
       if(showDifferent){
-        $("showDifferentBtn").onclick = () => { gs.sampleSeed++; renderGuidedSearch(); };
+        $("showDifferentBtn").onclick = () => { gs.sampleSeed++; trackEvent("rsz_guided_show_different", { sample_seed: gs.sampleSeed, device_category: getDeviceCategory() }); renderGuidedSearch(); };
       }
     }
 
@@ -2638,25 +2729,25 @@ function ingestRows(rows){
       const b1 = document.createElement("div");
       b1.className = "relaxBtn";
       b1.innerHTML = `<span>Clear CommunityFeel</span><span class="small">keep Region + Climate + Home Value</span>`;
-      b1.onclick = () => { gs.CommunityFeel = null; resetLowerFrom("community"); renderGuidedSearch(); };
+      b1.onclick = () => { gs.CommunityFeel = null; resetLowerFrom("community"); trackEvent("rsz_guided_relax", { relaxed_filter: "CommunityFeel", device_category: getDeviceCategory() }); renderGuidedSearch(); };
       grid.appendChild(b1);
 
       const b2 = document.createElement("div");
       b2.className = "relaxBtn";
       b2.innerHTML = `<span>Clear HomeValueBand</span><span class="small">keep Region + Climate</span>`;
-      b2.onclick = () => { gs.HomeValueBandName = null; resetLowerFrom("home"); renderGuidedSearch(); };
+      b2.onclick = () => { gs.HomeValueBandName = null; resetLowerFrom("home"); trackEvent("rsz_guided_relax", { relaxed_filter: "HomeValueBand", device_category: getDeviceCategory() }); renderGuidedSearch(); };
       grid.appendChild(b2);
 
       const b3 = document.createElement("div");
       b3.className = "relaxBtn";
       b3.innerHTML = `<span>Clear ClimateProfile</span><span class="small">keep Region</span>`;
-      b3.onclick = () => { gs.ClimateProfile = null; resetLowerFrom("climate"); renderGuidedSearch(); };
+      b3.onclick = () => { gs.ClimateProfile = null; resetLowerFrom("climate"); trackEvent("rsz_guided_relax", { relaxed_filter: "ClimateProfile", device_category: getDeviceCategory() }); renderGuidedSearch(); };
       grid.appendChild(b3);
 
       const b4 = document.createElement("div");
       b4.className = "relaxBtn";
       b4.innerHTML = `<span>Clear Region (last resort)</span><span class="small">start over</span>`;
-      b4.onclick = () => { gs.RegionName = null; resetLowerFrom("region"); renderGuidedSearch(); scopeMode="USA"; updateScopeLabel(); map.setView([39.5,-98.35],4,{animate:true}); };
+      b4.onclick = () => { gs.RegionName = null; resetLowerFrom("region"); trackEvent("rsz_guided_relax", { relaxed_filter: "RegionName", device_category: getDeviceCategory() }); renderGuidedSearch(); scopeMode="USA"; updateScopeLabel(); map.setView([39.5,-98.35],4,{animate:true}); };
       grid.appendChild(b4);
 
       wrap.appendChild(grid);
@@ -2666,6 +2757,10 @@ function ingestRows(rows){
       q3Mode = (mode || "guided").toLowerCase();
       if(!["guided","place","zip"].includes(q3Mode)) q3Mode = "guided";
       localStorage.setItem("rsz_q3_mode", q3Mode);
+      trackEvent("rsz_explore_mode", {
+        mode: q3Mode,
+        device_category: getDeviceCategory()
+      });
 
       const guidedBtn = $("modeGuidedBtn");
       const placeBtn  = $("modePlaceBtn");
@@ -2815,7 +2910,7 @@ function ingestRows(rows){
       for(const s of pageRows){
         const row = document.createElement("div");
         row.className = "resultRow";
-        row.addEventListener("click", () => applySelection(s.r, { pan:true }));
+        row.addEventListener("click", () => applySelection(s.r, { pan:true, source:"place_results" }));
 
         const left = document.createElement("div");
         left.className = "resultLeft";
@@ -2880,6 +2975,10 @@ function ingestRows(rows){
         const labelName = (baseLayer === satelliteLayer) ? "Satellite" : "Map";
         localStorage.setItem("rsz_base_layer", labelName);
         setBaseTheme(labelName);
+        trackEvent("rsz_map_base_layer", {
+          layer_name: labelName,
+          device_category: getDeviceCategory()
+        });
       }
 
       const saved = (localStorage.getItem("rsz_base_layer") || "Map").toLowerCase();
@@ -2909,10 +3008,34 @@ function ingestRows(rows){
       });
       new BaseToggleControl().addTo(map);
 
-      map.on("zoomstart", clearRegionHoverTooltips);
-      map.on("movestart", clearRegionHoverTooltips);
-      map.on("zoomend", () => { clearRegionHoverTooltips(); updateZoomDisplay(); });
-      map.on("moveend", updateZoomDisplay);
+      map.on("zoomstart", () => { clearRegionHoverTooltips(); gaState.mapZoomed = true; });
+      map.on("movestart", () => { clearRegionHoverTooltips(); gaState.mapMoved = true; });
+      map.on("zoomend", () => {
+        clearRegionHoverTooltips();
+        updateZoomDisplay();
+        if(gaState.mapZoomed){
+          gaState.mapZoomed = false;
+          trackEvent("rsz_map_zoom", {
+            zoom_level: map.getZoom(),
+            map_scope: getCurrentScope(),
+            device_category: getDeviceCategory()
+          });
+        }
+      });
+      map.on("moveend", () => {
+        updateZoomDisplay();
+        if(gaState.mapMoved){
+          gaState.mapMoved = false;
+          const c = map.getCenter();
+          trackEvent("rsz_map_pan", {
+            zoom_level: map.getZoom(),
+            center_lat: Number(c.lat.toFixed(4)),
+            center_lng: Number(c.lng.toFixed(4)),
+            map_scope: getCurrentScope(),
+            device_category: getDeviceCategory()
+          });
+        }
+      });
       updateZoomDisplay();
 
       metroLayer = L.layerGroup().addTo(map);
@@ -2921,7 +3044,16 @@ function ingestRows(rows){
         clearRegionHoverTooltips();
         if(zipIndex.size === 0) return;
         const nearest = findNearestZip(e.latlng.lat, e.latlng.lng);
-        if(nearest) applySelection(nearest, { pan:false });
+        if(nearest){
+          trackEvent("rsz_map_click", {
+            click_lat: Number(e.latlng.lat.toFixed(4)),
+            click_lng: Number(e.latlng.lng.toFixed(4)),
+            selected_zip: nearest.ZipCode,
+            map_scope: getCurrentScope(),
+            device_category: getDeviceCategory()
+          });
+          applySelection(nearest, { pan:false, source:"map" });
+        }
       });
     }
 
@@ -2936,41 +3068,46 @@ function ingestRows(rows){
         const msg = $("zipSearchMessage");
         if(!z){
           if(msg) msg.textContent = "Please enter a valid 5-digit ZIP.";
+          trackEvent("rsz_zip_search_error", { error_type: "invalid_zip", device_category: getDeviceCategory() });
           return;
         }
         const row = zipIndex.get(z);
         if(!row){
           if(msg) msg.textContent = "ZIP not found in current universe.";
+          trackEvent("rsz_zip_search_error", { error_type: "zip_not_found", attempted_zip: z, device_category: getDeviceCategory() });
           return;
         }
         if(msg) msg.textContent = "";
-        applySelection(row, { pan:true });
+        trackEvent("rsz_zip_search_submit", { zip_code: z, device_category: getDeviceCategory() });
+        applySelection(row, { pan:true, source:"zip_search" });
       });
 
       $("q3ZipInput")?.addEventListener("keydown", (ev) => {
         if(ev.key === "Enter") $("q3ZipGoBtn")?.click();
       });
 
-      $("scopeBtn").addEventListener("click", cycleScope);
+      $("scopeBtn").addEventListener("click", () => { cycleScope(); trackEvent("rsz_scope_cycle", { map_scope: getCurrentScope(), device_category: getDeviceCategory() }); });
 
       document.querySelectorAll("[data-fs]").forEach(btn=>{
-        btn.addEventListener("click", () => enterFullscreen(btn.getAttribute("data-fs")));
+        btn.addEventListener("click", () => { const panelId = btn.getAttribute("data-fs"); trackEvent("rsz_fullscreen_open", { panel_id: panelId, device_category: getDeviceCategory() }); enterFullscreen(panelId); });
       });
 
       $("showOnMapBtn").addEventListener("click", () => {
         if(selectedRow){
           map.setView([selectedRow.Lat, selectedRow.Lng], Math.max(map.getZoom(), 9), { animate:true });
           scopeMode = "ZIP"; updateScopeLabel();
+          trackEvent("rsz_show_on_map", { zip_code: selectedRow.ZipCode, device_category: getDeviceCategory() });
         }
       });
 
-      $("resetBtn").addEventListener("click", clearSelection);
-      $("clearZipBtn").addEventListener("click", clearSelection);
+      $("resetBtn").addEventListener("click", () => { trackEvent("rsz_clear_selection", { trigger: "reset_button", device_category: getDeviceCategory() }); clearSelection(); });
+      $("clearZipBtn").addEventListener("click", () => { trackEvent("rsz_clear_selection", { trigger: "clear_zip_button", device_category: getDeviceCategory() }); clearSelection(); });
 
       $("focusMetroBtn").addEventListener("click", () => {
         if(selectedRow && selectedRow.RegionName && selectedRow.State){
           drawMetroPoints(selectedRow.RegionName, selectedRow.State);
           scopeMode = "REGION"; updateScopeLabel();
+          trackEvent("rsz_focus_metro", { zip_code: selectedRow.ZipCode, region_name: safeStr(selectedRow.RegionName, ""), state: safeStr(selectedRow.State, ""), device_category: getDeviceCategory() });
         } else {
           setStatus(true, "Select a ZIP first (or click map)");
         }
@@ -2981,10 +3118,11 @@ function ingestRows(rows){
           const key = t.dataset.tab;
           document.querySelectorAll("#q2Tabs .tab").forEach(x=>x.classList.toggle("active", x===t));
           document.querySelectorAll("#q2Panels .tabPanel").forEach(p=>p.classList.toggle("active", p.dataset.panel===key));
+          trackEvent("rsz_q2_tab", { tab_name: key, zip_code: selectedZip || "", device_category: getDeviceCategory() });
         });
       });
 
-$("gsClearBtn").addEventListener("click", () => { resetLowerFrom("all"); renderGuidedSearch(); });
+$("gsClearBtn").addEventListener("click", () => { resetLowerFrom("all"); trackEvent("rsz_guided_clear", { device_category: getDeviceCategory() }); renderGuidedSearch(); });
 
       $("modeGuidedBtn")?.addEventListener("click", () => { setQ3Mode("guided"); });
       $("modePlaceBtn")?.addEventListener("click", () => { setQ3Mode("place"); });
@@ -2997,12 +3135,14 @@ $("gsClearBtn").addEventListener("click", () => { resetLowerFrom("all"); renderG
         const ctSel = $("placeCity");
         place.city = (ctSel && ctSel.value) ? normCity(ctSel.value) : null;
         place.page = 0;
+        trackEvent("rsz_place_state", { state: st, device_category: getDeviceCategory() });
         renderPlaceResults();
       });
 
       $("placeCity")?.addEventListener("change", (e) => {
         place.city = normCity(e.target.value);
         place.page = 0;
+        trackEvent("rsz_place_city", { state: place.state || "", city: place.city || "", device_category: getDeviceCategory() });
         renderPlaceResults();
 
         const key = getPlaceKey();
@@ -3013,8 +3153,8 @@ $("gsClearBtn").addEventListener("click", () => { resetLowerFrom("all"); renderG
         }
       });
 
-      $("placePrevBtn")?.addEventListener("click", () => { if(place.page>0){ place.page--; renderPlaceResults(); } });
-      $("placeNextBtn")?.addEventListener("click", () => { place.page++; renderPlaceResults(); });
+      $("placePrevBtn")?.addEventListener("click", () => { if(place.page>0){ place.page--; trackEvent("rsz_place_page", { direction: "prev", page_number: place.page + 1, device_category: getDeviceCategory() }); renderPlaceResults(); } });
+      $("placeNextBtn")?.addEventListener("click", () => { place.page++; trackEvent("rsz_place_page", { direction: "next", page_number: place.page + 1, device_category: getDeviceCategory() }); renderPlaceResults(); });
     }
 
     function clearSelection(){
@@ -3089,12 +3229,14 @@ async function boot(){
 
       function openVideo(){
         modal.style.display = 'flex';
+        trackEvent("rsz_walkthrough_open", { device_category: getDeviceCategory() });
         video.currentTime = 0;
         const p = video.play();
         if(p && typeof p.catch === 'function') p.catch(() => {});
       }
       function closeVideo(){
         modal.style.display = 'none';
+        trackEvent("rsz_walkthrough_close", { device_category: getDeviceCategory(), video_seconds: Math.round(video.currentTime || 0) });
         video.pause();
       }
 
@@ -3108,6 +3250,10 @@ async function boot(){
       });
     })();
 
+    trackPageContext();
+    window.addEventListener("scroll", trackScrollDepth, { passive:true });
+    window.addEventListener("resize", trackScrollDepth, { passive:true });
+    trackScrollDepth();
     boot();
   </script>
 </body>
