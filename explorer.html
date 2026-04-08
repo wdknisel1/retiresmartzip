@@ -1459,6 +1459,12 @@
       return opts.source || "unknown";
     }
 
+    // Expose lightweight GA helpers for console/debug verification
+    if (typeof window !== "undefined") {
+      window.trackEvent = trackEvent;
+      window.trackPageContext = trackPageContext;
+    }
+
 
     // Key normalization (prevents hidden whitespace / casing mismatches)
     const normState = (s) => (s || "").trim().toUpperCase();
@@ -3250,11 +3256,19 @@ async function boot(){
       });
     })();
 
-    trackPageContext();
-    window.addEventListener("scroll", trackScrollDepth, { passive:true });
-    window.addEventListener("resize", trackScrollDepth, { passive:true });
-    trackScrollDepth();
-    boot();
+    function initExplorerAnalyticsAndBoot(){
+      trackPageContext();
+      window.addEventListener("scroll", trackScrollDepth, { passive:true });
+      window.addEventListener("resize", trackScrollDepth, { passive:true });
+      trackScrollDepth();
+      boot();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initExplorerAnalyticsAndBoot, { once:true });
+    } else {
+      initExplorerAnalyticsAndBoot();
+    }
   </script>
 </body>
 </html>
