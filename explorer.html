@@ -2112,8 +2112,9 @@ function ingestRows(rows){
       selectedRow = row;
       selectedZip = row.ZipCode;
 
-      trackEvent("rsz_zip_select", {
+      trackEvent("rsz_zip_view", {
         zip_code: safeStr(row.ZipCode, ""),
+        zip_label: `${safeStr(row.ZipCode, "")} ${safeStr(row.City, "")} ${safeStr(row.State, "")}`.trim(),
         city: safeStr(row.City, ""),
         state: safeStr(row.State, ""),
         region_name: safeStr(row.RegionName, ""),
