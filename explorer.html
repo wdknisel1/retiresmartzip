@@ -1077,10 +1077,14 @@
             </div>
           </div>
 
+          <div style="margin-top:8px; font-size:12px; font-style:italic; color:rgba(255,255,255,0.6);">
+            Distances are measured from the center of each ZIP code to the assigned metro core.
+          </div>
           <div class="tabs" id="q2Tabs">
             <div class="tab active" data-tab="home">Home</div>
             <div class="tab" data-tab="climate">Climate</div>
             <div class="tab" data-tab="health">Healthcare</div>
+            <div class="tab" data-tab="community">Community</div>
           </div>
 
           <div class="tabPanels" id="q2Panels">
@@ -1097,6 +1101,13 @@
                   <div class="v" id="cardRent">—</div>
                   <div class="s" id="cardRentAsOf">—</div>
                 </div>
+
+                <div class="card">
+                  <div class="k">Regional Avg Home Value</div>
+                  <div class="v" id="cardHomeRegionAvg">—</div>
+                </div>
+
+
               </div>
             </div>
 
@@ -1109,6 +1120,8 @@
                   <div class="v" id="climateTempValue">—</div>
                   <div class="s">Typical year range</div>
                   <div class="s" id="climateTempRange">—</div>
+                  <div class="s" id="climateSummerHigh">—</div>
+                  <div class="s" id="climateWinterLow">—</div>
                 </div>
 
                 <!-- Precipitation (30-year normals) -->
@@ -1153,6 +1166,23 @@
                   <div class="k">Healthcare Profile</div>
                   <div class="s" id="cardHealthProfile1">—</div>
                   <div class="s" id="cardHealthProfile2">—</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tabPanel" data-panel="community">
+              <div class="cards">
+                <div class="card">
+                  <div class="k">Population</div>
+                  <div class="v" id="cardCommunityPop">—</div>
+                  <div class="s" id="cardCommunityPopSub">—</div>
+                </div>
+
+                <div class="card">
+                  <div class="k">Retirement Share</div>
+                  <div class="v" id="cardCommunityRetiree">—</div>
+                  <div class="s" id="cardCommunityRetireeSub1">—</div>
+                  <div class="s" id="cardCommunityRetireeSub2">—</div>
                 </div>
               </div>
             </div>
@@ -1487,6 +1517,20 @@
       // Clamp extreme junk
       if(x < 0 || x > 1000) return null;
       return x;
+    }
+
+    function describeGap(pct, label){
+      const p = fmtPct(pct);
+      if(p === null) return `vs ${label.toLowerCase()}`;
+      if(Math.abs(p) < 0.05) return `Near ${label.toLowerCase()}`;
+      return `${Math.abs(p).toFixed(1)}% ${p < 0 ? "below" : "above"} ${label.toLowerCase()}`;
+    }
+
+    function describeGapDollar(val, label){
+      if(!hasNumber(val)) return `vs ${label.toLowerCase()}: Data not available`;
+      const n = Number(val);
+      const sign = n < 0 ? "-" : "+";
+      return `${sign}${fmtMoney(Math.abs(n))} vs ${label.toLowerCase()}`;
     }
 
     
@@ -1856,8 +1900,14 @@ function placeZipMarker(row){
           const r = await fetch(url, { cache: "no-store" });
           if(!r.ok) throw new Error(`HTTP ${r.status} ${r.statusText}`);
           const data = await r.json();
-          if(!Array.isArray(data)) throw new Error("JSON is not an array");
-          return { data, url };
+
+// Support BOTH formats:
+// old: [ {...}, {...} ]
+// new: { zips: [ {...}, {...} ] }
+const rows = Array.isArray(data) ? data : data.zips;
+
+if(!Array.isArray(rows)) throw new Error("Invalid JSON format");
+return { data: rows, url };
         }catch(e){
           lastErr = e;
         }
@@ -1917,6 +1967,16 @@ function ingestRows(rows){
         pct50: ["Pct50_64","Pct_50_64","Pct50to64"],
         hv:    ["HomeValue","ZHVI","HomeValueMostRecent","HomeValue_MostRecent"],
         hva:   ["HomeValueAsOf","HomeValueAsOfDate","ZHVI_AsOf","HomeValue_AsOf"],
+        hvRegAvg: ["HomeValueRegionAvg","HomeValue_RegionAvg"],
+        hvNatAvg: ["HomeValueNationalAvg","HomeValue_NationalAvg"],
+        hvGapReg: ["HomeValueGapToRegion","HomeValue_GapToRegion"],
+        hvGapPctReg: ["HomeValueGapPctToRegion","HomeValue_GapPctToRegion"],
+        hvGapNat: ["HomeValueGapToNational","HomeValue_GapToNational"],
+        hvGapPctNat: ["HomeValueGapPctToNational","HomeValue_GapPctToNational"],
+        summerHigh: ["SummerHighAvg","SummerMaxTemp","SummerHigh_Avg"],
+        winterLow: ["WinterLowAvg","WinterMinTemp","WinterLow_Avg"],
+        popTotal: ["PopTotal","Population","Pop"],
+        pctRetiree: ["PctRetiree","RetireePct","RetireeShare"],
         rent:  ["TypicalMonthlyRent","Rent","ZORI","RentMostRecent"],
         renta: ["TypicalMonthlyRentAsOf","TypicalMonthlyRent_AsOf","TypicalMonthlyRentAsOfDate","RentAsOf","RentAsOfDate","ZORI_AsOf","Rent_AsOf"],
         rentflag: ["Flag_RentAvailable","FlagRentAvailable","RentAvailableFlag","Flag_Rent"],
@@ -1972,6 +2032,8 @@ function ingestRows(rows){
           SeasonalityProfile: safeStr(pick(r,col.seasonProf), ""),
           SummerProfile: safeStr(pick(r,col.summerProf), ""),
           WinterProfile: safeStr(pick(r,col.winterProf), ""),
+          SummerHighAvg: pick(r,col.summerHigh),
+          WinterLowAvg: pick(r,col.winterLow),
 
           CoastMiles: pick(r,col.coastMiles),
           LifestyleRing: safeStr(pick(r,col.life), ""),
@@ -1988,6 +2050,14 @@ function ingestRows(rows){
           Pct50_64: pick(r,col.pct50),
           HomeValue: pick(r,col.hv),
           HomeValueAsOf: pick(r,col.hva),
+          HomeValueRegionAvg: pick(r,col.hvRegAvg),
+          HomeValueNationalAvg: pick(r,col.hvNatAvg),
+          HomeValueGapToRegion: pick(r,col.hvGapReg),
+          HomeValueGapPctToRegion: pick(r,col.hvGapPctReg),
+          HomeValueGapToNational: pick(r,col.hvGapNat),
+          HomeValueGapPctToNational: pick(r,col.hvGapPctNat),
+          PopTotal: pick(r,col.popTotal),
+          PctRetiree: pick(r,col.pctRetiree),
           Rent: pick(r,col.rent),
           RentAsOf: pick(r,col.renta),
           Flag_RentAvailable: rentFlag,
@@ -2163,6 +2233,13 @@ function ingestRows(rows){
         $("cardRentAsOf").textContent = "";
       }
 
+      // Home comparison context (MVP simplified: region only)
+      if(hasNumber(row.HomeValueRegionAvg)){
+        $("cardHomeRegionAvg").textContent = fmtMoney(row.HomeValueRegionAvg);
+      }else{
+        $("cardHomeRegionAvg").textContent = "Data not available";
+      }
+
       // ==================== CLIMATE DISPLAY (3 cards • 30-year normals) ====================
 
       // Temperature
@@ -2177,6 +2254,12 @@ function ingestRows(rows){
       }else{
         $("climateTempRange").textContent = "Data not available";
       }
+
+      $("climateSummerHigh").textContent =
+        hasNumber(row.SummerHighAvg) ? `Summer High (avg): ${Number(row.SummerHighAvg).toFixed(0)}°` : "Summer High (avg): Data not available";
+
+      $("climateWinterLow").textContent =
+        hasNumber(row.WinterLowAvg) ? `Winter Low (avg): ${Number(row.WinterLowAvg).toFixed(0)}°` : "Winter Low (avg): Data not available";
 
       // Precipitation
       if(hasNumber(row.Precip_Annual_Inches)){
@@ -2226,6 +2309,39 @@ function ingestRows(rows){
       const hp = buildHealthcareProfile(row);
       $("cardHealthProfile1").textContent = hp.primary;
       $("cardHealthProfile2").textContent = hp.supply;
+
+      // Community snapshot
+      if(hasNumber(row.PopTotal)){
+        $("cardCommunityPop").textContent = Number(row.PopTotal).toLocaleString();
+        $("cardCommunityPopSub").textContent = "people in this ZIP";
+      }else{
+        $("cardCommunityPop").textContent = "Data not available";
+        $("cardCommunityPopSub").textContent = "";
+      }
+
+      const retireePct = fmtPct(row.PctRetiree);
+      if(retireePct !== null){
+        $("cardCommunityRetiree").textContent = `${retireePct.toFixed(1)}%`;
+      }else{
+        $("cardCommunityRetiree").textContent = "Data not available";
+      }
+
+      const pct65 = fmtPct(row.Pct65Plus);
+      const pct50 = fmtPct(row.Pct50_64);
+
+      if(pct65 !== null && pct65 > 0 && pct50 !== null && pct50 > 0){
+        $("cardCommunityRetireeSub1").textContent = `${pct65.toFixed(1)}% age 65+`;
+        $("cardCommunityRetireeSub2").textContent = `${pct50.toFixed(1)}% age 50–64`;
+      }else if(pct65 !== null && pct65 > 0){
+        $("cardCommunityRetireeSub1").textContent = `${pct65.toFixed(1)}% age 65+`;
+        $("cardCommunityRetireeSub2").textContent = "";
+      }else if(pct50 !== null && pct50 > 0){
+        $("cardCommunityRetireeSub1").textContent = `${pct50.toFixed(1)}% age 50–64`;
+        $("cardCommunityRetireeSub2").textContent = "";
+      }else{
+        $("cardCommunityRetireeSub1").textContent = "";
+        $("cardCommunityRetireeSub2").textContent = "";
+      }
 
       placeZipMarker(row);
       $("startHint").style.display = "none";
@@ -3171,7 +3287,7 @@ $("gsClearBtn").addEventListener("click", () => { resetLowerFrom("all"); trackEv
       $("selZipTop").textContent = "—";
       $("selPlaceTop").textContent = "Click anywhere on the map to pick a ZIP.";
 
-      ["selMetaTop","cardHomeValue","cardHomeAsOf","cardRent","cardRentAsOf","climateTempValue","climateTempRange","climatePrecipValue","climatePrecipSummer","climatePrecipWinter","climateSeasonality","climateSummerProfile","climateWinterProfile","cardRet65","cardRetSub","cardCoverage","cardCoverageSub"].forEach(id => { const el=$(id); if(el) el.textContent = "Data not available"; });
+      ["selMetaTop","cardHomeValue","cardHomeAsOf","cardRent","cardRentAsOf","cardHomeRegionAvg","cardHomeRegionGap1","cardHomeRegionGap2","cardHomeNationalAvg","cardHomeNationalGap1","cardHomeNationalGap2","climateTempValue","climateTempRange","climateSummerHigh","climateWinterLow","climatePrecipValue","climatePrecipSummer","climatePrecipWinter","climateSeasonality","climateSummerProfile","climateWinterProfile","cardPrimaryCare","cardClinicians","cardNearestMetro","cardCareCategories","cardCareCategoriesSub","cardHealthProfile1","cardHealthProfile2","cardCommunityPop","cardCommunityPopSub","cardCommunityRetiree","cardCommunityRetireeSub"].forEach(id => { const el=$(id); if(el) el.textContent = "Data not available"; });
       ["aglClimate","aglCost","aglHealthcare","aglSetting"].forEach(id => { const el=$(id); if(el) el.textContent = "—"; });
 
       if(zipMarker) { zipMarker.remove(); zipMarker = null; }
