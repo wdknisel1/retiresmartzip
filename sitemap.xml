@@ -6,11 +6,19 @@
   </url>
 
   <url>
-    <loc>https://retiresmartzip.com/explorer.html</loc>
+    <loc>https://retiresmartzip.com/explorer</loc>
   </url>
 
   <url>
-    <loc>https://retiresmartzip.com/article.html</loc>
+    <loc>https://retiresmartzip.com/articles/</loc>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/retire-1500-month</loc>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/zip-code-retirement-meaning</loc>
   </url>
 
 </urlset>
