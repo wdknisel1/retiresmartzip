@@ -2,23 +2,39 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://retiresmartzip.com/</loc>
+    <loc>https://retiresmartzip.com/index.html</loc>
   </url>
 
   <url>
-    <loc>https://retiresmartzip.com/explorer</loc>
+    <loc>https://retiresmartzip.com/explorer.html</loc>
   </url>
 
   <url>
-    <loc>https://retiresmartzip.com/articles/</loc>
+    <loc>https://retiresmartzip.com/methodology.html</loc>
   </url>
 
   <url>
-    <loc>https://retiresmartzip.com/articles/retire-1500-month</loc>
+    <loc>https://retiresmartzip.com/articles/index.html</loc>
   </url>
 
   <url>
-    <loc>https://retiresmartzip.com/articles/zip-code-retirement-meaning</loc>
+    <loc>https://retiresmartzip.com/articles/how-to-choose-retirement-zip-code.html</loc>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/one-number-retirement.html</loc>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/retire-1500-month.html</loc>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/same-city-different-retirement.html</loc>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/zip-code-retirement-meaning.html</loc>
   </url>
 
 </urlset>

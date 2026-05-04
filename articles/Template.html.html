@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SW7D70V406"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SW7D70V406');
+  </script>
+
+  <!-- ========================================= -->
+  <!-- UPDATE THESE FOR EACH ARTICLE -->
+  <!-- ========================================= -->
+
+  <title>{{ARTICLE_TITLE}} | RetireSmartZIP</title>
+  <meta name="description" content="{{META_DESCRIPTION}}" />
+  <link rel="canonical" href="https://retiresmartzip.com/articles/{{ARTICLE_SLUG}}" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{ARTICLE_TITLE}}" />
+  <meta property="og:description" content="{{META_DESCRIPTION}}" />
+  <meta property="og:site_name" content="RetireSmartZIP" />
+  <meta property="og:url" content="https://retiresmartzip.com/articles/{{ARTICLE_SLUG}}" />
+  <meta property="og:image" content="https://retiresmartzip.com/image/og-preview.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ARTICLE_TITLE}}" />
+  <meta name="twitter:description" content="{{META_DESCRIPTION}}" />
+  <meta name="twitter:image" content="https://retiresmartzip.com/image/og-preview.png" />
+
+  <!-- Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ARTICLE_TITLE}}",
+    "description": "{{META_DESCRIPTION}}",
+    "author": {
+      "@type": "Organization",
+      "name": "RetireSmartZIP"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "RetireSmartZIP",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://retiresmartzip.com/image/RSZ_20251217.png"
+      }
+    },
+    "datePublished": "{{DATE}}",
+    "dateModified": "{{DATE}}",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://retiresmartzip.com/articles/{{ARTICLE_SLUG}}"
+    }
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #081a2b;
+      --panel: #0e2a44;
+      --text: #f3f6fa;
+      --muted: #bfd0df;
+      --accent: #f2c23e;
+      --line: rgba(255,255,255,0.12);
+      --max: 1040px;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #061321 0%, #0a1f34 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .topbar {
+      background: rgba(3, 12, 22, 0.9);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .brand-logo {
+      height: 34px;
+    }
+
+    .nav-links a {
+      margin-left: 16px;
+      font-weight: 700;
+    }
+
+    .hero {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 48px 20px 20px;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      margin-bottom: 16px;
+    }
+
+    .subhead {
+      color: var(--muted);
+      max-width: 800px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .content {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .article-card {
+      background: rgba(10, 30, 49, 0.84);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .quote {
+      border-left: 4px solid var(--accent);
+      padding-left: 16px;
+      margin: 20px 0;
+    }
+
+    .footer-cta {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand-link" href="/">
+      <img class="brand-logo" src="../image/RSZ_20251217.png" />
+      RetireSmartZIP™
+    </a>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/explorer">Explorer</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>{{H1_TITLE}}</h1>
+  <p class="subhead">{{SUBHEAD}}</p>
+
+  <a class="btn btn-primary" href="/explorer">
+    Explore ZIPs in RetireSmartZIP
+  </a>
+</section>
+
+<main class="content">
+
+  <!-- ========================================= -->
+  <!-- REPLACE EVERYTHING BELOW WITH ARTICLE -->
+  <!-- ========================================= -->
+
+  <section class="article-card">
+    <h2>Section Title</h2>
+    <p>Replace with article content.</p>
+  </section>
+
+  <!-- ========================================= -->
+
+  <section class="article-card footer-cta">
+    <h2>Find out if your ZIP actually works for retirement</h2>
+    <p>
+      Check housing, climate, and healthcare access in seconds.
+    </p>
+
+    <a class="btn btn-primary" href="/explorer">
+      Open Explorer
+    </a>
+  </section>
+
+</main>
+
+</body>
+</html>

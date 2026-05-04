@@ -450,6 +450,12 @@
       line-height:1.45;
       font-weight:650;
     }
+    .healthRealityText{
+      color:rgba(232,238,252,.80);
+      font-size:13px;
+      line-height:1.55;
+      font-weight:750;
+    }
     .box ul{
       margin:8px 0 0 18px;
       padding:0;
@@ -477,6 +483,97 @@
       display:flex; gap:10px; align-items:center;
     }
     .ctaItem .arrow{ opacity:.65; }
+
+/* MVP3 Healthcare Access cards */
+.healthCards{
+  grid-template-columns: repeat(4, minmax(240px, 1fr));
+}
+.healthMetricGood{ color:#38BDF8; }  /* RSZ soft teal: positive availability */
+.healthMetricWarn{ color:#F2C23E; }  /* RSZ gold: review / limited / informational */
+.healthMetricAlert{ color:#F87171; } /* soft red: true access concern only */
+.dataMuted{ color:rgba(232,238,252,.55) !important; font-weight:850; }
+.healthNote{
+  margin-top:22px;
+  padding:14px;
+  border:1px solid rgba(96,165,250,.20);
+  background:rgba(96,165,250,.08);
+  border-radius:10px;
+  color:var(--text);
+  font-size:12px;
+  font-weight:750;
+  line-height:1.45;
+}
+.healthNoteIcon{
+  display:inline-flex;
+  width:20px;
+  height:20px;
+  align-items:center;
+  justify-content:center;
+  margin-right:8px;
+  border-radius:999px;
+  border:1px solid rgba(96,165,250,.45);
+  color:#60a5fa;
+  font-weight:950;
+}
+.healthAccessCard{
+  position:relative;
+  min-height:258px;
+}
+.healthNewBadge{
+  position:absolute;
+  right:12px;
+  top:12px;
+  padding:5px 9px;
+  border-radius:8px;
+  background:rgba(139,92,246,.75);
+  color:#fff;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.3px;
+}
+.healthDivider{
+  height:1px;
+  background:rgba(255,255,255,.10);
+  margin:12px 0;
+}
+.healthTwoCol{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.healthLabel{
+  font-size:12px;
+  color:var(--muted);
+  font-weight:850;
+  margin-top:10px;
+}
+.healthValue{
+  margin-top:4px;
+  font-size:15px;
+  color:var(--text);
+  font-weight:950;
+  line-height:1.25;
+}
+.healthMiles{ color:#F2C23E; font-weight:950; }
+.healthPill{
+  display:inline-flex;
+  margin-top:7px;
+  padding:7px 12px;
+  border-radius:999px;
+  border:1px solid rgba(34,197,94,.35);
+  background:rgba(34,197,94,.12);
+  color:#4ade80;
+  font-size:11px;
+  font-weight:950;
+  text-transform:uppercase;
+}
+@media (max-width: 1400px){
+  .healthCards{ grid-template-columns: repeat(2, minmax(240px, 1fr)); }
+}
+@media (max-width: 700px){
+  .healthCards{ grid-template-columns: 1fr; }
+}
+
 
     
 /* Q2 At a glance summary */
@@ -983,6 +1080,411 @@
 }
 
 
+
+/* REV4 Healthcare tab readability + RSZ color discipline */
+.tabPanel[data-panel="health"] .cards{
+  grid-template-columns: repeat(3, minmax(280px, 1fr));
+  gap:14px;
+}
+.tabPanel[data-panel="health"] .card{
+  padding:16px 18px;
+  min-height:112px;
+}
+.tabPanel[data-panel="health"] .card .k{
+  font-size:13px;
+  color:rgba(232,238,252,.76);
+  font-weight:900;
+  margin-bottom:8px;
+}
+.tabPanel[data-panel="health"] .card .v{
+  font-size:22px;
+  line-height:1.15;
+}
+.tabPanel[data-panel="health"] .card .v.dataMuted{
+  font-size:19px;
+  color:rgba(232,238,252,.50) !important;
+}
+.tabPanel[data-panel="health"] .card .s{
+  font-size:12.5px;
+  line-height:1.38;
+}
+.healthAccessCard{
+  padding:18px;
+  min-height:210px;
+}
+.healthAccessCard .k{
+  font-size:14px !important;
+  color:rgba(232,238,252,.92) !important;
+  margin-bottom:14px;
+}
+.healthAccessGrid{
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap:22px;
+  align-items:start;
+}
+.healthAccessPrimary,
+.healthAccessCounts{
+  min-width:0;
+}
+.healthAccessCounts{
+  border-left:1px solid rgba(255,255,255,.10);
+  padding-left:18px;
+}
+.healthLabel{
+  font-size:11px;
+  color:rgba(232,238,252,.62);
+  font-weight:950;
+  letter-spacing:.045em;
+  text-transform:uppercase;
+  margin-top:12px;
+}
+.healthValue{
+  margin-top:5px;
+  font-size:17px;
+  color:rgba(232,238,252,.94);
+  font-weight:950;
+  line-height:1.28;
+}
+.healthMiles{
+  color:#F2C23E;
+  font-weight:950;
+}
+.healthTwoCol{
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap:18px;
+}
+.healthRealityBox{
+  border-left:3px solid rgba(242,194,62,.55);
+  background:rgba(255,255,255,.035);
+}
+.healthRealityBox h3{
+  font-size:14px;
+  margin-bottom:8px;
+}
+.healthRealityText{
+  font-size:13.5px !important;
+  line-height:1.58 !important;
+  color:rgba(232,238,252,.82) !important;
+}
+@media (max-width: 1250px){
+  .tabPanel[data-panel="health"] .cards{
+    grid-template-columns: 1fr;
+  }
+  .healthAccessGrid{
+    grid-template-columns:1fr;
+  }
+  .healthAccessCounts{
+    border-left:none;
+    padding-left:0;
+    border-top:1px solid rgba(255,255,255,.10);
+    padding-top:12px;
+  }
+}
+
+
+/* REV5: Compact Healthcare tab — no-scroll target at 100% zoom */
+.tabPanel[data-panel="health"] .cards{
+  margin-top:10px;
+  gap:10px;
+}
+.tabPanel[data-panel="health"] .card{
+  padding:11px 14px;
+  min-height:76px;
+}
+.tabPanel[data-panel="health"] .card .v{
+  font-size:20px;
+  line-height:1.12;
+}
+.healthAccessCompact{
+  min-height:0 !important;
+  padding:12px 16px !important;
+}
+.healthAccessHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.healthRealityInline{
+  max-width:64%;
+  color:rgba(232,238,252,.78);
+  font-size:12px;
+  line-height:1.35;
+  font-weight:750;
+  text-align:right;
+}
+.healthRealityInline span:first-child{
+  color:#F2C23E;
+  font-weight:950;
+}
+.healthCompactGrid{
+  display:grid;
+  grid-template-columns:1.35fr .7fr 1fr;
+  gap:18px;
+  align-items:start;
+  padding-top:10px;
+}
+.healthCompactItem{
+  min-width:0;
+}
+.healthCompactItem + .healthCompactItem{
+  border-left:1px solid rgba(255,255,255,.08);
+  padding-left:16px;
+}
+.healthLabel{
+  margin-top:0 !important;
+  font-size:10.5px !important;
+  color:rgba(232,238,252,.62) !important;
+  font-weight:950 !important;
+  letter-spacing:.055em !important;
+  text-transform:uppercase !important;
+}
+.healthValue{
+  margin-top:4px !important;
+  font-size:16px !important;
+  line-height:1.22 !important;
+}
+.healthMiles{
+  color:#F2C23E !important;
+  font-weight:950 !important;
+}
+.healthStatLine{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:6px;
+  color:rgba(232,238,252,.74);
+  font-size:12px;
+  font-weight:850;
+}
+.healthStatLine strong{
+  color:rgba(232,238,252,.96);
+  font-size:18px;
+  font-weight:950;
+}
+@media (max-width:1250px){
+  .healthAccessHeader{ display:block; }
+  .healthRealityInline{ max-width:none; text-align:left; margin-top:6px; }
+  .healthCompactGrid{ grid-template-columns:1fr; gap:10px; }
+  .healthCompactItem + .healthCompactItem{ border-left:none; padding-left:0; border-top:1px solid rgba(255,255,255,.08); padding-top:10px; }
+}
+
+
+/* REV6: Make Healthcare Access row visually match the top cards */
+.healthAccessHeader{
+  border-bottom:none !important;
+  padding-bottom:6px !important;
+}
+.healthCompactGrid{
+  gap:12px !important;
+  padding-top:6px !important;
+}
+.healthCompactItem{
+  border:1px solid var(--stroke) !important;
+  background:rgba(255,255,255,.025) !important;
+  border-radius:var(--r12) !important;
+  padding:12px 14px !important;
+  min-height:96px;
+}
+.healthCompactItem + .healthCompactItem{
+  border-left:1px solid var(--stroke) !important;
+  padding-left:14px !important;
+}
+.healthStatLine{
+  background:rgba(0,0,0,.10);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:10px;
+  padding:7px 10px;
+  margin-top:7px !important;
+}
+.healthRealityInline{
+  background:rgba(242,194,62,.075);
+  border:1px solid rgba(242,194,62,.16);
+  border-radius:999px;
+  padding:7px 11px;
+}
+@media (max-width:1250px){
+  .healthCompactItem + .healthCompactItem{
+    border-left:1px solid var(--stroke) !important;
+    padding-left:14px !important;
+    border-top:1px solid var(--stroke) !important;
+    padding-top:12px !important;
+  }
+  .healthRealityInline{
+    border-radius:12px;
+  }
+}
+
+/* REV7: Move Healthcare Reality below the access cards for cleaner flow */
+.healthAccessHeader{
+  display:block !important;
+  padding-bottom:4px !important;
+}
+.healthAccessHeader .k{
+  margin-bottom:0 !important;
+}
+.healthRealityInline{
+  display:none !important;
+}
+.healthRealityFull{
+  margin-top:10px;
+  padding:10px 14px;
+  border-radius:var(--r12);
+  border:1px solid rgba(242,194,62,.18);
+  background:rgba(242,194,62,.055);
+  color:rgba(232,238,252,.82);
+  font-size:12.5px;
+  line-height:1.38;
+  font-weight:800;
+}
+.healthRealityFull span:first-child{
+  color:#F2C23E;
+  font-weight:950;
+}
+@media (max-width:1250px){
+  .healthRealityFull{
+    font-size:12px;
+    line-height:1.4;
+  }
+}
+
+
+
+/* REV8: final 100% zoom compression pass — preserve Rev7 layout */
+.tabPanel[data-panel="health"] .cards{margin-top:8px!important;gap:8px!important;}
+.tabPanel[data-panel="health"] .card{padding:9px 12px!important;min-height:68px!important;}
+.tabPanel[data-panel="health"] .card .k{margin-bottom:5px!important;font-size:12.5px!important;}
+.tabPanel[data-panel="health"] .card .v{font-size:19px!important;line-height:1.08!important;}
+.tabPanel[data-panel="health"] .card .v.dataMuted{font-size:18px!important;}
+.tabPanel[data-panel="health"] .card .s{font-size:12px!important;line-height:1.26!important;}
+.healthAccessCompact{margin-top:8px!important;padding:9px 12px!important;}
+.healthAccessHeader{padding-bottom:2px!important;}
+.healthCompactGrid{gap:8px!important;padding-top:4px!important;}
+.healthCompactItem{padding:9px 12px!important;min-height:82px!important;}
+.healthCompactItem + .healthCompactItem{padding-left:12px!important;}
+.healthLabel{font-size:10px!important;margin-bottom:2px!important;}
+.healthValue{margin-top:2px!important;font-size:15px!important;line-height:1.16!important;}
+.healthStatLine{padding:5px 8px!important;margin-top:5px!important;font-size:11.5px!important;}
+.healthStatLine strong{font-size:16px!important;}
+.healthRealityFull{margin-top:7px!important;padding:7px 10px!important;font-size:12px!important;line-height:1.28!important;}
+.q2Body > div[style*="display:flex"][style*="margin-top:12px"]{margin-top:8px!important;}
+.q2Body > div[style*="margin-top:10px"][style*="font-size:12px"]{margin-top:7px!important;}
+
+
+/* REV9: compact Hospital Reach into one line to remove last healthcare scroll */
+.healthReachInline{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  margin-top:8px;
+  color:rgba(232,238,252,.78);
+  font-size:12.5px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.healthReachInline strong{
+  color:rgba(232,238,252,.98);
+  font-size:17px;
+  font-weight:950;
+}
+.healthReachInline span{
+  display:inline-flex;
+  align-items:baseline;
+  gap:4px;
+}
+.healthReachInline .reachDot{
+  color:rgba(232,238,252,.38);
+  font-weight:950;
+}
+.hospitalReachItem{
+  min-height:72px!important;
+}
+.healthRealityFull{
+  margin-top:6px!important;
+  padding:6px 10px!important;
+}
+.healthAccessCompact{
+  padding-bottom:8px!important;
+}
+
+/* REV10: Q2 type consistency + healthcare no-scroll compression at 100% */
+#panelQ2, #panelQ2 *{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial !important;
+}
+#panelQ2 .tabs{margin-top:8px!important;padding:8px 0 8px 0!important;}
+#panelQ2 .tab{font-size:12px!important;font-weight:850!important;padding:7px 11px!important;}
+#panelQ2 .card .k,#panelQ2 .healthAccessCard .k{font-size:12px!important;font-weight:850!important;}
+#panelQ2 .card .v{font-size:20px!important;line-height:1.08!important;}
+#panelQ2 .card .s{font-size:11.5px!important;line-height:1.22!important;}
+.tabPanel[data-panel="health"] .cards{margin-top:7px!important;gap:7px!important;}
+.tabPanel[data-panel="health"] .card{padding:7px 10px!important;min-height:58px!important;}
+.tabPanel[data-panel="health"] .card .k{margin-bottom:3px!important;}
+.tabPanel[data-panel="health"] .card .v{font-size:18px!important;}
+.tabPanel[data-panel="health"] .card .v.dataMuted{font-size:16px!important;}
+.healthAccessCompact{margin-top:7px!important;padding:7px 10px 6px 10px!important;}
+.healthAccessHeader{padding-bottom:0!important;}
+.healthCompactGrid{gap:7px!important;padding-top:3px!important;}
+.healthCompactItem{padding:7px 10px!important;min-height:58px!important;}
+.hospitalReachItem{min-height:58px!important;}
+.healthCompactItem + .healthCompactItem{padding-left:10px!important;}
+.healthLabel{font-size:9.5px!important;margin-bottom:1px!important;}
+.healthValue{margin-top:1px!important;font-size:14px!important;line-height:1.12!important;}
+.healthReachInline{margin-top:5px!important;gap:7px!important;font-size:11.5px!important;}
+.healthReachInline strong{font-size:15px!important;}
+.healthRealityFull{margin-top:5px!important;padding:5px 9px!important;font-size:11.5px!important;line-height:1.22!important;}
+#panelQ2 .q2Body > div[style*="display:flex"][style*="margin-top:12px"]{margin-top:6px!important;}
+#panelQ2 .q2Body > div[style*="margin-top:10px"][style*="font-size:12px"]{margin-top:5px!important;font-size:11.5px!important;}
+
+/* REV11: Healthcare Access row responsive auto-fit fix
+   Purpose: prevent Hospital Reach / Care Hub text collision at browser zoom or split-screen widths.
+   Scope: Healthcare tab only; no data or JavaScript changes.
+*/
+.tabPanel[data-panel="health"] .healthCompactGrid{
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.tabPanel[data-panel="health"] .healthCompactItem{
+  min-width: 0 !important;
+  overflow-wrap: anywhere;
+}
+
+.tabPanel[data-panel="health"] .healthCompactItem + .healthCompactItem{
+  border-left: 1px solid var(--stroke) !important;
+  padding-left: 10px !important;
+}
+
+.tabPanel[data-panel="health"] .healthReachInline{
+  flex-wrap: wrap !important;
+  white-space: normal !important;
+  row-gap: 3px !important;
+}
+
+.tabPanel[data-panel="health"] .healthValue,
+.tabPanel[data-panel="health"] .healthReachInline,
+.tabPanel[data-panel="health"] .healthReachInline span,
+.tabPanel[data-panel="health"] .s{
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1450px){
+  .tabPanel[data-panel="health"] .healthCompactGrid{
+    grid-template-columns: 1fr !important;
+  }
+
+  .tabPanel[data-panel="health"] .healthCompactItem + .healthCompactItem{
+    border-left: 1px solid var(--stroke) !important;
+    padding-left: 10px !important;
+    border-top: 1px solid var(--stroke) !important;
+    padding-top: 10px !important;
+  }
+}
+
 </style>
 </head>
 
@@ -1145,10 +1647,10 @@
               <div style="margin-top:10px; font-size:12px; color:var(--muted2); font-weight:700;">
                 Climate metrics based on 30-year climate normals (1991–2020). Values represent long-term averages for this ZIP code.
               </div>
-            </div>
-
-            <div class="tabPanel" data-panel="health">
+            </div>            <div class="tabPanel" data-panel="health">
               <div class="cards">
+
+                <!-- Row 1: Core healthcare facts -->
                 <div class="card">
                   <div class="k">Primary Care</div>
                   <div class="v" id="cardPrimaryCare">—</div>
@@ -1157,16 +1659,52 @@
                 </div>
 
                 <div class="card">
-                  <div class="k">Care Categories</div>
+                  <div class="k">Care Availability</div>
                   <div class="v" id="cardCareCategories">—</div>
                   <div class="s" id="cardCareCategoriesSub">—</div>
+                  <div class="s" id="cardCareCategoriesDetail">—</div>
                 </div>
 
                 <div class="card">
-                  <div class="k">Healthcare Profile</div>
+                  <div class="k">Provider Supply</div>
+                  <div class="v" id="cardHealthcareProfileStatus">—</div>
                   <div class="s" id="cardHealthProfile1">—</div>
                   <div class="s" id="cardHealthProfile2">—</div>
                 </div>
+
+              </div>
+
+              <!-- Row 2: Compact healthcare access + reality layer -->
+              <div class="card healthAccessCard healthAccessCompact" style="margin-top:12px;">
+                <div class="healthAccessHeader">
+                  <div class="k">Healthcare Access</div>
+                </div>
+
+                <div class="healthCompactGrid">
+                  <div class="healthCompactItem hospitalItem">
+                    <div class="healthLabel">Nearest Hospital</div>
+                    <div class="healthValue" id="cardNearestHospital">—</div>
+                    <div class="s" id="cardNearestHospitalType">—</div>
+                    <div class="healthValue healthMiles" id="cardHospitalDistance">—</div>
+                  </div>
+
+                  <div class="healthCompactItem hospitalReachItem">
+                    <div class="healthLabel">Hospital Reach</div>
+                    <div class="healthReachInline">
+                      <span><strong id="cardHospitals25">—</strong> within 25 mi</span>
+                      <span class="reachDot">•</span>
+                      <span><strong id="cardHospitals50">—</strong> total within 50 mi</span>
+                    </div>
+                  </div>
+
+                  <div class="healthCompactItem">
+                    <div class="healthLabel">Care Hub</div>
+                    <div class="healthValue" id="cardCareHub">—</div>
+                    <div class="s" id="cardCareHubSub">—</div>
+                  </div>
+                </div>
+
+                <div class="healthRealityFull"><span>Healthcare Reality:</span> <span id="healthRealityText">—</span></div>
               </div>
             </div>
 
@@ -1348,12 +1886,29 @@
           </div>
 
           <div class="tipBox" style="margin-top:12px;">
-            <h3>Zoom & pan</h3>
+            <h3>Zoom &amp; pan</h3>
             <ol>
               <li>Scroll wheel: zoom in/out</li>
               <li>Drag: pan</li>
               <li>Use the View button on the map: USA → REGION → ZIP</li>
             </ol>
+          </div>
+
+          <div class="tipBox" style="margin-top:12px;">
+            <h3>Data &amp; Methodology.html</h3>
+            <div style="margin-top:8px; font-size:12px; color:var(--muted); font-weight:700; line-height:1.5;">
+              RetireSmartZIP uses ZIP-level housing, climate, healthcare, geography, and demographic data to surface tradeoffs — not to make the decision for you.
+              <br><br>
+              <span style="color:var(--muted2);">
+                Data sources and assumptions are documented so you can understand what each signal means.
+              </span>
+            </div>
+
+            <div style="margin-top:10px;">
+              <a href="methodology.html" class="miniBtn" style="display:inline-flex; text-decoration:none;">
+                How this data works
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -1604,7 +2159,9 @@
 
     function fmtMiles1(v){
       if(v === null || v === undefined || v === "" || isNaN(Number(v))) return null;
-      return Number(v).toFixed(1) + " mi";
+      const n = Number(v);
+      if(n < 1) return "< 1 mi";
+      return n.toFixed(1) + " mi";
     }
 
     function clinicianSupplyLabel(count){
@@ -1626,6 +2183,97 @@
       }
       return { primary, supply };
     }
+    function titleCaseHealthcare(v){
+      const s = safeStr(v, "");
+      if(!s) return "Data not available";
+      return s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function careCategoryLabel(count){
+      if(!hasNumber(count) || Number(count) <= 0) {
+        return { label:"Data not available", detail:"care categories unavailable" };
+      }
+
+      const n = Number(count);
+
+      if(n >= 20) return { label:`${n} categories`, detail:"Wide range of specialties available" };
+      if(n >= 8) return { label:`${n} categories`, detail:"Multiple care categories available" };
+      if(n >= 4) return { label:`${n} categories`, detail:"Basic care categories available" };
+
+      return { label:`${n} categories`, detail:"Limited care categories available" };
+    }
+
+    function healthcareProfileStatus(row){
+      const clinicians = hasNumber(row.TotalClinicians) ? Number(row.TotalClinicians) : null;
+
+      if(!clinicians) return { label:"Data not available", sub:"Provider count unavailable" };
+
+      if(clinicians >= 100) return { label:`${clinicians.toLocaleString()} clinicians`, sub:"Higher provider availability" };
+      if(clinicians >= 25) return { label:`${clinicians.toLocaleString()} clinicians`, sub:"Moderate provider availability" };
+
+      return { label:`${clinicians.toLocaleString()} clinicians`, sub:"Limited provider availability" };
+    }
+
+    function accessPatternShort(v){
+      const s = safeStr(v, "");
+      if(!s) return "Data not available";
+      return s;
+    }
+
+    function buildAtGlanceHealthcare(row){
+      const hasPcp = parseBoolish(row.HasPCP);
+      const dist = fmtMiles1(row.NearestHospitalDistanceMiles);
+      const h25 = row.HospitalsWithin25Miles;
+
+      const parts = [];
+
+      if(hasPcp === true) parts.push("Primary care available");
+      else if(hasPcp === false) parts.push("Limited primary care");
+
+      if(dist) parts.push(`Hospital ${dist}`);
+
+      if(hasNumber(h25)) parts.push(`${Number(h25).toLocaleString()} hospitals within 25 mi`);
+
+      return parts.length ? parts.join(" • ") : (row.HealthcareAtAGlance || "—");
+    }
+
+    function buildHealthcareReality(row){
+      const dist = hasNumber(row.NearestHospitalDistanceMiles) ? Number(row.NearestHospitalDistanceMiles) : null;
+      const h25 = hasNumber(row.HospitalsWithin25Miles) ? Number(row.HospitalsWithin25Miles) : 0;
+      const h50 = hasNumber(row.HospitalsWithin50Miles) ? Number(row.HospitalsWithin50Miles) : 0;
+      const hasPcp = parseBoolish(row.HasPCP);
+      const hubMiles = hasNumber(row.NearestAnchorCityCareHubDistanceMiles) ? Number(row.NearestAnchorCityCareHubDistanceMiles) : null;
+
+      if(dist === null && h25 === 0 && h50 === 0){
+        return "Healthcare access data is limited. Verify hospital distance and routine-care availability.";
+      }
+
+      if(dist !== null && dist < 5 && h25 >= 3){
+        return "Routine and urgent care appear nearby, with multiple hospital options close to this ZIP.";
+      }
+
+      if(dist !== null && dist <= 20 && h25 >= 2){
+        return "Hospital care is within a reasonable drive; specialty services may still depend on the care hub.";
+      }
+
+      if(dist !== null && dist <= 40){
+        if(hasPcp === true){
+          return "Primary care appears locally available; emergency and specialty care may require travel planning.";
+        }
+        return "Hospital care requires a moderate drive, and local routine-care signals are limited. Compare the care hub and hospitals within 25–50 mi before deciding how practical this ZIP is for ongoing care.";
+      }
+
+      if(dist !== null && dist > 40){
+        return "Hospital access requires significant travel. Emergency care, chronic-condition management, and specialist visits should be reviewed carefully for this location.";
+      }
+
+      if(h25 > 0 || h50 > 0 || hubMiles !== null){
+        return "Healthcare access depends on nearby regional options. Review hospital counts, care-hub distance, and local primary-care availability together.";
+      }
+
+      return "Healthcare access varies by service type. Review hospital distance, local provider availability, and nearby care hubs together.";
+    }
+
 function safeStr(v, fallback="—"){
       if(v === null || v === undefined) return fallback;
       const s = String(v).trim();
@@ -1913,6 +2561,64 @@ return { data: rows, url };
         }
       }
       throw lastErr || new Error("Unable to load JSON");
+    }
+
+    async function loadHealthcare(){
+      const candidates = [
+        "./data/zip_healthcare.json",
+        "./data/Healthcare.json",
+        "./app/data/zip_healthcare.json",
+        "/data/zip_healthcare.json",
+        "/app/data/zip_healthcare.json"
+      ];
+
+      let lastErr = null;
+      for(const url of candidates){
+        try{
+          const r = await fetch(url, { cache: "no-store" });
+          if(!r.ok) throw new Error(`HTTP ${r.status} ${r.statusText}`);
+          const data = await r.json();
+          const rows = Array.isArray(data) ? data : data.zips;
+          if(!Array.isArray(rows)) throw new Error("Invalid healthcare JSON format");
+          return { data: rows, url };
+        }catch(e){
+          lastErr = e;
+        }
+      }
+      throw lastErr || new Error("Unable to load healthcare JSON");
+    }
+
+    function mergeHealthcareRows(rows){
+      if(!Array.isArray(rows)) return 0;
+      let merged = 0;
+      for(const h of rows){
+        const zip = normalizeZip(h.ZipCode || h.ZIP || h.zip);
+        if(!zip || !zipIndex.has(zip)) continue;
+        const row = zipIndex.get(zip);
+
+        row.HasPCP = h.HasPCP ?? row.HasPCP;
+        row.TotalClinicians = h.TotalClinicians ?? row.TotalClinicians;
+        row.CareCategoryCount = h.DistinctCareCategories ?? h.CareCategoryCount ?? row.CareCategoryCount;
+        row.LocalClinicianBand = h.LocalClinicianBand ?? row.LocalClinicianBand;
+        row.LocalCategoryBand = h.LocalCategoryBand ?? row.LocalCategoryBand;
+        row.ThinCareFlag = h.ThinCareFlag ?? row.ThinCareFlag;
+
+        row.NearestHospitalName = h.NearestHospitalName ?? row.NearestHospitalName;
+        row.NearestHospitalType = h.NearestHospitalType ?? row.NearestHospitalType;
+        row.NearestHospitalDistanceMiles = h.NearestHospitalDistanceMiles ?? row.NearestHospitalDistanceMiles;
+        row.HospitalsWithin25Miles = h.HospitalsWithin25Miles ?? row.HospitalsWithin25Miles;
+        row.HospitalsWithin50Miles = h.HospitalsWithin50Miles ?? row.HospitalsWithin50Miles;
+        row.HealthcareAccessPattern = h.HealthcareAccessPattern ?? row.HealthcareAccessPattern;
+
+        row.NearestAnchorCityCareHub = h.NearestAnchorCityCareHub ?? row.NearestAnchorCityCareHub;
+        row.NearestAnchorCityCareHubCity = h.NearestAnchorCityCareHubCity ?? row.NearestAnchorCityCareHubCity;
+        row.NearestAnchorCityCareHubState = h.NearestAnchorCityCareHubState ?? row.NearestAnchorCityCareHubState;
+        row.NearestAnchorCityCareHubClinicians = h.NearestAnchorCityCareHubClinicians ?? row.NearestAnchorCityCareHubClinicians;
+        row.NearestAnchorCityCareHubSpecialties = h.NearestAnchorCityCareHubSpecialties ?? row.NearestAnchorCityCareHubSpecialties;
+        row.NearestAnchorCityCareHubDistanceMiles = h.NearestAnchorCityCareHubDistanceMiles ?? row.NearestAnchorCityCareHubDistanceMiles;
+        merged++;
+      }
+      return merged;
     }
 
     // ----------------------------
@@ -2208,7 +2914,7 @@ function ingestRows(rows){
       // At a glance summary
       $("aglClimate").textContent = row.ClimateAtAGlance || "—";
       $("aglCost").textContent = row.CostAtAGlance || "—";
-      $("aglHealthcare").textContent = row.HealthcareAtAGlance || "—";
+      $("aglHealthcare").textContent = buildAtGlanceHealthcare(row);
       $("aglSetting").textContent = row.SettingAtAGlance || "—";
 
 
@@ -2283,32 +2989,56 @@ function ingestRows(rows){
 
       $("climateWinterProfile").textContent =
         row.WinterProfile ? describeWinterProfile(row.WinterProfile) : "Data not available";
-
-
-      // Healthcare access snapshot
+      // Healthcare access snapshot — MVP3
       const hasPcp = parseBoolish(row.HasPCP);
-      $("cardPrimaryCare").textContent = hasPcp === true ? "Yes" : (hasPcp === false ? "No" : "Data not available");
+      const pcEl = $("cardPrimaryCare");
+      pcEl.textContent = hasPcp === true ? "Available" : (hasPcp === false ? "Limited" : "Data not available");
+      pcEl.className = "v " + (hasPcp === true ? "healthMetricGood" : hasPcp === false ? "healthMetricWarn" : "dataMuted");
 
       if(hasNumber(row.TotalClinicians) && Number(row.TotalClinicians) > 0){
-        $("cardClinicians").textContent = `Clinicians: ${Number(row.TotalClinicians).toLocaleString()}`;
+        $("cardClinicians").textContent = `${Number(row.TotalClinicians).toLocaleString()} clinicians in area`;
       }else{
         $("cardClinicians").textContent = "Clinicians: Data not available";
       }
 
       const metroMiles = fmtMiles1(row.MetroDistanceMiles);
-      $("cardNearestMetro").textContent = metroMiles ? `Nearest metro: ${metroMiles}` : "Nearest metro: Data not available";
+      $("cardNearestMetro").textContent = metroMiles ? `Assigned metro: ${metroMiles}` : "Assigned metro: Data not available";
 
-      if(hasNumber(row.CareCategoryCount) && Number(row.CareCategoryCount) > 0){
-        $("cardCareCategories").textContent = String(Number(row.CareCategoryCount));
-        $("cardCareCategoriesSub").textContent = "distinct care categories";
-      }else{
-        $("cardCareCategories").textContent = "Data not available";
-        $("cardCareCategoriesSub").textContent = "care categories unavailable";
-      }
+      const cat = careCategoryLabel(row.CareCategoryCount);
+      const catEl = $("cardCareCategories");
+      catEl.textContent = cat.label;
+      catEl.className = "v" + (cat.label === "Data not available" ? " dataMuted" : "");
+      $("cardCareCategoriesSub").textContent = cat.detail;
+      $("cardCareCategoriesDetail").textContent = hasNumber(row.NearestAnchorCityCareHubSpecialties)
+        ? `${Number(row.NearestAnchorCityCareHubSpecialties).toLocaleString()} specialties in nearest care hub`
+        : "Specialty depth not available";
 
       const hp = buildHealthcareProfile(row);
-      $("cardHealthProfile1").textContent = hp.primary;
-      $("cardHealthProfile2").textContent = hp.supply;
+      const prof = healthcareProfileStatus(row);
+      const profEl = $("cardHealthcareProfileStatus");
+      profEl.textContent = prof.label;
+      profEl.className = "v" + (prof.label === "Data not available" ? " dataMuted" : "");
+      $("cardHealthProfile1").textContent = prof.sub || hp.primary;
+      $("cardHealthProfile2").textContent = hp.primary;
+
+      $("cardNearestHospital").textContent = row.NearestHospitalName ? titleCaseHealthcare(row.NearestHospitalName) : "Data not available";
+      $("cardNearestHospitalType").textContent = row.NearestHospitalType ? titleCaseHealthcare(row.NearestHospitalType) : "Hospital type not available";
+      $("cardHospitalDistance").textContent = fmtMiles1(row.NearestHospitalDistanceMiles) || "Distance not available";
+      $("cardHospitalDistance").className = "healthValue healthMiles" + (hasNumber(row.NearestHospitalDistanceMiles) ? "" : " dataMuted");
+      $("cardHospitals25").textContent = hasNumber(row.HospitalsWithin25Miles) ? Number(row.HospitalsWithin25Miles).toLocaleString() : "—";
+      $("cardHospitals50").textContent = hasNumber(row.HospitalsWithin50Miles) ? Number(row.HospitalsWithin50Miles).toLocaleString() : "—";
+
+      const hubCity = safeStr(row.NearestAnchorCityCareHubCity, "");
+      const hubState = safeStr(row.NearestAnchorCityCareHubState, "");
+      const hubZip = safeStr(row.NearestAnchorCityCareHub, "");
+      $("cardCareHub").textContent = hubCity ? `${hubCity}${hubState ? ", " + hubState : ""}` : "Data not available";
+      const hubBits = [];
+      if(hubZip) hubBits.push(`ZIP ${hubZip}`);
+      if(hasNumber(row.NearestAnchorCityCareHubDistanceMiles)) hubBits.push(fmtMiles1(row.NearestAnchorCityCareHubDistanceMiles));
+      if(hasNumber(row.NearestAnchorCityCareHubClinicians)) hubBits.push(`${Number(row.NearestAnchorCityCareHubClinicians).toLocaleString()} clinicians`);
+      $("cardCareHubSub").textContent = hubBits.length ? hubBits.join(" • ") : "Care hub details not available";
+
+      $("healthRealityText").textContent = buildHealthcareReality(row);
 
       // Community snapshot
       if(hasNumber(row.PopTotal)){
@@ -3287,7 +4017,7 @@ $("gsClearBtn").addEventListener("click", () => { resetLowerFrom("all"); trackEv
       $("selZipTop").textContent = "—";
       $("selPlaceTop").textContent = "Click anywhere on the map to pick a ZIP.";
 
-      ["selMetaTop","cardHomeValue","cardHomeAsOf","cardRent","cardRentAsOf","cardHomeRegionAvg","cardHomeRegionGap1","cardHomeRegionGap2","cardHomeNationalAvg","cardHomeNationalGap1","cardHomeNationalGap2","climateTempValue","climateTempRange","climateSummerHigh","climateWinterLow","climatePrecipValue","climatePrecipSummer","climatePrecipWinter","climateSeasonality","climateSummerProfile","climateWinterProfile","cardPrimaryCare","cardClinicians","cardNearestMetro","cardCareCategories","cardCareCategoriesSub","cardHealthProfile1","cardHealthProfile2","cardCommunityPop","cardCommunityPopSub","cardCommunityRetiree","cardCommunityRetireeSub"].forEach(id => { const el=$(id); if(el) el.textContent = "Data not available"; });
+      ["selMetaTop","cardHomeValue","cardHomeAsOf","cardRent","cardRentAsOf","cardHomeRegionAvg","cardHomeRegionGap1","cardHomeRegionGap2","cardHomeNationalAvg","cardHomeNationalGap1","cardHomeNationalGap2","climateTempValue","climateTempRange","climateSummerHigh","climateWinterLow","climatePrecipValue","climatePrecipSummer","climatePrecipWinter","climateSeasonality","climateSummerProfile","climateWinterProfile","cardPrimaryCare","cardClinicians","cardNearestMetro","cardCareCategories","cardCareCategoriesSub","cardCareCategoriesDetail","cardHealthcareProfileStatus","cardHealthProfile1","cardHealthProfile2","cardNearestHospital","cardNearestHospitalType","cardHospitalDistance","cardHospitals25","cardHospitals50","cardCareHub","cardCareHubSub","healthRealityText","cardCommunityPop","cardCommunityPopSub","cardCommunityRetiree","cardCommunityRetireeSub"].forEach(id => { const el=$(id); if(el) el.textContent = "Data not available"; });
       ["aglClimate","aglCost","aglHealthcare","aglSetting"].forEach(id => { const el=$(id); if(el) el.textContent = "—"; });
 
       if(zipMarker) { zipMarker.remove(); zipMarker = null; }
@@ -3307,6 +4037,15 @@ async function boot(){
       try{
         const { data, url } = await loadSpine();
         ingestRows(data);
+
+        try{
+          const hc = await loadHealthcare();
+          const merged = mergeHealthcareRows(hc.data);
+          $("mapStats").textContent += ` • Healthcare: ${merged.toLocaleString()} ZIPs`;
+        }catch(hcErr){
+          console.warn("Healthcare JSON unavailable:", hcErr);
+          $("mapStats").textContent += ` • Healthcare JSON unavailable`;
+        }
 
         try{
           await loadStatesLayer();

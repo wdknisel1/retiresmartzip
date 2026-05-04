@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Data & Methodology | RetireSmartZIP™</title>
+  <meta name="description" content="Learn how RetireSmartZIP uses ZIP-level data, assumptions, and methodology to help evaluate retirement locations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --navy:#0E3A5F;
+      --navy2:#0B2F4A;
+      --gold:#F2C23E;
+      --ink:#0B1320;
+      --muted:#536173;
+      --surface:#F8FAFC;
+      --ring:rgba(15,23,42,.10);
+      --shadow:0 10px 30px rgba(2,6,23,.10), 0 2px 8px rgba(2,6,23,.06);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 420px at 50% -10%, rgba(242,194,62,.10), transparent 55%),
+        linear-gradient(180deg, #ffffff, var(--surface));
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:10;
+      background:linear-gradient(to bottom, rgba(242,194,62,.18), rgba(255,255,255,.97));
+      border-bottom:1px solid var(--ring);
+      backdrop-filter:saturate(1.05) blur(4px);
+    }
+
+    .nav{
+      max-width:1120px;
+      margin:0 auto;
+      padding:12px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:22px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:900;
+      font-size:22px;
+      letter-spacing:.2px;
+    }
+
+    .brand img{
+      height:56px;
+      width:auto;
+      display:block;
+    }
+
+    .brandWrap{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .brandSub{
+      font-size:12px;
+      color:#64748b;
+      font-weight:700;
+      letter-spacing:.2px;
+      margin-top:2px;
+      text-align:left;
+    }
+
+    .navLinks{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .navLinks a{
+      color:#64748b;
+      padding:8px 10px;
+      border-radius:10px;
+      font-weight:600;
+      font-size:14px;
+    }
+
+    .navLinks a:hover{
+      background:rgba(2,6,23,.05);
+      color:var(--ink);
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      height:46px;
+      padding:0 18px;
+      border-radius:12px;
+      font-weight:800;
+      border:1px solid transparent;
+      box-shadow:var(--shadow);
+      transition:filter .15s ease, transform .15s ease;
+    }
+
+    .btn:hover{
+      filter:saturate(1.03) brightness(1.01);
+      transform:translateY(-1px);
+    }
+
+    .btn.primary{
+      background:var(--gold);
+      color:#241700;
+    }
+
+    .btn.secondary{
+      background:#fff;
+      color:var(--ink);
+      border-color:rgba(15,23,42,.10);
+    }
+
+    .wrap{
+      max-width:1120px;
+      margin:0 auto;
+      padding:28px 20px 64px;
+    }
+
+    .center{text-align:center}
+
+    .hero{
+      max-width:920px;
+      margin:0 auto;
+      display:grid;
+      gap:18px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      justify-self:center;
+      align-items:center;
+      gap:8px;
+      padding:9px 14px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--ring);
+      font-size:12px;
+      font-weight:800;
+      color:#334155;
+    }
+
+    h1{
+      margin:0;
+      font-size:52px;
+      line-height:1.05;
+      letter-spacing:-1px;
+    }
+
+    .lead{
+      margin:0 auto;
+      max-width:760px;
+      color:var(--muted);
+      font-size:20px;
+      line-height:1.6;
+    }
+
+    .heroActions{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .heroNote{
+      font-size:13px;
+      color:#64748b;
+      font-weight:700;
+    }
+
+    .featureCard{
+      margin:26px auto 0 auto;
+      max-width:920px;
+      background:linear-gradient(180deg, #132F4A, #0E2438);
+      color:#fff;
+      border-radius:24px;
+      padding:24px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.08);
+      text-align:left;
+    }
+
+    .featureKicker{
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.35px;
+      color:rgba(242,194,62,.95);
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .featureCard h2{
+      margin:0 0 10px;
+      font-size:34px;
+      line-height:1.15;
+    }
+
+    .featureCard p{
+      margin:0;
+      color:rgba(255,255,255,.86);
+      line-height:1.65;
+      font-size:17px;
+    }
+
+    .section{
+      margin-top:24px;
+      max-width:920px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, #132F4A, #0E2438);
+      color:#fff;
+      border-radius:20px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.08);
+      text-align:left;
+    }
+
+    .card.wide{
+      grid-column:1 / -1;
+    }
+
+    .card .kicker{
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.35px;
+      color:rgba(242,194,62,.95);
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .card h3{
+      margin:0 0 8px;
+      font-size:24px;
+      line-height:1.2;
+    }
+
+    .card p{
+      margin:0;
+      color:rgba(255,255,255,.84);
+      line-height:1.65;
+      font-size:16px;
+    }
+
+    .card ul{
+      margin:12px 0 0 18px;
+      padding:0;
+      color:rgba(255,255,255,.84);
+      line-height:1.65;
+      font-size:16px;
+    }
+
+    .card li{margin:4px 0}
+
+    .note{
+      margin-top:12px;
+      color:rgba(255,255,255,.68);
+      font-size:14px;
+      line-height:1.55;
+      font-weight:650;
+    }
+
+    .ctaStrip{
+      margin:28px auto 0 auto;
+      max-width:920px;
+      background:linear-gradient(180deg, #132F4A, #0E2438);
+      color:#fff;
+      border-radius:22px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .ctaStrip strong{font-size:20px}
+    .ctaStrip p{margin:6px 0 0; color:rgba(255,255,255,.82)}
+
+    footer{
+      margin-top:30px;
+      padding-top:16px;
+      border-top:1px solid var(--ring);
+      color:#64748b;
+      font-size:13px;
+      text-align:center;
+      max-width:920px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    @media (max-width:980px){
+      h1{font-size:40px}
+      .lead{font-size:18px}
+      .nav{gap:12px}
+      .brand img{height:48px}
+      .brand{font-size:20px}
+      .featureCard h2{font-size:28px}
+      .cards{grid-template-columns:1fr}
+      .card h3{font-size:22px}
+    }
+
+    @media (max-width:620px){
+      .nav{justify-content:flex-start}
+      h1{font-size:34px}
+      .lead{font-size:17px}
+      .heroActions .btn{width:100%}
+      .ctaStrip .btn{width:100%}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <nav class="nav">
+      <a href="index.html" class="brand" aria-label="RetireSmartZIP home">
+        <img src="image/RSZ_20251217.png" alt="RetireSmartZIP logo" onerror="this.style.display='none'">
+        <div class="brandWrap">
+          <div>RetireSmartZIP™</div>
+          <div class="brandSub">Explore where retirement could work</div>
+        </div>
+      </a>
+
+      <div class="navLinks">
+        <a href="index.html">Home</a>
+        <a href="explorer.html">Explorer</a>
+        <a href="articles/index.html">Articles</a>
+        <a class="btn primary" href="explorer.html">Open Explorer</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="wrap">
+    <section class="hero center">
+      <div class="eyebrow">RetireSmartZIP™ • Data &amp; Methodology</div>
+      <h1>How RetireSmartZIP Uses Data</h1>
+      <p class="lead">
+        RetireSmartZIP uses ZIP-level housing, climate, healthcare, geography, and demographic data to help surface tradeoffs before you make a retirement move.
+      </p>
+      <div class="heroActions">
+        <a class="btn primary" href="explorer.html">Open Explorer</a>
+        <a class="btn secondary" href="articles/index.html">Read Articles</a>
+      </div>
+      <div class="heroNote">
+        We show structured signals. You decide what works for your retirement.
+      </div>
+    </section>
+
+    <section class="featureCard">
+      <div class="featureKicker">Core Principle</div>
+      <h2>Retirement decisions happen at the ZIP-code level.</h2>
+      <p>
+        City and state averages can be useful starting points, but they often hide the differences that matter in daily retirement life. RetireSmartZIP is designed to make those ZIP-level differences easier to see.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="cards">
+
+        <article class="card wide">
+          <div class="kicker">What RetireSmartZIP Does</div>
+          <h3>Decision support, not automatic recommendations</h3>
+          <p>
+            RetireSmartZIP is designed to help you understand where retirement could work — before you make a move.
+          </p>
+          <p style="margin-top:12px;">
+            Instead of ranking “best places,” we surface ZIP-level differences across housing, climate, healthcare, and geography so you can evaluate tradeoffs.
+          </p>
+          <p style="margin-top:12px;">
+            <strong>We do not make decisions for you.</strong> We provide structured signals so you can make better ones.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="kicker">Data Sources</div>
+          <h3>What the Explorer uses</h3>
+          <ul>
+            <li>U.S. Census ACS — population and demographics</li>
+            <li>Zillow — home values and housing trends</li>
+            <li>NOAA — climate normals and seasonal patterns</li>
+            <li>Healthcare datasets — hospital access and provider availability</li>
+            <li>Geographic datasets — ZIP centroids and metro mapping</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="kicker">Key Assumptions</div>
+          <h3>How signals are interpreted</h3>
+          <ul>
+            <li>Distances are measured from the center of each ZIP code</li>
+            <li>Healthcare reflects access, not quality</li>
+            <li>Climate is based on long-term averages</li>
+            <li>Housing reflects most recent available market data</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="kicker">Data Freshness</div>
+          <h3>Different datasets update differently</h3>
+          <ul>
+            <li>Population: ACS 5-year estimates, latest available</li>
+            <li>Housing: updated periodically from Zillow datasets</li>
+            <li>Climate: NOAA long-term averages</li>
+            <li>Healthcare: latest available provider and hospital data</li>
+          </ul>
+          <p class="note">
+            RetireSmartZIP prioritizes consistency and coverage across ZIP codes.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="kicker">Limitations</div>
+          <h3>What to keep in mind</h3>
+          <ul>
+            <li>Data may lag real-world conditions</li>
+            <li>ZIP-level aggregation can hide neighborhood differences</li>
+            <li>Healthcare access does not guarantee provider availability</li>
+          </ul>
+        </article>
+
+        <article class="card wide">
+          <div class="kicker">What This Is Not</div>
+          <h3>RetireSmartZIP is not financial advice</h3>
+          <ul>
+            <li>Not financial advice</li>
+            <li>Not a ranking system</li>
+            <li>Not a recommendation engine</li>
+          </ul>
+          <p class="note">
+            RetireSmartZIP is a decision-support tool — not a decision engine.
+          </p>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="ctaStrip">
+      <div>
+        <strong>Ready to see the data in action?</strong>
+        <p>Open the Explorer and compare ZIPs using housing, climate, healthcare, and local context.</p>
+      </div>
+      <a class="btn primary" href="explorer.html">Open Explorer</a>
+    </section>
+
+    <footer>
+      © 2026 RetireSmartZIP™
+    </footer>
+  </main>
+</body>
+</html>
