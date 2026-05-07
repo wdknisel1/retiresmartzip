@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Data & Methodology | RetireSmartZIP™</title>
-  <meta name="description" content="Learn how RetireSmartZIP uses ZIP-level data, assumptions, and methodology to help evaluate retirement locations." />
+  <meta name="description" content="Learn how RetireSmartZIP uses ZIP-level housing, climate, healthcare, property tax, cost-of-living, and demographic data to help evaluate retirement locations across the United States." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -371,7 +371,7 @@
       <div class="eyebrow">RetireSmartZIP™ • Data &amp; Methodology</div>
       <h1>How RetireSmartZIP Uses Data</h1>
       <p class="lead">
-        RetireSmartZIP uses ZIP-level housing, climate, healthcare, geography, and demographic data to help surface tradeoffs before you make a retirement move.
+        RetireSmartZIP uses ZIP-level housing, climate, healthcare, cost, tax, geography, and demographic data to help surface tradeoffs before you make a retirement move.
       </p>
       <div class="heroActions">
         <a class="btn primary" href="explorer.html">Open Explorer</a>
@@ -380,6 +380,9 @@
       <div class="heroNote">
         We show structured signals. You decide what works for your retirement.
       </div>
+      <p class="heroNote" style="max-width:760px; margin:0 auto;">
+        Topics include retirement cost of living, property taxes, state income taxes, healthcare access, climate patterns, ZIP-level housing affordability, and retirement location comparisons.
+      </p>
     </section>
 
     <section class="featureCard">
@@ -397,10 +400,10 @@
           <div class="kicker">What RetireSmartZIP Does</div>
           <h3>Decision support, not automatic recommendations</h3>
           <p>
-            RetireSmartZIP is designed to help you understand where retirement could work — before you make a move.
+            RetireSmartZIP is designed to help you evaluate retirement locations and understand where retirement could work — before you make a move.
           </p>
           <p style="margin-top:12px;">
-            Instead of ranking “best places,” we surface ZIP-level differences across housing, climate, healthcare, and geography so you can evaluate tradeoffs.
+            Instead of ranking “best places,” the <a href="explorer.html" style="color:rgba(242,194,62,.95); font-weight:800;">ZIP Explorer</a> surfaces ZIP-level differences across housing, climate, healthcare, cost, tax, and geography so you can evaluate tradeoffs.
           </p>
           <p style="margin-top:12px;">
             <strong>We do not make decisions for you.</strong> We provide structured signals so you can make better ones.
@@ -415,6 +418,7 @@
             <li>Zillow — home values and housing trends</li>
             <li>NOAA — climate normals and seasonal patterns</li>
             <li>Healthcare datasets — hospital access and provider availability</li>
+            <li>Tax Foundation and public tax datasets — state and local tax estimates</li>
             <li>Geographic datasets — ZIP centroids and metro mapping</li>
           </ul>
         </article>
@@ -430,6 +434,40 @@
           </ul>
         </article>
 
+
+
+        <article class="card wide">
+          <div class="kicker">Cost &amp; Tax Model</div>
+          <h3>How RetireSmartZIP estimates local tax burden</h3>
+
+          <p>
+            RetireSmartZIP includes a directional Cost &amp; Tax Snapshot designed to help show how taxes and cost of living can affect the real monthly affordability of a ZIP code during retirement.
+          </p>
+
+          <ul>
+            <li>
+              Property tax estimates are modeled using county-level effective property tax rates applied to local housing values.
+            </li>
+            <li>
+              Sales tax estimates are based on combined state and local sales tax rates using a baseline monthly spending assumption.
+            </li>
+            <li>
+              State income tax estimates are modeled using approximately $60,000 in annual household income for both single and married filing scenarios.
+            </li>
+            <li>
+              These values are combined into a simplified monthly “Tax Reality” estimate to help surface hidden affordability differences between ZIP codes.
+            </li>
+          </ul>
+
+          <p class="note">
+            Income-tax estimates compare a single filer versus a married joint-filing household using the same approximate household income baseline.
+          </p>
+
+          <p class="note">
+            Tax estimates are based on public datasets including Tax Foundation data and other public tax sources. Values are directional estimates only and should not be considered tax, financial, or legal advice.
+          </p>
+        </article>
+
         <article class="card">
           <div class="kicker">Data Freshness</div>
           <h3>Different datasets update differently</h3>
@@ -438,6 +476,7 @@
             <li>Housing: updated periodically from Zillow datasets</li>
             <li>Climate: NOAA long-term averages</li>
             <li>Healthcare: latest available provider and hospital data</li>
+            <li>Cost &amp; Tax: periodic updates from public tax and cost datasets</li>
           </ul>
           <p class="note">
             RetireSmartZIP prioritizes consistency and coverage across ZIP codes.
@@ -451,6 +490,7 @@
             <li>Data may lag real-world conditions</li>
             <li>ZIP-level aggregation can hide neighborhood differences</li>
             <li>Healthcare access does not guarantee provider availability</li>
+            <li>Tax estimates may differ from actual filing outcomes</li>
           </ul>
         </article>
 
@@ -459,6 +499,7 @@
           <h3>RetireSmartZIP is not financial advice</h3>
           <ul>
             <li>Not financial advice</li>
+            <li>Not tax advice</li>
             <li>Not a ranking system</li>
             <li>Not a recommendation engine</li>
           </ul>
@@ -473,7 +514,7 @@
     <section class="ctaStrip">
       <div>
         <strong>Ready to see the data in action?</strong>
-        <p>Open the Explorer and compare ZIPs using housing, climate, healthcare, and local context.</p>
+        <p>Open the Explorer and compare ZIPs using housing, climate, healthcare, cost, tax, and local context. You can also read our <a href="articles/index.html" style="color:rgba(242,194,62,.95); font-weight:800;">retirement articles</a> for additional planning context.</p>
       </div>
       <a class="btn primary" href="explorer.html">Open Explorer</a>
     </section>

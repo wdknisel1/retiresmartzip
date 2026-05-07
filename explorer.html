@@ -1485,6 +1485,51 @@
   }
 }
 
+
+/* MVP4 Cost & Tax Snapshot - Rev5 Q2 only; Q1 map rendering restored to production baseline */
+.tabPanel[data-panel="cost"] .cards{
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap:12px;
+}
+.tabPanel[data-panel="cost"] .card .v,
+.tabPanel[data-panel="cost"] .costIncomeValue{
+  margin-top:6px;
+  font-size:22px;
+  line-height:1.12;
+  font-weight:950;
+  letter-spacing:.2px;
+  color:var(--text);
+}
+.tabPanel[data-panel="cost"] .costIncomeValue + .costIncomeValue{
+  margin-top:4px;
+}
+.tabPanel[data-panel="cost"] .costIncomeValue .costLabel{
+  font-size:12px;
+  color:var(--muted);
+  font-weight:900;
+  margin-right:5px;
+}
+.costTaxReality{
+  margin-top:12px;
+  padding:12px 14px;
+  border-radius:var(--r12);
+  border:1px solid rgba(242,194,62,.46);
+  background:rgba(242,194,62,.065);
+  color:rgba(232,238,252,.84);
+  font-size:12.5px;
+  line-height:1.42;
+  font-weight:800;
+}
+.costTaxReality span:first-child{
+  color:#F2C23E;
+  font-weight:950;
+}
+@media (max-width: 1250px){
+  .tabPanel[data-panel="cost"] .cards{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 </head>
 
@@ -1587,6 +1632,7 @@
             <div class="tab" data-tab="climate">Climate</div>
             <div class="tab" data-tab="health">Healthcare</div>
             <div class="tab" data-tab="community">Community</div>
+            <div class="tab" data-tab="cost">Cost</div>
           </div>
 
           <div class="tabPanels" id="q2Panels">
@@ -1722,6 +1768,40 @@
                   <div class="s" id="cardCommunityRetireeSub1">—</div>
                   <div class="s" id="cardCommunityRetireeSub2">—</div>
                 </div>
+              </div>
+            </div>
+
+            <div class="tabPanel" data-panel="cost">
+              <div style="font-size:13px; font-weight:950; margin-bottom:2px;">Cost &amp; Tax Snapshot</div>
+              <div style="font-size:12px; color:var(--muted2); font-weight:750; margin-bottom:10px;">
+                Based on an estimated ~$60K annual household income model and typical taxable spending assumptions.
+              </div>
+
+              <div class="cards">
+                <div class="card">
+                  <div class="k">Monthly Property Tax</div>
+                  <div class="v" id="costPropertyTax">—</div>
+                  <div class="s">County-based estimate</div>
+                </div>
+
+                <div class="card">
+                  <div class="k">State Income Tax</div>
+                  <div class="costIncomeValue"><span class="costLabel">Single filer:</span><span id="costIncomeSingle">—</span></div>
+                  <div class="costIncomeValue"><span class="costLabel">Married joint filer:</span><span id="costIncomeMarried">—</span></div>
+                  <div class="s" style="margin-top:8px;">Based on $60K income</div>
+                </div>
+
+                <div class="card">
+                  <div class="k">Sales Tax Impact</div>
+                  <div class="v" id="costSalesTax">—</div>
+                  <div class="s" id="costSalesRate">Combined state + local rate: —</div>
+                  <div class="s">State + local average</div>
+                </div>
+              </div>
+
+              <div class="costTaxReality">
+                <span>Tax Reality:</span>
+                <span id="costTaxRealityText">—</span>
               </div>
             </div>
           </div>
@@ -2064,6 +2144,73 @@
       if(n === null || n === undefined || n === "" || isNaN(Number(n))) return "—";
       return Number(n).toLocaleString(undefined, {style:"currency", currency:"USD", maximumFractionDigits:0});
     }
+
+    function fmtMoneyMo(n){
+      if(!hasNumber(n)) return "—";
+      return `${Number(n).toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0})} / mo`;
+    }
+
+    function fmtMoneyPlain(n){
+      if(!hasNumber(n)) return "—";
+      return Number(n).toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0});
+    }
+
+    function fmtTaxRange(low, high){
+      if(!hasNumber(low) && !hasNumber(high)) return "—";
+      if(hasNumber(low) && hasNumber(high)){
+        const a = Number(low);
+        const b = Number(high);
+        if(Math.round(a) === Math.round(b)) return fmtMoneyMo(a);
+        return `${fmtMoneyPlain(Math.min(a,b))} – ${fmtMoneyPlain(Math.max(a,b))} / mo`;
+      }
+      return fmtMoneyMo(hasNumber(low) ? low : high);
+    }
+
+    function formatCostAtGlance(row){
+      const base = safeStr(row.CostAtAGlance, "");
+      const taxLow = hasNumber(row.TotalMonthlyTax_Single) && hasNumber(row.TotalMonthlyTax_Married)
+        ? Math.min(Number(row.TotalMonthlyTax_Single), Number(row.TotalMonthlyTax_Married))
+        : null;
+      const taxHigh = hasNumber(row.TotalMonthlyTax_Single) && hasNumber(row.TotalMonthlyTax_Married)
+        ? Math.max(Number(row.TotalMonthlyTax_Single), Number(row.TotalMonthlyTax_Married))
+        : null;
+
+      let homeSignal = "";
+      if(hasNumber(row.HomeValue) && hasNumber(row.HomeValueRegionAvg)){
+        const hv = Number(row.HomeValue);
+        const reg = Number(row.HomeValueRegionAvg);
+        const relation = hv < reg ? "below" : (hv > reg ? "above" : "near");
+        homeSignal = relation === "near"
+          ? `Home value near regional average (${fmtMoneyPlain(hv)} vs ${fmtMoneyPlain(reg)})`
+          : `Home value ${relation} regional average (${fmtMoneyPlain(hv)} vs ${fmtMoneyPlain(reg)})`;
+      }
+
+      let taxSignal = "";
+      if(taxLow !== null && taxHigh !== null){
+        taxSignal = Math.round(taxLow) === Math.round(taxHigh)
+          ? `Taxes ~${fmtMoneyPlain(taxLow)}/mo`
+          : `Taxes ~${fmtMoneyPlain(taxLow)}–${fmtMoneyPlain(taxHigh)}/mo`;
+      }
+
+      return [homeSignal || base, taxSignal].filter(Boolean).join(" • ") || "—";
+    }
+
+    function buildCostTaxReality(row){
+      const low = hasNumber(row.TotalMonthlyTax_Single) && hasNumber(row.TotalMonthlyTax_Married)
+        ? Math.min(Number(row.TotalMonthlyTax_Single), Number(row.TotalMonthlyTax_Married))
+        : null;
+      const high = hasNumber(row.TotalMonthlyTax_Single) && hasNumber(row.TotalMonthlyTax_Married)
+        ? Math.max(Number(row.TotalMonthlyTax_Single), Number(row.TotalMonthlyTax_Married))
+        : null;
+
+      if(low !== null && high !== null){
+        const burdenText = Math.round(low) === Math.round(high)
+          ? `~${fmtMoneyPlain(low)}`
+          : `~${fmtMoneyPlain(low)} – ${fmtMoneyPlain(high)}`;
+        return `This ZIP’s estimated monthly tax burden is ${burdenText} depending on filing status and spending patterns. Property, income, and sales taxes can change the real monthly cost of a ZIP — even when home prices look affordable.`;
+      }
+      return "Cost and tax estimates are not available for this ZIP yet. Use housing, healthcare, and climate signals as the main MVP snapshot.";
+    }
     function fmtPct(v){
       if(v === null || v === undefined || v === "" || isNaN(Number(v))) return null;
       let x = Number(v);
@@ -2332,6 +2479,7 @@ function safeStr(v, fallback="—"){
     // ----------------------------
     let spineRows = [];
     let zipIndex = new Map();        // zip -> normalized row
+    let costTaxIndex = new Map();     // zip -> MVP4 cost/tax row
 
     let regions = [];
     let statesByRegion = new Map();
@@ -2586,6 +2734,73 @@ return { data: rows, url };
         }
       }
       throw lastErr || new Error("Unable to load healthcare JSON");
+    }
+
+
+    async function loadCostTax(){
+      const candidates = [
+        "./data/zip_cost_tax.json",
+        "./app/data/zip_cost_tax.json",
+        "/data/zip_cost_tax.json",
+        "/app/data/zip_cost_tax.json"
+      ];
+
+      function parseCostTaxPayload(raw){
+        const txt = String(raw || "").replace(/^﻿/, "").trim();
+
+        // Preferred path: clean JSON file that starts with [ ... ].
+        try{
+          return JSON.parse(txt);
+        }catch(cleanErr){
+          // SSMS sometimes saves FOR JSON PATH results with a column header and wrapped lines.
+          // This extracts the JSON array and removes display-only line breaks from the export.
+          const first = txt.indexOf("[");
+          const last = txt.lastIndexOf("]");
+          if(first >= 0 && last > first){
+            const extracted = txt.slice(first, last + 1).replace(/[\r\n]+/g, "");
+            return JSON.parse(extracted);
+          }
+          throw cleanErr;
+        }
+      }
+
+      let lastErr = null;
+      for(const url of candidates){
+        try{
+          const r = await fetch(url, { cache: "no-store" });
+          if(!r.ok) throw new Error(`HTTP ${r.status} ${r.statusText}`);
+          const raw = await r.text();
+          const data = parseCostTaxPayload(raw);
+          const rows = Array.isArray(data) ? data : data.zips;
+          if(!Array.isArray(rows)) throw new Error("Invalid cost/tax JSON format");
+          return { data: rows, url };
+        }catch(e){
+          lastErr = e;
+        }
+      }
+      throw lastErr || new Error("Unable to load cost/tax JSON");
+    }
+
+    function mergeCostTaxRows(rows){
+      if(!Array.isArray(rows)) return 0;
+      let merged = 0;
+      for(const c of rows){
+        const zip = normalizeZip(c.ZipCode || c.ZIP || c.zip);
+        if(!zip || !zipIndex.has(zip)) continue;
+        const row = zipIndex.get(zip);
+
+        row.MonthlyPropertyTax = c.MonthlyPropertyTax ?? row.MonthlyPropertyTax;
+        row.EstimatedMonthlySalesTax = c.EstimatedMonthlySalesTax ?? row.EstimatedMonthlySalesTax;
+        row.CombinedSalesTaxRate = c.CombinedSalesTaxRate ?? row.CombinedSalesTaxRate;
+        row.MonthlyIncomeTax_Single = c.MonthlyIncomeTax_Single ?? row.MonthlyIncomeTax_Single;
+        row.MonthlyIncomeTax_Married = c.MonthlyIncomeTax_Married ?? row.MonthlyIncomeTax_Married;
+        row.TotalMonthlyTax_Single = c.TotalMonthlyTax_Single ?? row.TotalMonthlyTax_Single;
+        row.TotalMonthlyTax_Married = c.TotalMonthlyTax_Married ?? row.TotalMonthlyTax_Married;
+
+        costTaxIndex.set(zip, c);
+        merged++;
+      }
+      return merged;
     }
 
     function mergeHealthcareRows(rows){
@@ -2913,7 +3128,7 @@ function ingestRows(rows){
 
       // At a glance summary
       $("aglClimate").textContent = row.ClimateAtAGlance || "—";
-      $("aglCost").textContent = row.CostAtAGlance || "—";
+      $("aglCost").textContent = formatCostAtGlance(row);
       $("aglHealthcare").textContent = buildAtGlanceHealthcare(row);
       $("aglSetting").textContent = row.SettingAtAGlance || "—";
 
@@ -2989,6 +3204,16 @@ function ingestRows(rows){
 
       $("climateWinterProfile").textContent =
         row.WinterProfile ? describeWinterProfile(row.WinterProfile) : "Data not available";
+      // Cost & Tax Snapshot — MVP4
+      $("costPropertyTax").textContent = fmtMoneyMo(row.MonthlyPropertyTax);
+      $("costIncomeSingle").textContent = fmtMoneyMo(row.MonthlyIncomeTax_Single);
+      $("costIncomeMarried").textContent = fmtMoneyMo(row.MonthlyIncomeTax_Married);
+      $("costSalesTax").textContent = fmtMoneyMo(row.EstimatedMonthlySalesTax);
+      $("costSalesRate").textContent = hasNumber(row.CombinedSalesTaxRate)
+        ? `Combined state + local rate: ${Number(row.CombinedSalesTaxRate).toFixed(1)}%`
+        : "Combined state + local rate: —";
+      $("costTaxRealityText").textContent = buildCostTaxReality(row);
+
       // Healthcare access snapshot — MVP3
       const hasPcp = parseBoolish(row.HasPCP);
       const pcEl = $("cardPrimaryCare");
@@ -4017,7 +4242,7 @@ $("gsClearBtn").addEventListener("click", () => { resetLowerFrom("all"); trackEv
       $("selZipTop").textContent = "—";
       $("selPlaceTop").textContent = "Click anywhere on the map to pick a ZIP.";
 
-      ["selMetaTop","cardHomeValue","cardHomeAsOf","cardRent","cardRentAsOf","cardHomeRegionAvg","cardHomeRegionGap1","cardHomeRegionGap2","cardHomeNationalAvg","cardHomeNationalGap1","cardHomeNationalGap2","climateTempValue","climateTempRange","climateSummerHigh","climateWinterLow","climatePrecipValue","climatePrecipSummer","climatePrecipWinter","climateSeasonality","climateSummerProfile","climateWinterProfile","cardPrimaryCare","cardClinicians","cardNearestMetro","cardCareCategories","cardCareCategoriesSub","cardCareCategoriesDetail","cardHealthcareProfileStatus","cardHealthProfile1","cardHealthProfile2","cardNearestHospital","cardNearestHospitalType","cardHospitalDistance","cardHospitals25","cardHospitals50","cardCareHub","cardCareHubSub","healthRealityText","cardCommunityPop","cardCommunityPopSub","cardCommunityRetiree","cardCommunityRetireeSub"].forEach(id => { const el=$(id); if(el) el.textContent = "Data not available"; });
+      ["selMetaTop","cardHomeValue","cardHomeAsOf","cardRent","cardRentAsOf","cardHomeRegionAvg","cardHomeRegionGap1","cardHomeRegionGap2","cardHomeNationalAvg","cardHomeNationalGap1","cardHomeNationalGap2","climateTempValue","climateTempRange","climateSummerHigh","climateWinterLow","climatePrecipValue","climatePrecipSummer","climatePrecipWinter","climateSeasonality","climateSummerProfile","climateWinterProfile","cardPrimaryCare","cardClinicians","cardNearestMetro","cardCareCategories","cardCareCategoriesSub","cardCareCategoriesDetail","cardHealthcareProfileStatus","cardHealthProfile1","cardHealthProfile2","cardNearestHospital","cardNearestHospitalType","cardHospitalDistance","cardHospitals25","cardHospitals50","cardCareHub","cardCareHubSub","healthRealityText","cardCommunityPop","cardCommunityPopSub","cardCommunityRetiree","cardCommunityRetireeSub","costPropertyTax","costIncomeSingle","costIncomeMarried","costSalesTax","costSalesRate","costTaxRealityText"].forEach(id => { const el=$(id); if(el) el.textContent = "Data not available"; });
       ["aglClimate","aglCost","aglHealthcare","aglSetting"].forEach(id => { const el=$(id); if(el) el.textContent = "—"; });
 
       if(zipMarker) { zipMarker.remove(); zipMarker = null; }
@@ -4045,6 +4270,16 @@ async function boot(){
         }catch(hcErr){
           console.warn("Healthcare JSON unavailable:", hcErr);
           $("mapStats").textContent += ` • Healthcare JSON unavailable`;
+        }
+
+
+        try{
+          const ct = await loadCostTax();
+          const mergedTax = mergeCostTaxRows(ct.data);
+          $("mapStats").textContent += ` • Cost/Tax: ${mergedTax.toLocaleString()} ZIPs`;
+        }catch(ctErr){
+          console.warn("Cost/Tax JSON unavailable:", ctErr);
+          $("mapStats").textContent += ` • Cost/Tax JSON unavailable`;
         }
 
         try{
