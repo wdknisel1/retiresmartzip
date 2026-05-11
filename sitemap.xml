@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
+    <loc>https://retiresmartzip.com/</loc>
+  </url>
+
+  <url>
     <loc>https://retiresmartzip.com/index.html</loc>
   </url>
 
@@ -15,6 +19,13 @@
 
   <url>
     <loc>https://retiresmartzip.com/articles/index.html</loc>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/geographic-retirement-intelligence.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
   </url>
 
   <url>
