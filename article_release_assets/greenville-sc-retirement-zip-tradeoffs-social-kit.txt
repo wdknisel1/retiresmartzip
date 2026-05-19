@@ -1,0 +1,85 @@
+RetireSmartZIP Release Kit
+==========================
+Region: Greenville, SC
+Article URL: https://retiresmartzip.com/articles/greenville-sc-retirement-zip-tradeoffs.html
+Explorer URL: https://retiresmartzip.com/explorer.html
+Matching ZIPs found: 7
+Representative ZIPs: 29611, 29601, 29609, 29617
+Selection roles: Lowest home value: 29611; Highest home value: 29601; Balanced middle-ground profile: 29609; Highest retiree share: 29617
+
+Core thesis
+-----------
+A retirement city can sound right. A neighboring ZIP may work better.
+
+LinkedIn post seed
+------------------
+A retirement search often starts with a city name: Is Greenville, SC a good place to retire?
+
+But retirement does not happen at the city-average level. It happens inside a specific ZIP code — with its own housing cost, healthcare access, tax picture, climate pattern, and community feel.
+
+RetireSmartZIP found 7 matching ZIPs around Greenville, SC and highlighted representative examples to show how nearby ZIPs can produce very different retirement trade-offs.
+
+The bigger lesson: the best retirement fit may not be the city or ZIP you searched first.
+
+Read the ZIP-level briefing:
+https://retiresmartzip.com/articles/greenville-sc-retirement-zip-tradeoffs.html
+
+Explore the ZIPs directly:
+https://retiresmartzip.com/explorer.html
+
+#RetirementPlanning #Retirement #DataAnalytics #LocationIntelligence #RetireSmartZIP
+
+Facebook post seed
+------------------
+Thinking about retiring near Greenville, SC?
+
+The city may sound right — but the better retirement fit might be a nearby ZIP code.
+
+RetireSmartZIP compared ZIP-level signals around Greenville: housing, healthcare access, taxes, climate, and community feel.
+
+A retirement city can sound right. A neighboring ZIP may work better.
+
+Read the article:
+https://retiresmartzip.com/articles/greenville-sc-retirement-zip-tradeoffs.html
+
+Then explore nearby ZIPs:
+https://retiresmartzip.com/explorer.html
+
+LinkedIn carousel outline
+-------------------------
+Slide 1: Is Greenville, SC really one retirement answer?
+Slide 2: RSZ found 7 matching ZIPs — and they do not all behave the same.
+Slide 3: Housing can shift dramatically from ZIP to ZIP.
+Slide 4: Healthcare access can change even across nearby ZIPs.
+Slide 5: A balanced nearby ZIP may be the real retirement fit.
+Slide 6: Explore the surrounding ZIPs in RetireSmartZIP.
+
+Facebook image carousel sequence
+--------------------------------
+1. Regional map / Explorer overview screenshot
+2. Home or housing tab screenshot
+3. Healthcare tab screenshot
+4. Full Explorer screenshot with CTA
+
+Screenshot checklist
+--------------------
+[ ] Explorer map centered on Greenville, SC
+[ ] ZIP result list visible if possible
+[ ] Home/Housing tab screenshot
+[ ] Healthcare tab screenshot
+[ ] Optional Cost tab screenshot
+[ ] Full Explorer page screenshot
+[ ] Article hero / published page screenshot
+
+Release checklist
+-----------------
+[ ] Confirm article generated and opens locally
+[ ] Add article to articles/index.html
+[ ] Add sitemap entry to sitemap.xml
+[ ] Commit and push to GitHub
+[ ] Validate production URL
+[ ] Request indexing in Google Search Console
+[ ] Publish LinkedIn carousel
+[ ] Publish Facebook carousel
+[ ] Review GA4 + social metrics Sunday/Monday
+
