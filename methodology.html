@@ -420,6 +420,7 @@
             <li>Healthcare datasets — hospital access and provider availability</li>
             <li>Tax Foundation and public tax datasets — state and local tax estimates</li>
             <li>Geographic datasets — ZIP centroids and metro mapping</li>
+            <li>OpenStreetMap — nearby lifestyle, amenity, recreation, and environmental feature signals</li>
           </ul>
         </article>
 
@@ -431,9 +432,46 @@
             <li>Healthcare reflects access, not quality</li>
             <li>Climate is based on long-term averages</li>
             <li>Housing reflects most recent available market data</li>
+            <li>Lifestyle environment signals reflect modeled nearby activity and recreation patterns, not subjective rankings.</li>
           </ul>
         </article>
 
+
+
+        <article class="card wide">
+          <div class="kicker">Lifestyle Environment &amp; OSM Signals</div>
+          <h3>How lifestyle orientation is calculated</h3>
+
+          <p>
+            RetireSmartZIP uses nearby amenity, recreation, wellness, culture, nature, and activity signals to describe the lifestyle character surrounding a ZIP code.
+          </p>
+
+          <ul>
+            <li>
+              Lifestyle features are evaluated within an approximate 30-mile ecosystem around each ZIP centroid.
+            </li>
+            <li>
+              Signals are grouped into categories such as daily-life access, activity orientation, regional recreation, culture, nature, golf, and water-related lifestyle patterns.
+            </li>
+            <li>
+              Water Orientation is not based only on distance to water. It reflects the relative influence of water-related recreation and waterfront activity within the surrounding lifestyle ecosystem.
+            </li>
+            <li>
+              Dense urban ZIPs may show lower water emphasis even when major water access exists nearby because the broader lifestyle signal mix is more diversified.
+            </li>
+            <li>
+              Smaller coastal, lake, river, or boating communities may show stronger water orientation when water-related recreation appears to play a meaningful role in the surrounding lifestyle pattern.
+            </li>
+          </ul>
+
+          <p class="note">
+            Lifestyle labels are exploratory signals intended to describe surrounding retirement context. They are not rankings, guarantees, or recommendations.
+          </p>
+
+          <p class="note">
+            Lifestyle environment data uses OpenStreetMap-derived features and related classification logic. OpenStreetMap data is © OpenStreetMap contributors and is available under the Open Database License.
+          </p>
+        </article>
 
 
         <article class="card wide">
@@ -499,6 +537,7 @@
             <li>ZIP-level aggregation can hide neighborhood differences</li>
             <li>Healthcare access does not guarantee provider availability</li>
             <li>Tax estimates may differ from actual filing outcomes</li>
+            <li>Lifestyle orientation labels may understate certain dense urban waterfront environments.</li>
           </ul>
         </article>
 

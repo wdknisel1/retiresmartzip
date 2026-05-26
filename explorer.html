@@ -1530,6 +1530,194 @@
   }
 }
 
+
+/* MVP Lifestyle Intelligence tab */
+.tabPanel[data-panel="lifestyle"] .lifestyleHero{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  margin-top:2px;
+  margin-bottom:12px;
+}
+.tabPanel[data-panel="lifestyle"] .lifestyleEyebrow{
+  font-size:13px;
+  color:rgba(232,238,252,.92);
+  font-weight:950;
+  margin-bottom:4px;
+}
+.tabPanel[data-panel="lifestyle"] .lifestyleTitle{
+  color:#F2C23E;
+  font-size:28px;
+  line-height:1.05;
+  font-weight:950;
+  letter-spacing:.1px;
+}
+.tabPanel[data-panel="lifestyle"] .lifestyleSummary{
+  margin-top:6px;
+  max-width:720px;
+  color:rgba(232,238,252,.88);
+  font-size:13.5px;
+  line-height:1.35;
+  font-weight:750;
+}
+.lifestyleCards{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(190px, 1fr));
+  gap:12px;
+  margin-top:10px;
+}
+.lifestyleCard{
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.03);
+  border-radius:var(--r12);
+  padding:13px 14px;
+  min-height:150px;
+}
+.lifestyleCard .lifeK{
+  font-size:12px;
+  font-weight:950;
+  margin-bottom:8px;
+}
+.lifeK.daily{ color:#22d3d0; }
+.lifeK.activity{ color:#a78bfa; }
+.lifeK.recreation{ color:#84cc16; }
+.lifeK.water{ color:#38bdf8; }
+.lifestyleCard .lifeV{
+  color:var(--text);
+  font-size:21px;
+  line-height:1.14;
+  font-weight:950;
+}
+.lifestyleCard .lifeS{
+  margin-top:12px;
+  color:rgba(232,238,252,.78);
+  font-size:12.5px;
+  line-height:1.36;
+  font-weight:750;
+}
+.lifestyleBottom{
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap:12px;
+  margin-top:12px;
+}
+.lifestyleCharacter{
+  border:1px solid rgba(242,194,62,.45);
+  background:rgba(242,194,62,.045);
+  border-radius:var(--r12);
+  padding:14px 16px;
+}
+.lifestyleCharacter h3{
+  margin:0 0 8px 0;
+  color:#F2C23E;
+  font-size:15px;
+  font-weight:950;
+}
+.lifestyleCharacter p{
+  margin:0 0 10px 0;
+  color:rgba(232,238,252,.84);
+  font-size:13px;
+  line-height:1.48;
+  font-weight:750;
+}
+.lifestyleCharacter p:last-child{ margin-bottom:0; }
+.lifestyleSignals{
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.025);
+  border-radius:var(--r12);
+  overflow:hidden;
+}
+.lifestyleSignals h3{
+  margin:0;
+  padding:10px 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  color:var(--text);
+  font-size:14px;
+  font-weight:950;
+}
+.lifestyleSignalRow{
+  display:grid;
+  grid-template-columns: 1fr 132px;
+  gap:10px;
+  align-items:center;
+  padding:6px 14px;
+  border-bottom:1px solid rgba(255,255,255,.045);
+  color:rgba(232,238,252,.82);
+  font-size:12.5px;
+  font-weight:750;
+}
+.lifestyleSignalRow:last-child{ border-bottom:none; }
+.lifeSignalPill{
+  justify-self:end;
+  min-width:104px;
+  text-align:center;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(0,0,0,.14);
+  color:rgba(232,238,252,.86);
+  font-size:11.5px;
+  font-weight:900;
+}
+.lifeSignalPill.strong{ color:#22d3ee; border-color:rgba(34,211,238,.35); background:rgba(34,211,238,.07); }
+.lifeSignalPill.good{ color:#84cc16; border-color:rgba(132,204,22,.35); background:rgba(132,204,22,.07); }
+.lifeSignalPill.mid{ color:#F2C23E; border-color:rgba(242,194,62,.35); background:rgba(242,194,62,.07); }
+.lifeSignalPill.low{ color:#38bdf8; border-color:rgba(56,189,248,.30); background:rgba(56,189,248,.06); }
+.lifeSignalPill.muted{ color:rgba(232,238,252,.55); border-color:rgba(232,238,252,.12); }
+.lifestyleMethodNote{
+  margin-top:10px;
+  color:rgba(232,238,252,.55);
+  font-size:11.5px;
+  font-style:italic;
+  line-height:1.35;
+  font-weight:700;
+}
+@media (max-width:1450px){
+  .lifestyleCards{ grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+  .lifestyleBottom{ grid-template-columns:1fr; }
+}
+@media (max-width:700px){
+  .lifestyleCards{ grid-template-columns:1fr; }
+  .tabPanel[data-panel="lifestyle"] .lifestyleTitle{ font-size:24px; }
+}
+
+/* MVP Lifestyle tooltip polish: cleaner analytics-style help badges */
+.lifestyleCard .infoTip{
+  margin-left:6px;
+  transform:translateY(-1px);
+}
+
+.lifestyleCard .infoTip[data-tip]:hover::after{
+  white-space:normal;
+  width:max-content;
+  max-width:360px;
+  min-width:240px;
+  text-align:left;
+
+  font-weight:400;
+  font-size:0.82rem;
+  line-height:1.45;
+  color:#d9e4f2;
+
+  background:rgba(10,20,35,.96);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  padding:10px 12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.35);
+}
+
+.lifestyleCard .infoTip[data-tip]:hover::before{
+  border-bottom:6px solid rgba(10,20,35,.96);
+}
+
+@media (max-width:700px){
+  .lifestyleCard .infoTip[data-tip]:hover::after{
+    max-width:260px;
+    min-width:220px;
+  }
+}
+
 </style>
 </head>
 
@@ -1633,6 +1821,7 @@
             <div class="tab" data-tab="health">Healthcare</div>
             <div class="tab" data-tab="community">Community</div>
             <div class="tab" data-tab="cost">Cost</div>
+            <div class="tab" data-tab="lifestyle">Lifestyle</div>
           </div>
 
           <div class="tabPanels" id="q2Panels">
@@ -1802,6 +1991,64 @@
               <div class="costTaxReality">
                 <span>Tax Reality:</span>
                 <span id="costTaxRealityText">—</span>
+              </div>
+            </div>
+
+            <div class="tabPanel" data-panel="lifestyle">
+              <div class="lifestyleHero">
+                <div>
+                  <div class="lifestyleEyebrow">Lifestyle Environment</div>
+                  <div class="lifestyleTitle" id="lifeEnvironmentLabel">—</div>
+                  <div class="lifestyleSummary" id="lifeEnvironmentSummary">—</div>
+                </div>
+              </div>
+
+              <div class="lifestyleCards">
+                <div class="lifestyleCard">
+                  <div class="lifeK daily">Daily-Life Structure<span class="infoTip" data-tip="Indicates how locally embedded daily activities appear to be within the surrounding ZIP ecosystem.">ⓘ</span></div>
+                  <div class="lifeV" id="lifeDailyValue">—</div>
+                  <div class="lifeS" id="lifeDailyText">—</div>
+                </div>
+
+                <div class="lifestyleCard">
+                  <div class="lifeK activity">Activity Orientation<span class="infoTip" data-tip="Reflects the relative mix of wellness, recreation, culture, and activity-related lifestyle signals nearby.">ⓘ</span></div>
+                  <div class="lifeV" id="lifeActivityValue">—</div>
+                  <div class="lifeS" id="lifeActivityText">—</div>
+                </div>
+
+                <div class="lifestyleCard">
+                  <div class="lifeK recreation">Recreation Pattern<span class="infoTip" data-tip="Represents the balance between local and regional recreation opportunities surrounding this ZIP.">ⓘ</span></div>
+                  <div class="lifeV" id="lifeRecreationValue">—</div>
+                  <div class="lifeS" id="lifeRecreationText">—</div>
+                </div>
+
+                <div class="lifestyleCard">
+                  <div class="lifeK water">Water Orientation<span class="infoTip" data-tip="Reflects the relative influence of water-related recreation and waterfront activity within the surrounding lifestyle ecosystem. Scores may vary in dense urban areas where lifestyle signals are more diversified.">ⓘ</span></div>
+                  <div class="lifeV" id="lifeWaterValue">—</div>
+                  <div class="lifeS" id="lifeWaterText">—</div>
+                </div>
+              </div>
+
+              <div class="lifestyleBottom">
+                <div class="lifestyleCharacter">
+                  <h3>Lifestyle Character</h3>
+                  <p id="lifeRealityText1">—</p>
+                  <p id="lifeRealityText2">—</p>
+                </div>
+
+                <div class="lifestyleSignals">
+                  <h3>Lifestyle Signals</h3>
+                  <div class="lifestyleSignalRow"><span>Embedded Daily Life</span><span class="lifeSignalPill" id="sigEmbedded">—</span></div>
+                  <div class="lifestyleSignalRow"><span>Outdoor Orientation</span><span class="lifeSignalPill" id="sigOutdoor">—</span></div>
+                  <div class="lifestyleSignalRow"><span>Nature Integration</span><span class="lifeSignalPill" id="sigNature">—</span></div>
+                  <div class="lifestyleSignalRow"><span>Cultural Infrastructure</span><span class="lifeSignalPill" id="sigCulture">—</span></div>
+                  <div class="lifestyleSignalRow"><span>Car Dependency</span><span class="lifeSignalPill" id="sigCar">—</span></div>
+                  <div class="lifestyleSignalRow"><span>Regional Recreation</span><span class="lifeSignalPill" id="sigRegionalRec">—</span></div>
+                </div>
+              </div>
+
+              <div class="lifestyleMethodNote">
+                Lifestyle environment is derived from nearby amenity and recreation patterns using OSM-based signals and reflects the character of everyday life in this ZIP.
               </div>
             </div>
           </div>
@@ -2737,6 +2984,32 @@ return { data: rows, url };
     }
 
 
+
+    async function loadLifestyle(){
+      const candidates = [
+        "./data/zip_lifestyle.json",
+        "./data/zip_lifestyle",
+        "./app/data/zip_lifestyle.json",
+        "/data/zip_lifestyle.json",
+        "/app/data/zip_lifestyle.json"
+      ];
+
+      let lastErr = null;
+      for(const url of candidates){
+        try{
+          const r = await fetch(url, { cache: "no-store" });
+          if(!r.ok) throw new Error(`HTTP ${r.status} ${r.statusText}`);
+          const data = await r.json();
+          const rows = Array.isArray(data) ? data : data.zips;
+          if(!Array.isArray(rows)) throw new Error("Invalid lifestyle JSON format");
+          return { data: rows, url };
+        }catch(e){
+          lastErr = e;
+        }
+      }
+      throw lastErr || new Error("Unable to load lifestyle JSON");
+    }
+
     async function loadCostTax(){
       const candidates = [
         "./data/zip_cost_tax.json",
@@ -2798,6 +3071,29 @@ return { data: rows, url };
         row.TotalMonthlyTax_Married = c.TotalMonthlyTax_Married ?? row.TotalMonthlyTax_Married;
 
         costTaxIndex.set(zip, c);
+        merged++;
+      }
+      return merged;
+    }
+
+
+    function mergeLifestyleRows(rows){
+      if(!Array.isArray(rows)) return 0;
+      let merged = 0;
+      for(const l of rows){
+        const zip = normalizeZip(l.ZipCode || l.ZIP || l.zip);
+        if(!zip || !zipIndex.has(zip)) continue;
+        const row = zipIndex.get(zip);
+
+        row.LifestyleEnvironmentLabel = l.LifestyleEnvironmentLabel ?? row.LifestyleEnvironmentLabel;
+        row.LifestyleEnvironmentSummary = l.LifestyleEnvironmentSummary ?? row.LifestyleEnvironmentSummary;
+        row.WaterOrientation = l.WaterOrientation ?? row.WaterOrientation;
+        row.EmbeddedDailyLifeSignal = l.EmbeddedDailyLifeSignal ?? row.EmbeddedDailyLifeSignal;
+        row.OutdoorOrientationSignal = l.OutdoorOrientationSignal ?? row.OutdoorOrientationSignal;
+        row.NatureIntegrationSignal = l.NatureIntegrationSignal ?? row.NatureIntegrationSignal;
+        row.CulturalInfrastructureSignal = l.CulturalInfrastructureSignal ?? row.CulturalInfrastructureSignal;
+        row.CarDependencySignal = l.CarDependencySignal ?? row.CarDependencySignal;
+        row.RegionalRecreationSignal = l.RegionalRecreationSignal ?? row.RegionalRecreationSignal;
         merged++;
       }
       return merged;
@@ -3099,6 +3395,162 @@ function ingestRows(rows){
       return true;
     }
 
+
+    function signalRank(v){
+      const s = safeStr(v, "").toLowerCase();
+      if(s.includes("very strong")) return 5;
+      if(s.includes("strong")) return 4;
+      if(s.includes("moderate")) return 3;
+      if(s.includes("light")) return 2;
+      if(s.includes("minimal") || s.includes("low")) return 1;
+      return 0;
+    }
+
+    function signalPillClass(v){
+      const r = signalRank(v);
+      if(r >= 5) return "strong";
+      if(r >= 4) return "good";
+      if(r >= 3) return "mid";
+      if(r >= 1) return "low";
+      return "muted";
+    }
+
+    function setSignalPill(id, value){
+      const el = $(id);
+      if(!el) return;
+      const v = safeStr(value, "—") || "—";
+      el.textContent = v;
+      el.className = "lifeSignalPill " + signalPillClass(v);
+    }
+
+    function dailyLifeLabel(v){
+      const r = signalRank(v);
+      if(r >= 5) return "Highly Embedded";
+      if(r >= 4) return "Well Integrated";
+      if(r >= 3) return "Balanced Local Access";
+      if(r >= 2) return "Regionally Distributed";
+      if(r >= 1) return "Limited Local Integration";
+      return "Data not available";
+    }
+
+    function dailyLifeText(v){
+      const r = signalRank(v);
+      if(r >= 5) return "Many daily needs and activities are available nearby without requiring frequent personal driving.";
+      if(r >= 4) return "Daily amenities and neighborhood services are generally well connected within the surrounding area.";
+      if(r >= 3) return "Daily life blends nearby services with some regional trips for broader choices and activities.";
+      if(r >= 2) return "Everyday access is more distributed, with residents often relying on nearby towns or corridors.";
+      if(r >= 1) return "Daily services appear less embedded locally, so broader regional access may matter more.";
+      return "Lifestyle structure data is not available for this ZIP.";
+    }
+
+    function activityLabel(row){
+      const o = signalRank(row.OutdoorOrientationSignal);
+      const c = signalRank(row.CulturalInfrastructureSignal);
+      if(o >= 5 && c >= 4) return "Outdoor + Culture Oriented";
+      if(o >= 5) return "Outdoor Recreation Focused";
+      if(o >= 4 && c >= 4) return "Active Wellness + Culture";
+      if(c >= 4 && o >= 3) return "Strong Fitness + Culture";
+      if(c >= 4) return "Culture + Services Oriented";
+      if(o >= 4) return "Outdoor Activity Oriented";
+      if(o >= 3 || c >= 3) return "Balanced Activity Mix";
+      return "Light Activity Signal";
+    }
+
+    function activityText(row){
+      const o = signalRank(row.OutdoorOrientationSignal);
+      const c = signalRank(row.CulturalInfrastructureSignal);
+      if(o >= 5 && c >= 4) return "This ZIP combines strong outdoor recreation access with meaningful cultural, wellness, and social infrastructure.";
+      if(o >= 5) return "This ZIP shows a very strong outdoor recreation pattern, with activity often shaped by nearby terrain, trails, or regional destinations.";
+      if(c >= 4 && o >= 3) return "This ZIP shows a strong concentration of wellness, fitness, social, and cultural infrastructure.";
+      if(c >= 4) return "This ZIP leans toward culture, services, dining, wellness, and neighborhood activity infrastructure.";
+      if(o >= 4) return "This ZIP leans toward outdoor activity, recreation access, and active-lifestyle patterns.";
+      return "This ZIP shows a more balanced or lighter activity pattern across the available lifestyle signals.";
+    }
+
+    function recreationLabel(v){
+      const r = signalRank(v);
+      if(r >= 5) return "Very Strong Regional Recreation";
+      if(r >= 4) return "Strong Regional Recreation";
+      if(r >= 3) return "Moderate Regional Recreation";
+      if(r >= 2) return "Light Regional Recreation";
+      if(r >= 1) return "Limited Regional Recreation";
+      return "Data not available";
+    }
+
+    function recreationText(v){
+      const r = signalRank(v);
+      if(r >= 5) return "Recreation access is strongly supported by nearby regional destinations, corridors, and activity ecosystems.";
+      if(r >= 4) return "Residents have meaningful access to regional recreation options beyond the immediate neighborhood.";
+      if(r >= 3) return "Recreation access is balanced between local neighborhood amenities and nearby regional destinations.";
+      if(r >= 2) return "Regional recreation is present but appears less dominant in the surrounding lifestyle ecosystem.";
+      if(r >= 1) return "Regional recreation does not appear to be a major defining signal for this ZIP.";
+      return "Recreation pattern data is not available for this ZIP.";
+    }
+
+    function waterText(v){
+      const s = safeStr(v, "").toLowerCase();
+      if(s.includes("very strong") || s.includes("strong")) return "Water-related recreation appears to be a meaningful part of the surrounding lifestyle ecosystem.";
+      if(s.includes("moderate")) return "Water-related recreation is present, but it is balanced with other lifestyle and recreation patterns.";
+      if(s.includes("light")) return "Water access appears secondary rather than central to this ZIP's lifestyle identity.";
+      if(s.includes("minimal") || s.includes("low")) return "Water-related recreation does not appear to be a dominant part of the lifestyle ecosystem in this ZIP.";
+      return "Water orientation data is not available for this ZIP.";
+    }
+
+    function carDependencyText(v){
+      const r = signalRank(v);
+      if(r >= 5) return "Personal driving appears to play a major role in everyday mobility and regional access.";
+      if(r >= 4) return "Personal driving is likely important for many daily and regional activities.";
+      if(r >= 3) return "Mobility is mixed, with both local access and personal driving playing meaningful roles.";
+      if(r >= 2) return "This ZIP may support more flexible mobility, with less need to personally drive for every daily activity.";
+      if(r >= 1) return "This ZIP appears to have low personal-driving dependence compared with more distributed suburban or regional settings.";
+      return "Mobility pattern data is not available.";
+    }
+
+    function buildLifestyleReality(row){
+      const label = safeStr(row.LifestyleEnvironmentLabel, "Lifestyle Environment");
+      const daily = dailyLifeLabel(row.EmbeddedDailyLifeSignal);
+      const activity = activityLabel(row);
+      const rec = recreationLabel(row.RegionalRecreationSignal);
+      const water = safeStr(row.WaterOrientation, "not available");
+
+      const p1 = `This ZIP behaves like a ${label.toLowerCase()} where ${daily.toLowerCase()} daily-life patterns and ${activity.toLowerCase()} help shape everyday living.`;
+      const p2 = `Recreation reads as ${rec.toLowerCase()}, while water orientation is ${water.toLowerCase()}. ${carDependencyText(row.CarDependencySignal)}`;
+      return [p1, p2];
+    }
+
+    function renderLifestyle(row){
+      if(!$("lifeEnvironmentLabel")) return;
+
+      const hasLifestyle = !!safeStr(row.LifestyleEnvironmentLabel, "");
+      $("lifeEnvironmentLabel").textContent = hasLifestyle ? row.LifestyleEnvironmentLabel : "Lifestyle data not available";
+      $("lifeEnvironmentSummary").textContent = hasLifestyle
+        ? safeStr(row.LifestyleEnvironmentSummary, "Lifestyle environment summary is not available for this ZIP.")
+        : "Lifestyle Intelligence is not available for this ZIP yet.";
+
+      $("lifeDailyValue").textContent = dailyLifeLabel(row.EmbeddedDailyLifeSignal);
+      $("lifeDailyText").textContent = dailyLifeText(row.EmbeddedDailyLifeSignal);
+
+      $("lifeActivityValue").textContent = activityLabel(row);
+      $("lifeActivityText").textContent = activityText(row);
+
+      $("lifeRecreationValue").textContent = recreationLabel(row.RegionalRecreationSignal);
+      $("lifeRecreationText").textContent = recreationText(row.RegionalRecreationSignal);
+
+      $("lifeWaterValue").textContent = safeStr(row.WaterOrientation, "Data not available");
+      $("lifeWaterText").textContent = waterText(row.WaterOrientation);
+
+      const reality = buildLifestyleReality(row);
+      $("lifeRealityText1").textContent = reality[0];
+      $("lifeRealityText2").textContent = reality[1];
+
+      setSignalPill("sigEmbedded", row.EmbeddedDailyLifeSignal);
+      setSignalPill("sigOutdoor", row.OutdoorOrientationSignal);
+      setSignalPill("sigNature", row.NatureIntegrationSignal);
+      setSignalPill("sigCulture", row.CulturalInfrastructureSignal);
+      setSignalPill("sigCar", row.CarDependencySignal);
+      setSignalPill("sigRegionalRec", row.RegionalRecreationSignal);
+    }
+
     function applySelection(row, opts={pan:false}){
       selectedRow = row;
       selectedZip = row.ZipCode;
@@ -3131,6 +3583,8 @@ function ingestRows(rows){
       $("aglCost").textContent = formatCostAtGlance(row);
       $("aglHealthcare").textContent = buildAtGlanceHealthcare(row);
       $("aglSetting").textContent = row.SettingAtAGlance || "—";
+
+      renderLifestyle(row);
 
 
       // Housing snapshot
@@ -4272,6 +4726,16 @@ async function boot(){
           $("mapStats").textContent += ` • Healthcare JSON unavailable`;
         }
 
+
+
+        try{
+          const lf = await loadLifestyle();
+          const mergedLifestyle = mergeLifestyleRows(lf.data);
+          $("mapStats").textContent += ` • Lifestyle: ${mergedLifestyle.toLocaleString()} ZIPs`;
+        }catch(lfErr){
+          console.warn("Lifestyle JSON unavailable:", lfErr);
+          $("mapStats").textContent += ` • Lifestyle JSON unavailable`;
+        }
 
         try{
           const ct = await loadCostTax();

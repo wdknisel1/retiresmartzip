@@ -1,0 +1,86 @@
+RetireSmartZIP Release Kit
+==========================
+Region: Sarasota, FL
+Article URL: https://retiresmartzip.com/articles/sarasota-fl-retirement-lifestyle-intelligence.html
+Explorer URL: https://retiresmartzip.com/explorer.html
+Matching ZIPs found: 13
+Representative ZIPs: 34234, 34243, 34239, 34236
+Contrast dimensions: Home Value Contrast: 34234; Lifestyle Environment Contrast: 34243; Healthcare Access Contrast: 34239; Retiree Concentration Contrast: 34236
+
+Core thesis
+-----------
+A retirement city can sound right. A neighboring ZIP may work better. Not every affordable ZIP feels the same to live in.
+
+LinkedIn post seed
+------------------
+A retirement search often starts with a city name: Is Sarasota, FL a good place to retire?
+
+But retirement does not happen at the city-average level. It happens inside a specific ZIP code — with its own housing cost, healthcare access, tax picture, climate pattern, lifestyle environment, and community feel.
+
+RetireSmartZIP found 13 matching ZIPs around Sarasota, FL and highlighted representative examples to show how nearby ZIPs can produce very different retirement trade-offs.
+
+The bigger lesson: the best retirement fit may not be the city or ZIP you searched first.
+
+Read the ZIP-level briefing:
+https://retiresmartzip.com/articles/sarasota-fl-retirement-lifestyle-intelligence.html
+
+Explore the ZIPs directly:
+https://retiresmartzip.com/explorer.html
+
+#RetirementPlanning #Retirement #DataAnalytics #LocationIntelligence #RetirementLifestyle #RetireSmartZIP
+
+Facebook post seed
+------------------
+Thinking about retiring near Sarasota, FL?
+
+The city may sound right — but the better retirement fit might be a nearby ZIP code.
+
+RetireSmartZIP compared ZIP-level signals around Sarasota: housing, healthcare access, lifestyle environment, taxes, climate, and community feel.
+
+A retirement city can sound right. A neighboring ZIP may work better.
+
+Read the article:
+https://retiresmartzip.com/articles/sarasota-fl-retirement-lifestyle-intelligence.html
+
+Then explore nearby ZIPs:
+https://retiresmartzip.com/explorer.html
+
+LinkedIn carousel outline
+-------------------------
+Slide 1: Is Sarasota, FL really one retirement answer?
+Slide 2: RSZ found 13 matching ZIPs — and they do not all behave the same.
+Slide 3: Housing can shift dramatically from ZIP to ZIP.
+Slide 4: Healthcare access can change even across nearby ZIPs.
+Slide 5: Lifestyle environments can change how retirement feels day to day.
+Slide 6: A balanced nearby ZIP may be the real retirement fit.
+Slide 7: Explore the surrounding ZIPs in RetireSmartZIP.
+
+Facebook image carousel sequence
+--------------------------------
+1. Regional map / Explorer overview screenshot
+2. Home or housing tab screenshot
+3. Healthcare tab screenshot
+4. Full Explorer screenshot with CTA
+
+Screenshot checklist
+--------------------
+[ ] Explorer map centered on Sarasota, FL
+[ ] ZIP result list visible if possible
+[ ] Home/Housing tab screenshot
+[ ] Healthcare tab screenshot
+[ ] Optional Cost tab screenshot
+[ ] Full Explorer page screenshot
+[ ] Article hero / published page screenshot
+
+Release checklist
+-----------------
+[ ] Confirm article generated and opens locally
+[ ] Add article to articles/index.html
+[ ] Add sitemap entry to sitemap.xml
+[ ] Commit and push to GitHub
+[ ] Validate production URL
+[ ] Request indexing in Google Search Console
+[ ] Publish LinkedIn carousel
+[ ] Publish Facebook carousel
+[ ] Review GA4 + social metrics Sunday/Monday
+
