@@ -6,7 +6,7 @@
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://retiresmartzip.com/explorer">
+<meta property="og:url" content="https://retiresmartzip.com/explorer.html">
 <meta property="og:title" content="Explore ZIP Codes for Retirement | RetireSmartZIP™">
 <meta property="og:description" content="Compare ZIP codes across housing, climate, and healthcare to find your best place to retire.">
 <meta property="og:image" content="https://retiresmartzip.com/image/og-preview.png">
@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://retiresmartzip.com/image/og-preview.png">
 
 <!-- Canonical -->
-<link rel="canonical" href="https://retiresmartzip.com/explorer">
+<link rel="canonical" href="https://retiresmartzip.com/explorer.html">
 <meta property="og:site_name" content="RetireSmartZIP">
 <meta name="robots" content="index,follow,max-image-preview:large">
 
@@ -36,7 +36,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "RetireSmartZIP Explorer",
-  "url": "https://retiresmartzip.com/explorer",
+  "url": "https://retiresmartzip.com/explorer.html",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
   "description": "Explore U.S. ZIP codes for retirement using housing, climate, healthcare, and cost-of-living insights."
@@ -1718,6 +1718,314 @@
   }
 }
 
+
+/* ------------------------------------------------------------------
+   RSZ Explorer UX Sprint RevA
+   Q1/Q2/Q3/Q4 focus behavior:
+   - Default: Q4 orientation guide is visible for first-time users.
+   - After a ZIP/search interaction: Q4 minimizes and Q2 expands down the right side.
+   - User can restore/hide the guide with the Guide button.
+   - Q3 mode panels stay compact and only the active mode is visible.
+------------------------------------------------------------------ */
+#panelQ1{ grid-column:1; grid-row:1; }
+#panelQ2{ grid-column:2; grid-row:1; }
+#panelQ3{ grid-column:1; grid-row:2; }
+#panelQ4{ grid-column:2; grid-row:2; }
+
+.grid.workMode #panelQ2{
+  grid-row:1 / span 2;
+}
+.grid.workMode #panelQ4{
+  display:none;
+}
+
+#guideToggleBtn{
+  min-width:86px;
+  text-align:center;
+}
+#guideCollapseBtn{
+  min-width:82px;
+  text-align:center;
+}
+
+.grid.workMode #panelQ2 .q2Body{
+  padding-bottom:18px;
+}
+
+.modeWrap{
+  padding:8px 10px !important;
+  margin-bottom:8px !important;
+}
+.modeSub{
+  font-size:11.5px !important;
+}
+.modeBtn{
+  padding:7px 11px !important;
+}
+.q3Body .section{
+  margin-top:10px !important;
+  padding-top:10px !important;
+}
+.q3Hint{
+  margin-top:8px !important;
+}
+#zipBlock .placeRow,
+#placeBlock .placeRow{
+  margin-top:8px !important;
+}
+
+.q4Body .tipBox:first-child{
+  border-color:rgba(242,194,62,.24);
+  background:rgba(242,194,62,.055);
+}
+
+@media (max-width:1100px){
+  #panelQ1,#panelQ2,#panelQ3,#panelQ4{
+    grid-column:auto;
+    grid-row:auto;
+  }
+  .grid.workMode #panelQ2{
+    grid-row:auto;
+  }
+  .grid.workMode #panelQ4{
+    display:block;
+  }
+}
+
+
+/* ------------------------------------------------------------------
+   RSZ Explorer UX Sprint RevB — Phone layout simplification
+   Goal: on phone-sized screens, show only the two decision-critical panels:
+   Q1 Navigator Map + Q2 ZIP Overview.
+   Q3 Explore ZIPs and Q4 Orientation Guide are hidden on phones to reduce
+   scroll fatigue and keep the mobile experience focused.
+------------------------------------------------------------------ */
+@media (max-width: 760px){
+  body{
+    overflow:auto !important;
+  }
+
+  .wrap{
+    height:auto !important;
+    padding:8px !important;
+  }
+
+  .grid,
+  .grid.workMode{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    grid-template-rows:auto auto !important;
+    gap:10px !important;
+    height:auto !important;
+  }
+
+  #panelQ1,
+  #panelQ2{
+    grid-column:1 !important;
+    grid-row:auto !important;
+    display:block !important;
+    width:100% !important;
+  }
+
+  /* Mobile focus mode: hide Q3/Q4 entirely on phones */
+  #panelQ3,
+  #panelQ4{
+    display:none !important;
+  }
+
+  /* Map gets enough room, but no longer dominates the full phone screen */
+  #panelQ1{
+    height:58vh !important;
+    min-height:390px !important;
+    max-height:520px !important;
+  }
+
+  #panelQ1 .panelHeader{
+    padding:10px 12px 12px 12px !important;
+  }
+
+  #panelQ1 .panelHeader .desc{
+    font-size:11px !important;
+    line-height:1.25 !important;
+  }
+
+  #map{
+    inset:58px 0 0 0 !important;
+    min-height:0 !important;
+  }
+
+  /* ZIP Overview becomes the main mobile work area */
+  #panelQ2{
+    min-height:calc(100vh - 96px) !important;
+    height:auto !important;
+  }
+
+  #panelQ2 .panelHeader{
+    padding:10px 12px 12px 12px !important;
+  }
+
+  #panelQ2 .q2Body{
+    position:relative !important;
+    inset:auto !important;
+    overflow:visible !important;
+    padding:10px !important;
+  }
+
+  #panelQ2 .selectedRow{
+    display:grid !important;
+    grid-template-columns:1fr auto !important;
+    gap:10px !important;
+    align-items:center !important;
+    padding:10px !important;
+  }
+
+  #panelQ2 .selectedRow .left .zip{
+    font-size:20px !important;
+  }
+
+  #showOnMapBtn{
+    min-width:56px !important;
+    padding:8px 10px !important;
+    line-height:1.1 !important;
+    text-align:center !important;
+  }
+
+  #showOnMapBtn::before{
+    content:"Map";
+    font-size:0;
+  }
+
+  #showOnMapBtn{
+    font-size:0 !important;
+  }
+
+  #showOnMapBtn::before{
+    font-size:12px !important;
+  }
+
+  #resetBtn{
+    padding:8px 10px !important;
+    font-size:12px !important;
+  }
+
+  #guideToggleBtn{
+    display:none !important;
+  }
+
+  .atGlance{
+    margin-top:10px !important;
+    padding:10px !important;
+  }
+
+  .atGlanceGrid{
+    grid-template-columns:1fr !important;
+    gap:4px !important;
+  }
+
+  .atGlanceLabel{
+    margin-top:6px !important;
+  }
+
+  .tabs{
+    gap:6px !important;
+    overflow-x:auto !important;
+    padding-bottom:10px !important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .tab{
+    flex:0 0 auto !important;
+    padding:8px 10px !important;
+  }
+
+  .cards,
+  .wideRow,
+  .lifestyleCards,
+  .lifestyleBottom,
+  .tabPanel[data-panel="cost"] .cards,
+  .tabPanel[data-panel="health"] .cards{
+    grid-template-columns:1fr !important;
+  }
+
+  .card{
+    min-height:0 !important;
+  }
+
+  .fullscreen{
+    inset:8px !important;
+  }
+
+  .panelHeader .actions .miniBtn[data-fs]{
+    display:none !important;
+  }
+
+  .topbar{
+    height:72px !important;
+    padding:0 14px !important;
+  }
+
+  .brandTitle{
+    font-size:24px !important;
+  }
+
+  .logoImg{
+    height:44px !important;
+  }
+
+  .rightbar{
+    display:none !important;
+  }
+}
+
+
+/* ------------------------------------------------------------------
+   RSZ Explorer UX Sprint RevC — Mobile domain tabs
+   Goal: on phone-sized screens, show Q2 domain tabs as two clean rows
+   instead of a clipped horizontal row.
+   Desktop/tablet behavior remains unchanged.
+------------------------------------------------------------------ */
+@media (max-width: 760px){
+  #panelQ2 .tabs{
+    display:grid !important;
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:8px !important;
+    overflow:visible !important;
+    padding:10px 0 14px 0 !important;
+    margin-top:10px !important;
+  }
+
+  #panelQ2 .tab{
+    width:100% !important;
+    min-width:0 !important;
+    flex:none !important;
+    justify-content:center !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+    font-size:11.5px !important;
+    line-height:1.05 !important;
+    padding:9px 6px !important;
+  }
+}
+
+
+/* ------------------------------------------------------------------
+   RSZ Explorer UX Sprint RevD — Map focus toggle
+   Goal: make the Q2 map focus control behave like a clear two-state toggle.
+   Default focus is ZIP. User can switch to Metro focus, then switch back.
+------------------------------------------------------------------ */
+#focusMetroBtn.active{
+  border-color: rgba(242,194,62,.45) !important;
+  background: rgba(242,194,62,.14) !important;
+  color: rgba(242,194,62,.98) !important;
+}
+
+@media (max-width: 760px){
+  #focusMetroBtn{
+    min-width:116px !important;
+    text-align:center !important;
+  }
+}
+
 </style>
 </head>
 
@@ -1775,6 +2083,7 @@
             <div class="desc">Facts about this location — deeper analysis comes later.</div>
           </div>
           <div class="actions">
+            <div class="miniBtn" id="guideToggleBtn" title="Show or hide the Orientation Guide">Hide guide</div>
             <div class="miniBtn" data-fs="panelQ2" title="Fullscreen">⤢</div>
           </div>
         </div>
@@ -2053,7 +2362,7 @@
             </div>
           </div>
 <div style="display:flex; gap:10px; margin-top:12px;">
-            <div class="miniBtn primary" id="focusMetroBtn">Focus map to metro points</div>
+            <div class="miniBtn primary" id="focusMetroBtn">Focus: ZIP</div>
             <div class="miniBtn" id="clearZipBtn">Clear selected ZIP</div>
           </div>
 
@@ -2188,6 +2497,7 @@
             <div class="desc">What to do next</div>
           </div>
           <div class="actions">
+            <div class="miniBtn" id="guideCollapseBtn" title="Minimize this guide">Minimize</div>
             <div class="miniBtn" data-fs="panelQ4" title="Fullscreen">⤢</div>
           </div>
         </div>
@@ -3554,6 +3864,9 @@ function ingestRows(rows){
     function applySelection(row, opts={pan:false}){
       selectedRow = row;
       selectedZip = row.ZipCode;
+      mapFocusMode = "ZIP";
+      clearMetroLayer();
+      updateMapFocusButton();
 
       trackEvent("rsz_zip_view", {
         zip_code: safeStr(row.ZipCode, ""),
@@ -3754,6 +4067,7 @@ function ingestRows(rows){
 
       placeZipMarker(row);
       $("startHint").style.display = "none";
+      autoMinimizeGuide(selectionSourceFromOpts(opts) || "zip_selection");
 
       if(opts.pan){
         map.setView([row.Lat, row.Lng], Math.max(map.getZoom(), 9), { animate:true });
@@ -3763,6 +4077,41 @@ function ingestRows(rows){
 
     function clearMetroLayer(){
       if(metroLayer) metroLayer.clearLayers();
+    }
+
+    function updateMapFocusButton(){
+      const btn = $("focusMetroBtn");
+      if(!btn) return;
+      const isMetro = mapFocusMode === "METRO";
+      btn.textContent = isMetro ? "Focus: Metro ✓" : "Focus: ZIP";
+      btn.classList.toggle("active", isMetro);
+      btn.title = isMetro ? "Click to return map focus to the selected ZIP" : "Click to show nearby metro points";
+    }
+
+    function focusSelectedZip(){
+      mapFocusMode = "ZIP";
+      clearMetroLayer();
+      if(selectedRow){
+        map.setView([selectedRow.Lat, selectedRow.Lng], Math.max(map.getZoom(), 9), { animate:true });
+        scopeMode = "ZIP";
+        updateScopeLabel();
+      }
+      updateMapFocusButton();
+    }
+
+    function focusMetroPoints(){
+      if(selectedRow && selectedRow.RegionName && selectedRow.State){
+        mapFocusMode = "METRO";
+        drawMetroPoints(selectedRow.RegionName, selectedRow.State);
+        map.setView([selectedRow.Lat, selectedRow.Lng], Math.min(Math.max(map.getZoom(), 5), 6), { animate:true });
+        scopeMode = "REGION";
+        updateScopeLabel();
+        updateMapFocusButton();
+        return true;
+      }
+      setStatus(true, "Select a ZIP first (or click map)");
+      updateMapFocusButton();
+      return false;
     }
 
     function drawMetroPoints(region, state){
@@ -3962,6 +4311,38 @@ function ingestRows(rows){
 
       setTimeout(()=> map.invalidateSize(), 80);
     }
+
+    // Q4 Orientation Guide focus behavior
+    let q4Minimized = false;
+
+    function setGuideMinimized(isMinimized, source="manual"){
+      q4Minimized = !!isMinimized;
+      const grid = $("gridRoot");
+      if(grid) grid.classList.toggle("workMode", q4Minimized);
+
+      const toggleBtn = $("guideToggleBtn");
+      if(toggleBtn) toggleBtn.textContent = q4Minimized ? "Show guide" : "Hide guide";
+
+      const collapseBtn = $("guideCollapseBtn");
+      if(collapseBtn) collapseBtn.textContent = q4Minimized ? "Restore" : "Minimize";
+
+      if(source){
+        trackEvent("rsz_orientation_guide_toggle", {
+          guide_state: q4Minimized ? "minimized" : "visible",
+          source,
+          device_category: getDeviceCategory()
+        });
+      }
+
+      setTimeout(()=>{ if(map) map.invalidateSize(); }, 120);
+    }
+
+    function autoMinimizeGuide(source="interaction"){
+      // Keep the guide visible on mobile/stacked layout where panels already flow vertically.
+      if(window.innerWidth <= 1100) return;
+      if(!q4Minimized) setGuideMinimized(true, source);
+    }
+
 
     // Guided Search
     function chipEl(label, active, onClick, count=null, disabled=false){
@@ -4624,10 +5005,17 @@ function ingestRows(rows){
         btn.addEventListener("click", () => { const panelId = btn.getAttribute("data-fs"); trackEvent("rsz_fullscreen_open", { panel_id: panelId, device_category: getDeviceCategory() }); enterFullscreen(panelId); });
       });
 
+      $("guideToggleBtn")?.addEventListener("click", () => {
+        setGuideMinimized(!q4Minimized, "q2_header_button");
+      });
+
+      $("guideCollapseBtn")?.addEventListener("click", () => {
+        setGuideMinimized(!q4Minimized, "q4_header_button");
+      });
+
       $("showOnMapBtn").addEventListener("click", () => {
         if(selectedRow){
-          map.setView([selectedRow.Lat, selectedRow.Lng], Math.max(map.getZoom(), 9), { animate:true });
-          scopeMode = "ZIP"; updateScopeLabel();
+          focusSelectedZip();
           trackEvent("rsz_show_on_map", { zip_code: selectedRow.ZipCode, device_category: getDeviceCategory() });
         }
       });
@@ -4636,12 +5024,16 @@ function ingestRows(rows){
       $("clearZipBtn").addEventListener("click", () => { trackEvent("rsz_clear_selection", { trigger: "clear_zip_button", device_category: getDeviceCategory() }); clearSelection(); });
 
       $("focusMetroBtn").addEventListener("click", () => {
-        if(selectedRow && selectedRow.RegionName && selectedRow.State){
-          drawMetroPoints(selectedRow.RegionName, selectedRow.State);
-          scopeMode = "REGION"; updateScopeLabel();
-          trackEvent("rsz_focus_metro", { zip_code: selectedRow.ZipCode, region_name: safeStr(selectedRow.RegionName, ""), state: safeStr(selectedRow.State, ""), device_category: getDeviceCategory() });
+        if(mapFocusMode === "METRO"){
+          focusSelectedZip();
+          if(selectedRow){
+            trackEvent("rsz_focus_zip", { zip_code: selectedRow.ZipCode, device_category: getDeviceCategory() });
+          }
         } else {
-          setStatus(true, "Select a ZIP first (or click map)");
+          const ok = focusMetroPoints();
+          if(ok){
+            trackEvent("rsz_focus_metro", { zip_code: selectedRow.ZipCode, region_name: safeStr(selectedRow.RegionName, ""), state: safeStr(selectedRow.State, ""), device_category: getDeviceCategory() });
+          }
         }
       });
 
@@ -4651,14 +5043,15 @@ function ingestRows(rows){
           document.querySelectorAll("#q2Tabs .tab").forEach(x=>x.classList.toggle("active", x===t));
           document.querySelectorAll("#q2Panels .tabPanel").forEach(p=>p.classList.toggle("active", p.dataset.panel===key));
           trackEvent("rsz_q2_tab", { tab_name: key, zip_code: selectedZip || "", device_category: getDeviceCategory() });
+          autoMinimizeGuide("q2_tab");
         });
       });
 
 $("gsClearBtn").addEventListener("click", () => { resetLowerFrom("all"); trackEvent("rsz_guided_clear", { device_category: getDeviceCategory() }); renderGuidedSearch(); });
 
-      $("modeGuidedBtn")?.addEventListener("click", () => { setQ3Mode("guided"); });
-      $("modePlaceBtn")?.addEventListener("click", () => { setQ3Mode("place"); });
-      $("modeZipBtn")?.addEventListener("click", () => { setQ3Mode("zip"); });
+      $("modeGuidedBtn")?.addEventListener("click", () => { setQ3Mode("guided"); autoMinimizeGuide("q3_mode_guided"); });
+      $("modePlaceBtn")?.addEventListener("click", () => { setQ3Mode("place"); autoMinimizeGuide("q3_mode_place"); });
+      $("modeZipBtn")?.addEventListener("click", () => { setQ3Mode("zip"); autoMinimizeGuide("q3_mode_zip"); });
 
 
       $("placeState")?.addEventListener("change", (e) => {
@@ -4700,7 +5093,11 @@ $("gsClearBtn").addEventListener("click", () => { resetLowerFrom("all"); trackEv
       ["aglClimate","aglCost","aglHealthcare","aglSetting"].forEach(id => { const el=$(id); if(el) el.textContent = "—"; });
 
       if(zipMarker) { zipMarker.remove(); zipMarker = null; }
+      mapFocusMode = "ZIP";
+      clearMetroLayer();
+      updateMapFocusButton();
       $("startHint").style.display = "block";
+      setGuideMinimized(false, "clear_selection");
 
       scopeMode = gs.RegionName ? "REGION" : "USA";
       updateScopeLabel();

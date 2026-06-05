@@ -3,22 +3,50 @@
 
   <url>
     <loc>https://retiresmartzip.com/</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
   </url>
 
   <url>
     <loc>https://retiresmartzip.com/index.html</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
   </url>
 
   <url>
     <loc>https://retiresmartzip.com/explorer.html</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
   </url>
 
   <url>
     <loc>https://retiresmartzip.com/methodology.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
   </url>
 
   <url>
     <loc>https://retiresmartzip.com/articles/index.html</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/traverse-city-mi-retirement-lifestyle-intelligence.html</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/sarasota-fl-retirement-lifestyle-intelligence.html</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
@@ -30,30 +58,32 @@
 
   <url>
     <loc>https://retiresmartzip.com/articles/how-to-choose-retirement-zip-code.html</loc>
-  </url>
-
-  <url>
-    <loc>https://retiresmartzip.com/articles/one-number-retirement.html</loc>
-  </url>
-
-  <url>
-    <loc>https://retiresmartzip.com/articles/retire-1500-month.html</loc>
-  </url>
-
-  <url>
-    <loc>https://retiresmartzip.com/articles/same-city-different-retirement.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
 
   <url>
     <loc>https://retiresmartzip.com/articles/zip-code-retirement-meaning.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
 
   <url>
-    <loc>https://retiresmartzip.com/articles/cost-of-living-tampa-fl.html</loc>
+    <loc>https://retiresmartzip.com/articles/one-number-retirement.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
   </url>
 
   <url>
-    <loc>https://retiresmartzip.com/articles/cost-of-living-sarasota-fl.html</loc>
+    <loc>https://retiresmartzip.com/articles/retire-1500-month.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/same-city-different-retirement.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
   </url>
 
   <url>
@@ -64,10 +94,6 @@
   </url>
 
   <url>
-    <loc>https://retiresmartzip.com/articles/cost-of-living-naples-fl.html</loc>
-  </url>
-
-  <url>
     <loc>https://retiresmartzip.com/articles/greenville-sc-retirement-zip-tradeoffs.html</loc>
     <lastmod>2026-05-16</lastmod>
     <changefreq>monthly</changefreq>
@@ -75,24 +101,35 @@
   </url>
 
   <url>
-  <loc>https://retiresmartzip.com/articles/asheville-nc-retirement-zip-tradeoffs.html</loc>
-  <lastmod>2026-05-11</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.80</priority>
-</url>
+    <loc>https://retiresmartzip.com/articles/asheville-nc-retirement-zip-tradeoffs.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
 
-<url>
-  <loc>https://retiresmartzip.com/articles/scottsdale-az-retirement-zip-tradeoffs.html</loc>
-  <lastmod>2026-05-11</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.80</priority>
-</url>
+  <url>
+    <loc>https://retiresmartzip.com/articles/scottsdale-az-retirement-zip-tradeoffs.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
 
-<url>
-  <loc>https://retiresmartzip.com/articles/sarasota-fl-retirement-lifestyle-intelligence.html</loc>
-  <lastmod>2026-05-25</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.90</priority>
-</url>
+  <url>
+    <loc>https://retiresmartzip.com/articles/cost-of-living-sarasota-fl.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/cost-of-living-naples-fl.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://retiresmartzip.com/articles/cost-of-living-tampa-fl.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
 
 </urlset>
